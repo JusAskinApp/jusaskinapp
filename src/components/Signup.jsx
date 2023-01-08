@@ -8,7 +8,7 @@ import {
   Paper,
   Typography,
   ThemeProvider,
-  createMuiTheme,
+  createTheme,
   responsiveFontSizes,
   Grid,
   FormControl,
@@ -17,7 +17,7 @@ import {
   FormControlLabel,
 } from "@material-ui/core";
 
-const theme = createMuiTheme();
+const theme = createTheme();
 theme.overrides = {
   MuiOutlinedInput: {
     root: {

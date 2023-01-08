@@ -3,19 +3,20 @@ import myIcon from '../assets/logo.png';
 import facebook from '../assets/facebook-icon.png';
 import google from '../assets/google-icon.png';
 import twitter from '../assets/twitter-icon.png';
+import { useNavigate } from "react-router-dom";
 import {
   TextField,
   Paper,
   Typography,
   ThemeProvider,
-  createMuiTheme,
+  createTheme,
   responsiveFontSizes,
   Grid,
   FormControl,
   Button
 } from "@material-ui/core";
 
-const theme = createMuiTheme();
+const theme = createTheme();
 theme.overrides = {
   MuiOutlinedInput: {
     root: {
@@ -39,6 +40,7 @@ theme.overrides = {
 const responsiveTheme = responsiveFontSizes(theme);
 
 export default function Login() {
+  const navigate = useNavigate();
   const paperStyle = {
     padding: "40px 30px",
     width: 400,
@@ -98,6 +100,9 @@ export default function Login() {
       fontWeight:"700"
     }}
     variant="contained"
+    onClick={()=>{
+      navigate("/sidebar");
+    }}
   >
     Log in
   </Button>
