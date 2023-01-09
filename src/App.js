@@ -11,12 +11,13 @@ function App() {
      {/* <Signup/> */}
      {/* <Login/> */}
      {/* */}
-     <Sidebar/>
+     {/* <Sidebar/> */}
+     
      <Routes>
       
-        {/* <Route path="/" element={ <Login/> } /> */}
-        {/* <Route path="/sidebar" element={ <Sidebar/> } /> */}
-        {/* <Route path="/home" element={ <Home /> } /> */}
+        <Route path="/login" element={ <Login/> } />
+        <Route path="/signup" element={ <Signup/> } />
+        <Route path="/home" element={ <Sidebar /> } />
       </Routes>
     </div>
   );

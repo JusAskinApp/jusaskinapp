@@ -13,6 +13,7 @@ import {
   Grid,
   FormControl,
   Button,
+  IconButton,
   Checkbox,
   FormControlLabel,
 } from "@material-ui/core";
@@ -41,20 +42,59 @@ theme.overrides = {
 const responsiveTheme = responsiveFontSizes(theme);
 
 export default function Signup() {
-  const [email, setEmail] = useState("");
-  const [name, setName] = useState("");
-  const [password, setPassword] = useState("");
   const paperStyle = {
     padding: "40px 30px",
-    width: 400,
+    width: 450,
     margin: "20px auto",
     textAlign: "center",
   };
-  function handleSubmit(event) {
+
+  const [formData, setFormData] = useState({
+    username: "",
+    email: "",
+    password: "",
+  });
+  const [errors, setErrors] = useState({});
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData({ ...formData, [name]: value });
+    setErrors({ ...errors, [name]: "" });
+  };
+
+  const validate = () => {
+    const newErrors = {};
+    if (!formData.username) {
+      newErrors.username = "Username is required";
+    }
+    if (!formData.email) {
+      newErrors.email = "Email is required";
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = "Email is invalid";
+    }
+    if (!formData.password) {
+      newErrors.password = "Password is required";
+    } else if (formData.password.length < 8) {
+      newErrors.password = "Password must be at least 8 characters long";
+    }
+    // if (formData.password !== formData.confirmPassword) {
+    //   newErrors.confirmPassword = 'Passwords do not match';
+    // }
+    return newErrors;
+  };
+
+  const handleSubmit = (event) => {
     debugger;
     event.preventDefault();
-    console.log(name);
-  }
+    const newErrors = validate();
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+    } else {
+      // submit the form
+      console.log(formData);
+    }
+  };
+
   return (
     <Grid>
       <Paper style={paperStyle}>
@@ -68,38 +108,45 @@ export default function Signup() {
             Create Your Account
           </Typography>
           <Typography
-            style={{ marginTop: "15px", color: "#8CA1A6" }}
-            variant="caption"
+            style={{ marginTop: "18px", color: "#8CA1A6" }}
+            variant="body2"
             gutterBottom
           >
-            Please fill this form to create an account !
+            Beacome a part of Jus Askin community!
           </Typography>
         </Grid>
         <ThemeProvider theme={responsiveTheme}>
-          <FormControl onSubmit={handleSubmit} style={{ width: "35ch" }}>
+        <form onSubmit={handleSubmit}>
+          <FormControl style={{ width: "35ch" }}>
             <TextField
-              value={name}
-              onChange={(event) => setName(event.target.value)}
-              style={{ width: "100%", marginTop: "40px" }}
+              style={{ marginTop: "40px" }}
               label="Full Name"
-              id="outlined-size-small"
+              name="username"
+              type="text"
               variant="outlined"
+              onChange={handleChange}
+              error={!!errors.username}
+              helperText={errors.username}
             />
             <TextField
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
-              style={{ width: "100%", marginTop: "15px" }}
+              style={{ marginTop: "15px" }}
               label="Email"
-              id="outlined-size-small"
+              name="email"
+              type="email"
               variant="outlined"
+              onChange={handleChange}
+              error={!!errors.email}
+              helperText={errors.email}
             />
             <TextField
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
-              style={{ width: "100%", marginTop: "15px" }}
+              style={{ marginTop: "15px" }}
               label="Password"
-              id="outlined-size-small"
+              name="password"
+              type="password"
               variant="outlined"
+              onChange={handleChange}
+              error={!!errors.password}
+              helperText={errors.password}
             />
             <FormControlLabel
               style={{
@@ -109,7 +156,7 @@ export default function Signup() {
                 textAlign: "left",
                 marginTop: "15px",
               }}
-              control={<Checkbox style={{ marginBottom: "15px" }} />}
+              control={<Checkbox style={{ marginBottom: "15px" }} required />}
               label={
                 <Typography
                   variant="caption"
@@ -133,21 +180,35 @@ export default function Signup() {
                 fontWeight: "700",
               }}
               variant="contained"
+              type="submit"
             >
               Sing up
             </Button>
-            <Grid container style={{ marginTop: "30px" }}>
-              <Grid item xs={4} style={{ textAlign: "right" }}>
-                <img src={facebook} alt="" />
-              </Grid>
-              <Grid item xs={4}>
-                <img src={google} alt="" />
-              </Grid>
-              <Grid item xs={4} style={{ textAlign: "left" }}>
-                <img src={twitter} alt="" />
-              </Grid>
+            <Grid
+              container
+              style={{ marginTop: "30px" }}
+              justify="center"
+              alignItems="center"
+              spacing={1}
+            >
+             <Grid item xs={3}>
+                  <IconButton>
+                    <img src={facebook} alt="" />
+                  </IconButton>
+                </Grid>
+                <Grid item xs={3}>
+                  <IconButton>
+                    <img src={google} alt="" />
+                  </IconButton>
+                </Grid>
+                <Grid item xs={3}>
+                  <IconButton>
+                    <img src={twitter} alt="" />
+                  </IconButton>
+                </Grid>
             </Grid>
           </FormControl>
+          </form>
         </ThemeProvider>
       </Paper>
     </Grid>
