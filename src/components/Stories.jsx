@@ -13,6 +13,7 @@ function Stories() {
       avatar: faker.image.avatar(),
     }));
     setSuggestions(suggestions);
+    console.log(suggestions)
   }, []);
   return (
     <div className="flex space-x-9 p-6 bg-white rounded-sm border-gray-200 border overflow-x-hidden">

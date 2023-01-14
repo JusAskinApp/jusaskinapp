@@ -26,7 +26,7 @@ export default function AutoGrid() {
   return (
     <div>
       <Box sx={{ flexGrow: 1 }}>
-        <Grid container spacing={2} textAlign="right">
+        <Grid container spacing={2} >
           <Grid xs={10}></Grid>
           <Grid xs={1}>
             <IconButton>
@@ -38,11 +38,7 @@ export default function AutoGrid() {
               <EmailOutlinedIcon />
             </IconButton>
           </Grid>
-          {/* will render a story component */}
-
           <Stories />
-          {/* will render a story component */}
-
           <Grid item xs={11}>
             <ThemeProvider theme={responsiveTheme}>
               <TextField

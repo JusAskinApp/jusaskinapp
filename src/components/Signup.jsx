@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import myIcon from "../assets/logo.png";
 import facebook from "../assets/facebook-icon.png";
 import google from "../assets/google-icon.png";
@@ -53,6 +53,7 @@ export default function Signup() {
     username: "",
     email: "",
     password: "",
+    userType: "",
   });
   const [errors, setErrors] = useState({});
 
@@ -77,13 +78,11 @@ export default function Signup() {
     } else if (formData.password.length < 8) {
       newErrors.password = "Password must be at least 8 characters long";
     }
-    // if (formData.password !== formData.confirmPassword) {
-    //   newErrors.confirmPassword = 'Passwords do not match';
-    // }
+    
     return newErrors;
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     debugger;
     event.preventDefault();
     const newErrors = validate();
@@ -91,6 +90,23 @@ export default function Signup() {
       setErrors(newErrors);
     } else {
       // submit the form
+      const options = {
+        method: 'POST',
+        body: JSON.stringify({ email: formData.email, password: formData.password }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      };
+      try {
+        debugger;
+        const response = await fetch(`http://localhost:4000/signup`, options);
+        const data = await response.json();
+        console.log(data)
+        // handle response data
+      } catch (error) {
+        // handle error
+        console.log(error)
+      }
       console.log(formData);
     }
   };

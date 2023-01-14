@@ -10,13 +10,18 @@ import {
   Grid,
   IconButton,
   Typography,
-  Box
+  Box,
 } from "@mui/material";
-import userimg from '../assets/userimg.png';
-import post from '../assets/post.png'
-import MapsUgcOutlinedIcon from '@mui/icons-material/MapsUgcOutlined';
+import EmojiHappyIcon from "@material-ui/icons/EmojiEmotions";
+import userimg from "../assets/userimg.png";
+import post from "../assets/post.png";
+import MapsUgcOutlinedIcon from "@mui/icons-material/MapsUgcOutlined";
+import { useState } from "react";
 
 const Post = () => {
+  const [comment, setComment] = useState("");
+  const [comments, setComments] = useState([]);
+
   return (
     <Card>
       <CardHeader
@@ -33,19 +38,14 @@ const Post = () => {
         title="Elon Musk"
         subheader="September 14, 2022"
       />
-     <CardContent>
-  <Typography variant="body2" color="text.secondary">
-    <span style={{ fontWeight: "bold" }}>Question: </span>
-      What would government look like on Mars
-  </Typography>
-</CardContent>
-      <CardMedia
-        component="img"
-        height="20%"
-        image={post}
-        alt="Paella dish"
-      />
-      
+      <CardContent>
+        <Typography variant="body2" color="text.secondary">
+          <span style={{ fontWeight: "bold" }}>Question: </span>
+          What would government look like on Mars
+        </Typography>
+      </CardContent>
+      <CardMedia component="img" height="20%" image={post} alt="Paella dish" />
+
       <CardActions disableSpacing>
         <IconButton aria-label="add to favorites">
           <Checkbox
@@ -54,28 +54,34 @@ const Post = () => {
           />
         </IconButton>
         <IconButton>
-            <MapsUgcOutlinedIcon/>
+          <MapsUgcOutlinedIcon />
         </IconButton>
         <IconButton aria-label="share">
           <Share />
         </IconButton>
       </CardActions>
       {/* liked section */}
-      <Box display="flex"  ml={3} mb={2}>
-  <Avatar
-    alt="Remy Sharp"
-    src={userimg}
-    sx={{ width: 24, height: 24 }}
-  />
-  <Typography variant="body2" color="text.secondary" ml={1}>
-    <span style={{ fontWeight: "bold" }}>Umar Khan </span>
-      and <span style={{ fontWeight: "bold" }}>1 others </span> liked this.
-  </Typography>
-</Box>
+      <Box display="flex" ml={3} mb={2}>
+        <Avatar alt="Remy Sharp" src={userimg} sx={{ width: 24, height: 24 }} />
+        <Typography variant="body2" color="text.secondary" ml={1}>
+          <span style={{ fontWeight: "bold" }}>Umar Khan </span>
+          and <span style={{ fontWeight: "bold" }}>1 others </span> liked this.
+        </Typography>
+      </Box>
       {/*comments section  */}
 
-      {/* input field */}
-      
+      {/* comment field */}
+      <form className="flex items-center p-5">
+        <EmojiHappyIcon className="h-7" />
+        <input
+          type="text"
+          value={comment}
+          onChange={(e) => setComment(e.target.value)}
+          placeholder="Add a comment"
+          className="border-none flex-1 focus:ring-0 outline-none mx-3"
+        />
+        <button className="font-semibold text-blue-400" disabled={!comment.trim()}>Post</button>
+      </form>
     </Card>
   );
 };
