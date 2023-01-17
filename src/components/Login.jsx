@@ -45,7 +45,7 @@ export default function Login() {
   const paperStyle = {
     padding: "40px 30px",
     width: 450,
-    margin: "20px auto",
+    margin: "100px auto",
     textAlign: "center",
   };
   const [formData, setFormData] = useState({
