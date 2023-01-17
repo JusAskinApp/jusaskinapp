@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState,useEffect } from "react";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Unstable_Grid2";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
@@ -12,7 +12,6 @@ import {
 import AddIcon from "@mui/icons-material/Add";
 import IconButton from "@mui/material/IconButton";
 import Stories from "./Stories";
-
 const theme = createTheme();
 theme.overrides = {
   MuiOutlinedInput: {
@@ -21,8 +20,67 @@ theme.overrides = {
     },
   },
 };
+
 const responsiveTheme = responsiveFontSizes(theme);
 export default function AutoGrid() {
+  const [content, setContent] = useState("");
+  const [userDetail, setUserObject] = useState({});
+  let blogPost = {
+    id :'',
+    author: "",
+    content: "",
+    imageIDs: [],
+    videoIDs: [],
+  };
+  const createPost = (e) => {
+    console.log(blogPost);
+    debugger;
+    fetch("https://backend-justaskin-production.up.railway.app/api/blogPosts/addBlog", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(blogPost),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        // localStorage.setItem("userDetail", data);
+        // navigate('/home');
+      })
+      .catch((error) => {
+        // console.error(error);
+      });
+  };
+  useEffect(() => {
+    // setUserObject(JSON.parse(localStorage.getItem("userDetail")));
+  });
+  const  getProfilePicture = async (id) =>{
+    debugger;
+    fetch(`https://backend-justaskin-production.up.railway.app/${id}`, {
+      method: 'GET'
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        return data.ProfilePicture;
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+
+  }
+  const handleClick = async () => {
+    debugger;
+    const userDetail = JSON.parse(localStorage.getItem("userDetail"))
+    let profilePic = await getProfilePicture(userDetail.id)
+    console.log(userDetail);
+    blogPost.author = userDetail.name;
+    blogPost.id = userDetail.id;
+    blogPost.content = content;
+    blogPost.profilePicture = profilePic;
+    createPost();
+  };
   return (
     <div>
       <Box sx={{ flexGrow: 1 }}>
@@ -51,11 +109,14 @@ export default function AutoGrid() {
                 id="outlined-size-small"
                 variant="outlined"
                 size="small"
+                onChange={(e) => {
+                  setContent(e.target.value);
+                }}
               />
             </ThemeProvider>
           </Grid>
           <Grid item xs={1}>
-            <IconButton>
+            <IconButton onClick={handleClick}>
               <AddIcon
                 fontSize="large"
                 fontWeight="light"

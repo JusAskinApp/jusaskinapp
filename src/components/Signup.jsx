@@ -1,8 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import myIcon from "../assets/logo.png";
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
 import facebook from "../assets/facebook-icon.png";
 import google from "../assets/google-icon.png";
 import twitter from "../assets/twitter-icon.png";
+import FormLabel from "@mui/material/FormLabel";
+import { useNavigate } from "react-router-dom";
 import {
   TextField,
   Paper,
@@ -42,21 +46,43 @@ theme.overrides = {
 const responsiveTheme = responsiveFontSizes(theme);
 
 export default function Signup() {
+  const navigate = useNavigate();
   const paperStyle = {
     padding: "40px 30px",
     width: 450,
     margin: "20px auto",
     textAlign: "center",
   };
-
+  useEffect(() => {
+    setFormData({ type: "Student" });
+  }, []);
   const [formData, setFormData] = useState({
-    username: "",
+    name: "",
     email: "",
     password: "",
+    type: "",
   });
   const [errors, setErrors] = useState({});
-
+  const creatingUser = (e) => {
+    debugger;
+    fetch("https://backend-justaskin-production.up.railway.app/users/signup", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        navigate('/login');
+      })
+      .catch((error) => {
+        // console.error(error);
+      });
+  };
   const handleChange = (event) => {
+    debugger;
     const { name, value } = event.target;
     setFormData({ ...formData, [name]: value });
     setErrors({ ...errors, [name]: "" });
@@ -92,6 +118,7 @@ export default function Signup() {
     } else {
       // submit the form
       console.log(formData);
+      creatingUser();
     }
   };
 
@@ -116,82 +143,101 @@ export default function Signup() {
           </Typography>
         </Grid>
         <ThemeProvider theme={responsiveTheme}>
-        <form onSubmit={handleSubmit}>
-          <FormControl style={{ width: "35ch" }}>
-            <TextField
-              style={{ marginTop: "40px" }}
-              label="Full Name"
-              name="username"
-              type="text"
-              variant="outlined"
-              onChange={handleChange}
-              error={!!errors.username}
-              helperText={errors.username}
-            />
-            <TextField
-              style={{ marginTop: "15px" }}
-              label="Email"
-              name="email"
-              type="email"
-              variant="outlined"
-              onChange={handleChange}
-              error={!!errors.email}
-              helperText={errors.email}
-            />
-            <TextField
-              style={{ marginTop: "15px" }}
-              label="Password"
-              name="password"
-              type="password"
-              variant="outlined"
-              onChange={handleChange}
-              error={!!errors.password}
-              helperText={errors.password}
-            />
-            <FormControlLabel
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "flex-start",
-                textAlign: "left",
-                marginTop: "15px",
-              }}
-              control={<Checkbox style={{ marginBottom: "15px" }} required />}
-              label={
-                <Typography
-                  variant="caption"
-                  style={{ color: "#8CA1A6" }}
-                  gutterBottom
+          <form onSubmit={handleSubmit}>
+            <FormControl style={{ width: "35ch" }}>
+              <TextField
+                style={{ marginTop: "40px" }}
+                label="Full Name"
+                name="username"
+                type="text"
+                variant="outlined"
+                onChange={handleChange}
+                error={!!errors.username}
+                helperText={errors.username}
+              />
+              <TextField
+                style={{ marginTop: "15px" }}
+                label="Email"
+                name="email"
+                type="email"
+                variant="outlined"
+                onChange={handleChange}
+                error={!!errors.email}
+                helperText={errors.email}
+              />
+              <TextField
+                style={{ marginTop: "15px" }}
+                label="Password"
+                name="password"
+                type="password"
+                variant="outlined"
+                onChange={handleChange}
+                error={!!errors.password}
+                helperText={errors.password}
+              />
+              <FormControl style={{ alignItems: "center", paddingTop: "10px" }}>
+                <RadioGroup
+                  row
+                  defaultValue="Student"
+                  aria-labelledby="demo-row-radio-buttons-group-label"
+                  name="type"
+                  onChange={handleChange}
                 >
-                  By creating your account you agree to JusAskin's terms and
-                  Privacy Policy
-                </Typography>
-              }
-              labelPlacement="end"
-            />
+                  <FormControlLabel
+                    value="Student"
+                    control={<Radio />}
+                    label="Student"
+                  />
+                  <FormControlLabel
+                    value="Professional"
+                    control={<Radio />}
+                    label="Professional"
+                  />
+                </RadioGroup>
+              </FormControl>
+              <FormControlLabel
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "flex-start",
+                  textAlign: "left",
+                }}
+                control={<Checkbox style={{ marginBottom: "15px" }} required />}
+                label={
+                  <Typography
+                    variant="caption"
+                    style={{ color: "#8CA1A6" }}
+                    gutterBottom
+                  >
+                    By creating your account you agree to JusAskin's terms and
+                    Privacy Policy
+                  </Typography>
+                }
+                labelPlacement="end"
+              />
 
-            <Button
-              style={{
-                width: "100%",
-                height: "60px",
-                marginTop: "15px",
-                borderRadius: "40px",
-                fontSize: "18px",
-                fontWeight: "700",
-              }}
-              variant="contained"
-              type="submit"
-            >
-              Sing up
-            </Button>
-            <Grid
-              container
-              style={{ marginTop: "30px" }}
-              justify="center"
-              alignItems="center"
-              spacing={1}
-            >
-             <Grid item xs={3}>
+              <Button
+                style={{
+                  width: "100%",
+                  height: "60px",
+                  marginTop: "15px",
+                  borderRadius: "40px",
+                  fontSize: "18px",
+                  fontWeight: "700",
+                }}
+                variant="contained"
+                type="submit"
+              >
+                Sign up
+              </Button>
+              <Grid
+                container
+                style={{ marginTop: "30px" }}
+                justify="center"
+                alignItems="center"
+                spacing={1}
+              >
+                <Grid item xs={3}>
                   <IconButton>
                     <img src={facebook} alt="" />
                   </IconButton>
@@ -206,8 +252,8 @@ export default function Signup() {
                     <img src={twitter} alt="" />
                   </IconButton>
                 </Grid>
-            </Grid>
-          </FormControl>
+              </Grid>
+            </FormControl>
           </form>
         </ThemeProvider>
       </Paper>

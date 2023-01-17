@@ -58,6 +58,29 @@ export default function Login() {
     setFormData({ ...formData, [name]: value });
     setErrors({ ...errors, [name]: "" });
   };
+  const loginUser = (e) => {
+    debugger;
+    fetch("https://backend-justaskin-production.up.railway.app/users/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        if (data == "Email or password is wrong") {
+          alert("Email Or Password Is Wrong")
+        } else {
+          localStorage.setItem("userDetail", JSON.stringify(data));
+          navigate("/home");
+        }
+      })
+      .catch((error) => {
+        // console.error(error);
+      });
+  };
   const validate = () => {
     const newErrors = {};
     if (!formData.email) {
@@ -76,6 +99,7 @@ export default function Login() {
       setErrors(newErrors);
     } else {
       // submit the form
+      loginUser();
       console.log(formData);
     }
   };

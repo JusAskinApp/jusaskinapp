@@ -23,7 +23,7 @@ function Sidebar(props) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = useState(false);
   const navigate = useNavigate();
-  const [activeItem, setSelectedItem] = useState(null);
+  const [activeItem, setSelectedItem] = useState('Home');
 
   function handleListItemClick(item) {
     setSelectedItem(item);
