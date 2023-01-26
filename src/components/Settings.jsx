@@ -5,9 +5,9 @@ import {
   ThemeProvider,
   createTheme,
   responsiveFontSizes,
-  Button
+  Button,
 } from "@material-ui/core";
-import Switch from '@mui/material/Switch';
+import Switch from "@mui/material/Switch";
 
 const theme = createTheme();
 theme.overrides = {
@@ -29,7 +29,9 @@ function Settings() {
             label="Username"
             name="username"
             type="text"
+            value={JSON.parse(localStorage.userDetail).name}
             variant="outlined"
+            disabled
           />
         </Grid>
         <Grid item xs={12} sm={12} md={4}>
@@ -38,6 +40,8 @@ function Settings() {
             name="email"
             type="text"
             variant="outlined"
+            value={JSON.parse(localStorage.userDetail).email}
+            disabled
           />
         </Grid>
         <Grid item xs={12} sm={12} md={4}>
@@ -46,13 +50,19 @@ function Settings() {
             name="location"
             type="text"
             variant="outlined"
+            value={JSON.parse(localStorage.userDetail).email}
+            disabled
           />
         </Grid>
       </ThemeProvider>
-      <Grid  item xs={6}>Recieve Notifications</Grid>
-      <Grid  item xs={6}><Switch/></Grid>
+      <Grid item xs={6}>
+        Recieve Notifications
+      </Grid>
+      <Grid item xs={6}>
+        <Switch />
+      </Grid>
       <Grid item xs={12}>
-      {/* <Button variant="outlined" color="error">
+        {/* <Button variant="outlined" color="error">
         Error
       </Button> */}
       </Grid>
