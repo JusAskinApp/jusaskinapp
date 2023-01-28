@@ -4,6 +4,7 @@ import Signup from './components/Signup';
 import Home from './pages/Home';
 import Sidebar from './pages/Sidebar';
 import { Routes, Route } from "react-router-dom"
+import LandingPage from './pages/LandingPage';
 
 function App() {
   return (
@@ -14,7 +15,7 @@ function App() {
      {/* <Sidebar/> */}
      
      <Routes>
-      
+     <Route path="/" element={ <LandingPage/> } />
         <Route path="/login" element={ <Login/> } />
         <Route path="/" element={ <Signup/> } />
         {/* <Route path="/signup" element={ <Signup/> } /> */}

@@ -7,7 +7,7 @@ function Stories() {
   const [suggestions, setSuggestions] = useState([]);
   useEffect(() => {
     debugger;
-    const suggestions = [...Array(15)].map((_, i) => ({
+    const suggestions = [...Array(10)].map((_, i) => ({
       Id: i,
       username: faker.internet.userName(),
       avatar: faker.image.avatar(),

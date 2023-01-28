@@ -27,7 +27,7 @@ export default function Resources() {
 
   return (
     <div>
-      <Grid container spacing={3}>
+      <Grid container spacing={3} fullWidth maxWidth="md">
         <Grid item xs={12}>
         <Typography variant="h6" gutterBottom> Video(s) </Typography>
           <div className='flex flex-no-wrap justify-between xs:flex-col sm:flex-row'>
@@ -37,15 +37,18 @@ export default function Resources() {
             <VideoPlayer videos={videoData} />
           </div>
         </Grid>
+        
         <Grid item xs={12}>
         <Typography variant="h6" gutterBottom> Document(s) </Typography>
-          <div className='flex flex-no-wrap justify-between xs:flex-col sm:flex-row'>
+          <div className='grid grid-cols-6 justify-between'>
           <DocumentList documents={documentData} />
           <DocumentList documents={documentData} />
           <DocumentList documents={documentData} />
           <DocumentList documents={documentData} /> 
           <DocumentList documents={documentData} /> 
           <DocumentList documents={documentData} /> 
+          <DocumentList documents={documentData} />
+          <DocumentList documents={documentData} />
           </div>
         </Grid>
         <Grid item xs={12}>

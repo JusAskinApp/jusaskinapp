@@ -37,7 +37,7 @@ const Feed = () => {
       {blogData.length > 0 ? (
         <>
           {blogData.map((item, index) => (
-            <Box>
+            <Box style={{marginTop:'25px'}}>
               <Post
                 name={item.author}
                 date={item.date}
