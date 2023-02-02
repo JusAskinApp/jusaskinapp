@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import { faker } from "@faker-js/faker";
 import Story from "./Story";
-import { Stack } from "@mui/system";
-import { Grid } from "@mui/material";
 function Stories() {
   const [suggestions, setSuggestions] = useState([]);
   useEffect(() => {

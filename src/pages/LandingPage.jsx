@@ -3,6 +3,8 @@ import Navbar from '../components/NavbarComponent'
 import Subscribe from '../components/Subscribe'
 import Features from '../components/Features'
 import AboutSec from '../components/AboutSec'
+import Statement from '../components/Statement'
+import Footer from '../components/Footer'
 
 function LandingPage() {
   return (
@@ -11,6 +13,8 @@ function LandingPage() {
         <Subscribe/>
         <Features/>
         <AboutSec/>
+        <Statement/>
+        <Footer/>
     </div>
   )
 }
