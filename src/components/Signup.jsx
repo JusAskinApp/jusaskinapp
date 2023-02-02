@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import myIcon from "../assets/logo.png";
 import Radio from "@mui/material/Radio";
@@ -77,7 +76,11 @@ export default function Signup() {
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
-        navigate('/login');
+        if (data !== "Email already exists") {
+          navigate("/login");
+        } else {
+          alert("You have already account")
+        }
       })
       .catch((error) => {
         // console.error(error);
@@ -105,7 +108,7 @@ export default function Signup() {
     } else if (formData.password.length < 8) {
       newErrors.password = "Password must be at least 8 characters long";
     }
-    
+
     return newErrors;
   };
 
@@ -118,22 +121,15 @@ export default function Signup() {
     } else {
       // submit the form
       const options = {
-        method: 'POST',
-        body: JSON.stringify({ email: formData.email, password: formData.password }),
+        method: "POST",
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password,
+        }),
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       };
-      try {
-        debugger;
-        const response = await fetch(`http://localhost:4000/signup`, options);
-        const data = await response.json();
-        console.log(data)
-        // handle response data
-      } catch (error) {
-        // handle error
-        console.log(error)
-      }
       console.log(formData);
       creatingUser();
     }

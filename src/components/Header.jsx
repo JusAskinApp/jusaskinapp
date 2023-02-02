@@ -3,6 +3,7 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Unstable_Grid2";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
+import API_URL from '../constants/constant'
 import {
   ThemeProvider,
   createTheme,
@@ -49,7 +50,7 @@ export default function AutoGrid() {
   const createPost = (e) => {
     console.log(blogPost);
     debugger;
-    fetch("https://backend-justaskin-production.up.railway.app/api/blogPosts/addBlog", {
+    fetch(API_URL+"/api/blogPosts/addBlog", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -59,6 +60,7 @@ export default function AutoGrid() {
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
+        alert("blog added")
         // localStorage.setItem("userDetail", data);
         // navigate('/home');
       })
