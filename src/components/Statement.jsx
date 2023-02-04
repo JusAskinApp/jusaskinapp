@@ -3,12 +3,12 @@ import statement from '../assets/statement.png'
 
 function Statement() {
   return (
-    <div className="my-20" style={{ paddingTop: "2.5rem" }}>
-      <div className="container mx-auto px-6 flex">
+    <div className="my-10 md:my-20">
+      <div className="grid grid-co1-1 md:grid-col-2 container mx-auto px-6 md:flex">
         <div className="w-full md:w-1/2">
           <img src={statement} alt="About us" className="float-right" />
         </div>
-        <div className="w-full md:w-1/2" style={{marginTop:'9rem', marginLeft:'6rem'}}>
+        <div className="w-full md:w-1/2 mt-8 md:p-16">
           <h3 className="text-lg font-medium mb-2">
             Statement
           </h3>

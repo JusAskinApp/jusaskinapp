@@ -3,9 +3,9 @@ import about from "../assets/about.png";
 
 function AboutUs() {
   return (
-    <div className="bg-gray-200 my-20" style={{paddingTop:'2.5rem'}}>
-      <div className="container mx-auto px-6 flex">
-        <div className="w-full md:w-1/2 ml-4 mt-8">
+    <div className="bg-gray-200 my-10">
+      <div className="grid grid-cols-1 md:grid-cols-2 md:flex container mx-auto px-6">
+        <div className="w-full md:w-1/2 pt-10 md:p-16">
         <h3 className="text-lg font-medium bg-gray-200 mb-2">About Jus Askin</h3>
           <h2 className="text-5xl font-medium text-black mt-5">
             Share knowledge, skills and learn from others.
@@ -20,7 +20,7 @@ function AboutUs() {
             place to learn, share, and grow.
           </p>
         </div>
-        <div className="w-full md:w-1/2">
+        <div className="w-full md:w-1/2 md:mt-43">
           <img src={about} alt="About us" className="float-right" />
         </div>
       </div>
