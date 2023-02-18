@@ -24,6 +24,13 @@ const Post = (props) => {
 
   const [comments, setComments] = useState([]);
 
+  // const sendComments = async (e) => {
+  //   e.preventDefault();
+
+  //   const commentsToSend = comment
+  //   setComment('')
+  // }
+
   const dateGetter = (date) => {
     if (date) {
       return new Date(
@@ -100,6 +107,18 @@ const Post = (props) => {
           and <span style={{ fontWeight: "bold" }}>1 others </span> liked this.
         </Typography>
       </Box>
+
+      {/* comments */}
+
+      <div className="ml-10 h-20 overflow-y-scroll scrollbar-thumb-black scrollbar-thin">
+        <div className="flex items-center space-x-2 mb-3">
+          <img
+          className="h-7 rounded-full"
+          src="https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/462.jpg"
+          alt=""
+          />
+        </div>
+      </div>
 
       <form className="flex items-center p-5">
         <EmojiHappyIcon className="h-7" />
