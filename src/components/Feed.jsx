@@ -11,9 +11,14 @@ const Feed = () => {
     fetch(
       `https://backend-justaskin-production.up.railway.app/api/blogPosts/blogs/`,
       {
-        method: "GET",
-      }
-    )
+        method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(
+        { "interests": ["Nasir"]}
+      ),
+      })
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
@@ -43,6 +48,8 @@ const Feed = () => {
                 date={item.date}
                 content={item.content}
                 images={item.imagesIDs}
+                blogRefId={item.blogRefId}
+                comments={item.comments}
               />
             </Box>
           ))}
