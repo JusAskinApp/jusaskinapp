@@ -1,9 +1,9 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Unstable_Grid2";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
-import API_URL from '../constants/constant'
+import API_URL from "../constants/constant";
 import {
   ThemeProvider,
   createTheme,
@@ -14,7 +14,7 @@ import AddIcon from "@mui/icons-material/Add";
 import IconButton from "@mui/material/IconButton";
 import Stories from "./Stories";
 import DialogBox from "./DialogBox";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 const theme = createTheme();
 theme.overrides = {
   MuiOutlinedInput: {
@@ -41,7 +41,7 @@ export default function AutoGrid() {
     setOpen(false);
   };
   let blogPost = {
-    id :'',
+    id: "",
     author: "",
     content: "",
     imageIDs: [],
@@ -50,7 +50,7 @@ export default function AutoGrid() {
   const createPost = (e) => {
     console.log(blogPost);
     debugger;
-    fetch(API_URL+"/api/blogPosts/addBlog", {
+    fetch(API_URL + "/api/blogPosts/addBlog", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -60,7 +60,7 @@ export default function AutoGrid() {
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
-        alert("blog added")
+        alert("blog added");
         // localStorage.setItem("userDetail", data);
         // navigate('/home');
       })
@@ -71,25 +71,24 @@ export default function AutoGrid() {
   useEffect(() => {
     // setUserObject(JSON.parse(localStorage.getItem("userDetail")));
   });
-  const  getProfilePicture = async (id) =>{
+  const getProfilePicture = async (id) => {
     debugger;
     fetch(`https://backend-justaskin-production.up.railway.app/${id}`, {
-      method: 'GET'
+      method: "GET",
     })
-      .then(response => response.json())
-      .then(data => {
+      .then((response) => response.json())
+      .then((data) => {
         console.log(data);
         return data.ProfilePicture;
       })
-      .catch(error => {
-        console.error('Error:', error);
+      .catch((error) => {
+        console.error("Error:", error);
       });
-
-  }
+  };
   const handleClick = async () => {
     debugger;
-    const userDetail = JSON.parse(localStorage.getItem("userDetail"))
-    let profilePic = await getProfilePicture(userDetail.id)
+    const userDetail = JSON.parse(localStorage.getItem("userDetail"));
+    let profilePic = await getProfilePicture(userDetail.id);
     console.log(userDetail);
     blogPost.author = userDetail.name;
     blogPost.id = userDetail.id;
@@ -100,7 +99,7 @@ export default function AutoGrid() {
   return (
     <div>
       <Box sx={{ flexGrow: 1 }}>
-        <Grid container spacing={2} >
+        <Grid container spacing={2}>
           <Grid xs={10}></Grid>
           <Grid xs={1}>
             <IconButton>
@@ -134,11 +133,9 @@ export default function AutoGrid() {
                 fontWeight="light"
                 style={{ color: "#8ca1a6", marginTop: "11px" }}
               />
+              
             </IconButton>
-            <DialogBox
-        open={open}
-        onClose={handleClose}
-      />
+            <DialogBox open={open} onClose={handleClose} />
           </Grid>
         </Grid>
       </Box>

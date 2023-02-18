@@ -11,6 +11,9 @@ import {
 } from "@mui/material";
 import Button from "@mui/material/Button";
 import { useState } from "react";
+import CloseIcon from "@mui/icons-material/Close";
+import Grid from "@material-ui/core/Grid";
+import { IconButton } from "@mui/material";
 
 const theme = createTheme();
 theme.overrides = {
@@ -28,15 +31,15 @@ theme.overrides = {
 const responsiveTheme = responsiveFontSizes(theme);
 
 export default function DialogBox(props) {
-  const { onClose, selectedValue, open } = props;
+  const { onClose, open } = props;
   const [postTitle, setPostTitle] = useState("");
   const [postAuthor, setPostAuthor] = useState("");
   const [postDescription, setPostDescription] = useState("");
   const [file, setFile] = useState(null);
 
   const handleClose = () => {
-    debugger
-    onClose(selectedValue);
+    debugger;
+    onClose(true);
   };
 
   const handleChange = (e) => {
@@ -45,7 +48,7 @@ export default function DialogBox(props) {
 
   const handlePost = () => {
     debugger;
-    console.log("hello")
+    console.log("hello");
   };
 
   return (
@@ -56,7 +59,19 @@ export default function DialogBox(props) {
       maxWidth="xs"
       height="30%"
     >
-      <DialogTitle>Add New Post</DialogTitle>
+      
+
+      <div class="flex justify-between items-center">
+        <Grid item xs={6}>
+          <DialogTitle>Add New Post</DialogTitle>
+        </Grid>
+        <Grid item xs={6} align="right" style={{paddingRight:'10px'}}>
+          <IconButton onClick={handleClose}>
+            <CloseIcon/>
+          </IconButton>
+        </Grid>
+      </div>
+
       <List style={{ padding: "20px 25px" }}>
         <ThemeProvider theme={responsiveTheme}>
           <ListItem disableGutters>
@@ -90,7 +105,6 @@ export default function DialogBox(props) {
             />
           </ListItem>
           <ListItem disableGutters>
-           
             <div class="outline-dashed border-gray-400 rounded w-full flex items-center justify-center mt-2">
               <button class="font-bold py-2 px-4 rounded-lg">
                 <label for="file-upload" class="cursor-pointer flex flex-col">
@@ -103,12 +117,18 @@ export default function DialogBox(props) {
                       <path d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z" />
                     </svg>
                   </div>
-                  <span class="ml-2 text-center">{file ? <p>{file.name}</p>: <p>Browse Files to upload</p>}</span>
+                  <span class="ml-2 text-center">
+                    {file ? <p>{file.name}</p> : <p>Browse Files to upload</p>}
+                  </span>
                 </label>
-                <input type="file" id="file-upload" onChange={handleChange} class="hidden" />
+                <input
+                  type="file"
+                  id="file-upload"
+                  onChange={handleChange}
+                  class="hidden"
+                />
               </button>
             </div>
-          
           </ListItem>
           <ListItem disableGutters>
             <Button

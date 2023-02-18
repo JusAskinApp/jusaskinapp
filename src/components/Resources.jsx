@@ -4,7 +4,7 @@ import {Grid, Typography} from '@material-ui/core';
 import VideoPlayer from './VideoPlayer';
 import ImageGallery from './ImageGallery';
 import DocumentList from './DocumentList';
-import { videoData, imageData, documentData } from './data';
+//import { videoData, imageData, documentData } from './data';
 
 const useStyles = makeStyles((theme) => ({
 //   root: {
@@ -31,34 +31,34 @@ export default function Resources() {
         <Grid item xs={12}>
         <Typography variant="h6" gutterBottom> Video(s) </Typography>
           <div className='flex flex-no-wrap justify-between xs:flex-col sm:flex-row'>
-            <VideoPlayer videos={videoData} />
-            <VideoPlayer videos={videoData} />
-            <VideoPlayer videos={videoData} />
-            <VideoPlayer videos={videoData} />
+            <VideoPlayer/>
+            <VideoPlayer/>
+            <VideoPlayer/>
+            <VideoPlayer/>
           </div>
         </Grid>
         
         <Grid item xs={12}>
         <Typography variant="h6" gutterBottom> Document(s) </Typography>
           <div className='grid grid-cols-6 justify-between'>
-          <DocumentList documents={documentData} />
-          <DocumentList documents={documentData} />
-          <DocumentList documents={documentData} />
-          <DocumentList documents={documentData} /> 
-          <DocumentList documents={documentData} /> 
-          <DocumentList documents={documentData} /> 
-          <DocumentList documents={documentData} />
-          <DocumentList documents={documentData} />
+          <DocumentList/>
+          <DocumentList/>
+          <DocumentList/>
+          <DocumentList/> 
+          <DocumentList/> 
+          <DocumentList/> 
+          <DocumentList/>
+          <DocumentList/>
           </div>
         </Grid>
         <Grid item xs={12}>
         <Typography variant="h6" gutterBottom> Image(s) </Typography>
           <div className='flex flex-no-wrap justify-between xs:flex-col sm:flex-row'>
-          <ImageGallery images={imageData} />
-          <ImageGallery images={imageData} />
-          <ImageGallery images={imageData} />
-          <ImageGallery images={imageData} />
-          <ImageGallery images={imageData} />
+          <ImageGallery/>
+          <ImageGallery/>
+          <ImageGallery/>
+          <ImageGallery/>
+          <ImageGallery/>
           </div>
         </Grid>
       </Grid>

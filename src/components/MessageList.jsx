@@ -1,8 +1,8 @@
 import React from "react";
 
-function MessageList({ img, username }) {
+function MessageList({ img, username, onClick }) {
   return (
-    <div className="h-20 w-100 rounded-lg m-4 flex items-center p-4 cursor-pointer">
+    <div onClick={onClick} style={{background:'#DBE5E8'}} className="h-20 w-100 rounded-lg m-4 flex items-center p-4 cursor-pointer">
       <img
         src={img}
         alt="Profile"

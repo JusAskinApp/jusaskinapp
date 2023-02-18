@@ -20,7 +20,7 @@ function AboutUs() {
             place to learn, share, and grow.
           </p>
         </div>
-        <div className="w-full md:w-1/2 md:mt-43">
+        <div className="w-full md:w-1/2">
           <img src={about} alt="About us" className="float-right" />
         </div>
       </div>
