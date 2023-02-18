@@ -2,7 +2,7 @@ import * as React from "react";
 import Alert from "@mui/material/Alert";
 import Stack from "@mui/material/Stack";
 
-export default function ErrorAlerts() {
+export default function ErrorAlerts(props) {
   const [open, setOpen] = React.useState(true);
 
   React.useEffect(() => {
@@ -20,7 +20,7 @@ export default function ErrorAlerts() {
   return (
     <div style={{ display: "flex", justifyContent: "center" }}>
       <Stack sx={{ width: "50%" }} spacing={2}>
-        <Alert severity="error">Something went wrong</Alert>
+        <Alert severity="error">{props.error}</Alert>
       </Stack>
     </div>
   );

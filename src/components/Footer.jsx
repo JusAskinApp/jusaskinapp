@@ -7,11 +7,11 @@ import myIcon from "../assets/logo.png";
 
 function Footer() {
   const handleFacebookClick = () => {
-    window.open("https://www.instagram.com/jusaskinapp/facebook.com/jusaskinapp", "_blank");
+    window.open("https://www.facebook.com/JusAskinApp?mibextid=LQQJ4d", "_blank");
   };
 
   const handleTwitterClick = () => {
-    window.open("https://www.instagram.com/jusaskinapp/facebook.com/jusaskinapp", "_blank");
+    window.open("https://instagram.com/jusaskinapp?igshid=YmMyMTA2M2Y=", "_blank");
   };
 
   const handleInstagramClick = () => {

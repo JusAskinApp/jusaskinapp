@@ -1,5 +1,5 @@
 import { Favorite, FavoriteBorder, MoreVert, Share } from "@mui/icons-material";
-
+import makeApiCall from '../Api/api';
 import {
   Avatar,
   Card,
@@ -21,9 +21,38 @@ import { useState } from "react";
 
 const Post = (props) => {
   const [comment, setComment] = useState("");
+  const [localComments,setLocalComment] = useState([])
+  const postComment = async (blogRefId) => {
+    debugger;
+    try {
+      const data = await makeApiCall('http://localhost:4000/api/blogPosts/addcomment', {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(
+          {
+            "blogRefID":blogRefId,
+            "comment": {
+              "userID":JSON.parse(JSON.parse(JSON.stringify(localStorage)).userDetail).id,
+              "userName": JSON.parse(JSON.parse(JSON.stringify(localStorage)).userDetail).name,
+              "comment": comment
+            }
+          }
+        ),
 
-  const [comments, setComments] = useState([]);
-
+      });
+      alert(data)
+      console.log(data);
+      setLocalComment(...localComments,{
+        "comment": comment,
+        "userID":JSON.parse(JSON.parse(JSON.stringify(localStorage)).userDetail).id,
+        "userName": JSON.parse(JSON.parse(JSON.stringify(localStorage)).userDetail).name,
+    })
+    } catch (error) {
+      console.error(error);
+    }
+  }
   const dateGetter = (date) => {
     if (date) {
       return new Date(
@@ -33,6 +62,7 @@ const Post = (props) => {
       return "0";
     }
   };
+  
 
   return (
     <Card>
@@ -100,7 +130,37 @@ const Post = (props) => {
           and <span style={{ fontWeight: "bold" }}>1 others </span> liked this.
         </Typography>
       </Box>
-
+      {props.comments.length > 0 ? (
+        <>
+          {props.comments.map((item, index) => (
+             <form className="flex items-center p-5">
+             <EmojiHappyIcon className="h-7" />
+             <input
+               type="text"
+               value={item.comment}
+               disabled
+               className="border-none flex-1 focus:ring-0 outline-none mx-3"
+             />        
+           </form>
+          ))}
+        </>
+      ) : '' }
+      {localComments.length > 0 ? (
+        <>
+          {localComments.map((item, index) => (
+             <form className="flex items-center p-5">
+             <EmojiHappyIcon className="h-7" />
+             <input
+               type="text"
+               value={item.comment}
+               disabled
+               className="border-none flex-1 focus:ring-0 outline-none mx-3"
+             />        
+           </form>
+          ))}
+        </>
+      ) : '' }
+     
       <form className="flex items-center p-5">
         <EmojiHappyIcon className="h-7" />
 
@@ -115,6 +175,10 @@ const Post = (props) => {
         <button
           className="font-semibold text-blue-400"
           disabled={!comment.trim()}
+          onClick={((e)=>{
+            e.preventDefault();
+            postComment(props.blogRefId);
+          })}
         >
           Post
         </button>

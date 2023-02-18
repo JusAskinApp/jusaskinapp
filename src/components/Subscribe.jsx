@@ -4,8 +4,10 @@ import SuccessAlert from "../components/SuccessAlert";
 import ErrorAlerts from "../components/ErrorAlerts";
 const Subscribe = () => {
   const [email, setEmail] = useState("");
-  const [showSuccessAlert, setSuccessShowAlert] = React.useState(false);
-  const [showErrorAlert, setErrorShowAlert] = React.useState(false);
+  const [showSuccessAlert, setSuccessShowAlert] = useState(false);
+  const [showErrorAlert, setErrorShowAlert] = useState(false);
+  const [error, setError] = useState(false);
+
   const sendEmail = () => {
     debugger;
     if (email) {
@@ -16,7 +18,9 @@ const Subscribe = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ email: email }),
+          body: JSON.stringify({
+            email: email
+          }),
         }
       )
         .then((response) => response.json())
@@ -28,7 +32,15 @@ const Subscribe = () => {
             setTimeout(() => {
               window.location.reload();
             }, 2000);
-          } else {
+          } else if (data == "You are already subciber") {
+            setError("You are already our subscriber")
+            setErrorShowAlert(true);
+            setTimeout(() => {
+              window.location.reload();
+            }, 2000);
+          }
+          else {
+            setError("Please check your email or network")
             setErrorShowAlert(true);
             setTimeout(() => {
               window.location.reload();
@@ -46,18 +58,12 @@ const Subscribe = () => {
   const handleSubmit = (e) => {
     debugger;
     e.preventDefault();
-    // if (!email) {
-    //   // setError("Please enter a valid email address.");
-    //   return;
-    // }
-    // setError("");
-    // sendEmail();
   };
 
   return (
     <div style={{ backgroundColor: "#F0F7F4" }} className="text-center">
       {showSuccessAlert && <SuccessAlert />}
-      {showErrorAlert && <ErrorAlerts />}
+      {showErrorAlert && <ErrorAlerts error={error} />}
 
       <h2 className="text-5xl font-bold mb-6 pt-20">Learn, Share, Connect</h2>
       <form onSubmit={handleSubmit} className="mx-auto my-6">
