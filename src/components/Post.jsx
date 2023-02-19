@@ -21,6 +21,7 @@ import { useState } from "react";
 
 const Post = (props) => {
   const [comment, setComment] = useState("");
+  const [comments, setComments] = useState("");
   const [localComments,setLocalComment] = useState([])
   const postComment = async (blogRefId) => {
     debugger;
@@ -61,6 +62,18 @@ const Post = (props) => {
     } else {
       return "0";
     }
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const newComment = {
+      name: formData.get('name'),
+      comment: formData.get('comment'),
+      timestamp: new Date().toLocaleString(),
+    };
+    setComments((prevComments) => [...prevComments, newComment]);
+    event.target.reset();
   };
   
 
@@ -131,50 +144,67 @@ const Post = (props) => {
         </Typography>
       </Box>
       {props.comments.length > 0 ? (
-        <>
+        <div className="m-5 h-20 overflow-y-scroll scrollbar-thumb-black scrollbar-thin">
           {props.comments.map((item, index) => (
-             <form className="flex items-center p-5">
-             <EmojiHappyIcon className="h-7" />
-             <input
-               type="text"
-               value={item.comment}
-               disabled
-               className="border-none flex-1 focus:ring-0 outline-none mx-3"
-             />        
-           </form>
+            
+             <div className="flex items-center space-x-2 mb-3">
+             <img
+             className="h-7 rounded-full"
+             src="https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/462.jpg"
+             alt=""
+             />
+             <p className="text-sm flex-1">
+               <span className="font-bold">Abdul Haseeb</span>{" "}
+               <span>{item.comment}</span>
+               
+             </p>
+             <span className="text-xs pr-5">9 seconds ago</span>
+             
+           </div>
           ))}
-        </>
+        </div>
       ) : '' }
       {localComments.length > 0 ? (
-        <>
+        <div className="m-5 h-20 overflow-y-scroll scrollbar-thumb-black scrollbar-thin">
           {localComments.map((item, index) => (
-             <form className="flex items-center p-5">
-             <EmojiHappyIcon className="h-7" />
-             <input
-               type="text"
-               value={item.comment}
-               disabled
-               className="border-none flex-1 focus:ring-0 outline-none mx-3"
-             />        
-           </form>
+            <div className="flex items-center space-x-2 mb-3">
+            <img
+            className="h-7 rounded-full"
+            src="https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/462.jpg"
+            alt=""
+            />
+            <p className="text-sm flex-1">
+              <span className="font-bold">Abdul Haseeb</span>{" "}
+              <span>{item.comment}</span>
+              
+            </p>
+            <span className="text-xs pr-5">9 seconds ago</span>
+            
+          </div>
           ))}
-        </>
+        </div>
       ) : '' }
      
       {/* comments */}
 
-      <div className="ml-10 h-20 overflow-y-scroll scrollbar-thumb-black scrollbar-thin">
+      {/* <div className="m-5 h-20 overflow-y-scroll scrollbar-thumb-black scrollbar-thin">
         <div className="flex items-center space-x-2 mb-3">
           <img
           className="h-7 rounded-full"
           src="https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/462.jpg"
           alt=""
           />
+          <p className="text-sm flex-1">
+            <span className="font-bold">Abdul Haseeb</span>{" "}
+            <span>this is a static comment</span>
+            
+          </p>
+          <span className="text-xs pr-5">9 seconds ago</span>
           
         </div>
-      </div>
+      </div> */}
 
-      <form className="flex items-center p-5">
+      <form className="flex items-center p-5" onSubmit={handleSubmit}>
         <EmojiHappyIcon className="h-7" />
 
         <input
