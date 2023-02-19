@@ -83,7 +83,7 @@ const Subscribe = () => {
       {showSuccessAlert && <SuccessAlert />}
       {showErrorAlert && <ErrorAlerts error={error} />}
 
-      <h2 className="text-5xl font-bold mb-6 pt-20 lg:text-6xl">Learn, Share, Connect</h2>
+      <h2 className="text-5xl font-bold mb-6 pt-20 lg:text-7xl">Learn, Share, Connect</h2>
       <form onSubmit={handleSubmit} className="mx-auto my-8 flex flex-col sm:flex-row sm:justify-center sm:items-center">
         <div className="ml-2 mb-6 sm:mb-0">
           <input
