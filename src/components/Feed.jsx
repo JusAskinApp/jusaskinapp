@@ -50,6 +50,7 @@ const Feed = () => {
                 images={item.imagesIDs}
                 blogRefId={item.blogRefId}
                 comments={item.comments}
+                likes={item.likes}
               />
             </Box>
           ))}

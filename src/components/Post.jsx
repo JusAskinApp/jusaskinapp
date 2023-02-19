@@ -23,6 +23,13 @@ const Post = (props) => {
   const [comment, setComment] = useState("");
   const [localComments,setLocalComment] = useState([])
   const postComment = async (blogRefId) => {
+    let temp = [...localComments,{
+      "comment": comment,
+      "userID":JSON.parse(JSON.parse(JSON.stringify(localStorage)).userDetail).id,
+      "userName": JSON.parse(JSON.parse(JSON.stringify(localStorage)).userDetail).name,
+  }]
+    setLocalComment(temp)
+    setComment('')
     debugger;
     try {
       const data = await makeApiCall('http://localhost:4000/api/blogPosts/addcomment', {
@@ -42,13 +49,9 @@ const Post = (props) => {
         ),
 
       });
-      alert(data)
+   
       console.log(data);
-      setLocalComment(...localComments,{
-        "comment": comment,
-        "userID":JSON.parse(JSON.parse(JSON.stringify(localStorage)).userDetail).id,
-        "userName": JSON.parse(JSON.parse(JSON.stringify(localStorage)).userDetail).name,
-    })
+     
     } catch (error) {
       console.error(error);
     }
@@ -62,7 +65,34 @@ const Post = (props) => {
       return "0";
     }
   };
-  
+  const likesUpdated = async (e) => {
+    debugger;
+    try {
+      const data = await makeApiCall('http://localhost:4000/api/blogPosts/updateLikes', {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(
+          {
+            "blogRefID":props.blogRefId,
+            "like":e.target.checked ? 1 : -1,
+            "user": {
+              "email":JSON.parse(JSON.parse(JSON.stringify(localStorage)).userDetail).email,
+              "userName": JSON.parse(JSON.parse(JSON.stringify(localStorage)).userDetail).name,
+
+            }
+          }
+        ),
+
+      });
+   
+      console.log(data);
+     
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   return (
     <Card>
@@ -104,11 +134,14 @@ const Post = (props) => {
       <CardMedia component="img" height="20%" image={post} alt="Paella dish" />
 
       <CardActions disableSpacing>
-        <IconButton aria-label="add to favorites">
+        <IconButton aria-label="add to favorites" 
+        >
           <Checkbox
+          onChange={likesUpdated}
             icon={<FavoriteBorder />}
             checkedIcon={<Favorite sx={{ color: "red" }} />}
           />
+         
         </IconButton>
 
         <IconButton>
@@ -124,10 +157,9 @@ const Post = (props) => {
 
       <Box display="flex" ml={3} mb={2}>
         <Avatar alt="Remy Sharp" src={userimg} sx={{ width: 24, height: 24 }} />
-
         <Typography variant="body2" color="text.secondary" ml={1}>
-          <span style={{ fontWeight: "bold" }}>Umar Khan </span>
-          and <span style={{ fontWeight: "bold" }}>1 others </span> liked this.
+          <span style={{ fontWeight: "bold" }}> {props.likes && props.likes[0] ? props.likes.data[0].user.name : ''} </span>
+          and <span style={{ fontWeight: "bold" }}>{props.likes.total} </span> liked this.
         </Typography>
       </Box>
       {props.comments.length > 0 ? (
@@ -163,7 +195,7 @@ const Post = (props) => {
      
       {/* comments */}
 
-      <div className="ml-10 h-20 overflow-y-scroll scrollbar-thumb-black scrollbar-thin">
+      {/* <div className="ml-10 h-20 overflow-y-scroll scrollbar-thumb-black scrollbar-thin">
         <div className="flex items-center space-x-2 mb-3">
           <img
           className="h-7 rounded-full"
@@ -172,7 +204,7 @@ const Post = (props) => {
           />
           
         </div>
-      </div>
+      </div> */}
 
       <form className="flex items-center p-5">
         <EmojiHappyIcon className="h-7" />
