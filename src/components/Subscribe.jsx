@@ -3,7 +3,25 @@ import myImage from "../assets/LP.png";
 import SuccessAlert from "../components/SuccessAlert";
 import ErrorAlerts from "../components/ErrorAlerts";
 const Subscribe = () => {
+  const interests = [
+    "Artificial intelligence and machine learning",
+    "Data science and analytics",
+    "Software development and programming",
+    "Web and mobile app development",
+    "Cybersecurity and information security",
+    "Cloud computing and infrastructure",
+    "Internet of Things (IoT) and connected devices",
+    "Virtual and augmented reality (VR/AR)",
+    "Electronics and hardware design",
+    "Robotics and automation",
+    "Quantum computing and physics",
+    "Biology and biotechnology",
+    "Chemistry and materials science",
+    "Environmental science and sustainability",
+    "Astronomy and astrophysics"
+  ];
   const [email, setEmail] = useState("");
+  const [interest, setInterest] = useState([]);
   const [showSuccessAlert, setSuccessShowAlert] = useState(false);
   const [showErrorAlert, setErrorShowAlert] = useState(false);
   const [error, setError] = useState(false);
@@ -19,7 +37,8 @@ const Subscribe = () => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            email: email
+            email: email,
+            interest: interest
           }),
         }
       )
@@ -33,14 +52,13 @@ const Subscribe = () => {
               window.location.reload();
             }, 2000);
           } else if (data == "You are already subciber") {
-            setError("You are already our subscriber")
+            setError("You are already our subscriber");
             setErrorShowAlert(true);
             setTimeout(() => {
               window.location.reload();
             }, 2000);
-          }
-          else {
-            setError("Please check your email or network")
+          } else {
+            setError("Please check your email or network");
             setErrorShowAlert(true);
             setTimeout(() => {
               window.location.reload();
@@ -65,24 +83,52 @@ const Subscribe = () => {
       {showSuccessAlert && <SuccessAlert />}
       {showErrorAlert && <ErrorAlerts error={error} />}
 
-      <h2 className="text-5xl font-bold mb-6 pt-20">Learn, Share, Connect</h2>
-      <form onSubmit={handleSubmit} className="mx-auto my-6">
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="Enter your email address"
-          className="px-3 py-2 rounded-lg w-64 mb-6"
-        />
-        <button
-          className="bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-600"
-          onClick={() => {
-            sendEmail();
-          }}
-        >
-          Subscribe
-        </button>
+      <h2 className="text-5xl font-bold mb-6 pt-20 lg:text-6xl">Learn, Share, Connect</h2>
+      <form onSubmit={handleSubmit} className="mx-auto my-8 flex flex-col sm:flex-row sm:justify-center sm:items-center">
+        <div className="ml-2 mb-6 sm:mb-0">
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Enter your email address"
+            className="px-3 py-2 rounded-lg w-64"
+          />
+        </div>
+
+        <div className="ml-2 mb-6 sm:mb-0">
+          <select
+            id="interest-select"
+            value={interest}
+            onChange={(e) => setInterest(Array.from(e.target.selectedOptions, (option) => option.value))}
+            className="px-3 py-2 rounded-lg w-64"
+          // multiple
+          >
+            <option value="" disabled selected>Select your interest</option>
+            <option value="Business">Business</option>
+            <option value="Technology">Technology</option>
+            <option value="Science">Science</option>
+            <option value="Arts & Humanities">Arts & Humanities</option>
+            <option value="Health & Medicine">Health & Medicine</option>
+            <option value="Social Sciences">Social Sciences</option>
+            <option value="Environment">Environment</option>
+            <option value="Education">Education</option>
+            <option value="Law & Politics">Law & Politics</option>
+            <option value="Lifestyle">Lifestyle</option>
+          </select>
+
+        </div>
+        <div className="mb-6 ml-2 sm:mb-0">
+          <button
+            className="bg-green-500 text-white px-3 py-2 rounded-lg hover:bg-green-600"
+            onClick={() => {
+              sendEmail();
+            }}
+          >
+            Subscribe
+          </button>
+        </div>
       </form>
+
       <img src={myImage} alt="image" className="mx-auto" />
     </div>
   );
