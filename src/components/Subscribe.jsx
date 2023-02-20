@@ -101,7 +101,7 @@ const Subscribe = () => {
             value={interest}
             onChange={(e) => setInterest(Array.from(e.target.selectedOptions, (option) => option.value))}
             className="px-3 py-2 rounded-lg w-64"
-          // multiple
+          multiple
           >
             <option value="" disabled selected>Select your interest</option>
             <option value="Business">Business</option>

@@ -32,7 +32,7 @@ const SubscriberDetail = () => {
         // setAlldata(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
         // return allData;
         try {
-            const data = await makeApiCall('http://localhost:4000/api/admin/subscribeusers', {
+            const data = await makeApiCall('https://backend-justaskin-production.up.railway.app/api/admin/subscribeusers', {
                 method: "GET",
             });
             setAlldata(data)
