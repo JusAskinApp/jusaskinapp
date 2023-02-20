@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import myImage from "../assets/LP.png";
 import SuccessAlert from "../components/SuccessAlert";
 import ErrorAlerts from "../components/ErrorAlerts";
+import SelectField from "./SelectField";
 const Subscribe = () => {
   const [email, setEmail] = useState("");
   const [interest, setInterest] = useState("");
@@ -65,7 +66,7 @@ const Subscribe = () => {
       {showSuccessAlert && <SuccessAlert />}
       {showErrorAlert && <ErrorAlerts error={error} />}
 
-      <h2 className="text-5xl font-bold mb-6 pt-20 lg:text-6xl">Learn, Share, Connect</h2>
+      <h2 className="text-5xl font-bold mb-6 pt-20 lg:text-7xl">Learn, Share, Connect</h2>
       <form onSubmit={handleSubmit} className="mx-auto my-8 flex flex-col sm:flex-row sm:justify-center sm:items-center">
   <div className="ml-2 mb-6 sm:mb-0">
     <input
@@ -78,7 +79,7 @@ const Subscribe = () => {
   </div>
 
   <div className="ml-2 mb-6 sm:mb-0">
-    <select
+    {/* <select
       id="interest-select"
       value={interest}
       onChange={(e) => setInterest(e.target.value)}
@@ -88,7 +89,8 @@ const Subscribe = () => {
       <option value="Technology">Technology</option>
       <option value="Business">Business</option>
       <option value="Health">Health</option>
-    </select>
+    </select> */}
+    <SelectField/>
   </div>
   <div className="mb-6 ml-2 sm:mb-0">
   <button
