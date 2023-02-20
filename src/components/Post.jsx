@@ -21,12 +21,22 @@ import { useState } from "react";
 
 const Post = (props) => {
   const [comment, setComment] = useState("");
-  const [comments, setComments] = useState("");
+  const [checked, setChecked] = useState(false);
   const [localComments,setLocalComment] = useState([])
+  const [likeCount,setCount] = useState(-1)
+  const [error,setError] = useState(false)
   const postComment = async (blogRefId) => {
+    setError(false)
+    let temp = [...localComments,{
+      "comment": comment,
+      "userID":JSON.parse(JSON.parse(JSON.stringify(localStorage)).userDetail).id,
+      "userName": JSON.parse(JSON.parse(JSON.stringify(localStorage)).userDetail).name,
+  }]
+    setLocalComment(temp)
+    setComment('')
     debugger;
     try {
-      const data = await makeApiCall('http://localhost:4000/api/blogPosts/addcomment', {
+      const data = await makeApiCall('https://backend-justaskin-production.up.railway.app/api/blogPosts/addcomment', {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -43,14 +53,11 @@ const Post = (props) => {
         ),
 
       });
-      alert(data)
+   
       console.log(data);
-      setLocalComment(...localComments,{
-        "comment": comment,
-        "userID":JSON.parse(JSON.parse(JSON.stringify(localStorage)).userDetail).id,
-        "userName": JSON.parse(JSON.parse(JSON.stringify(localStorage)).userDetail).name,
-    })
+     
     } catch (error) {
+      setError(true)
       console.error(error);
     }
   }
@@ -63,19 +70,39 @@ const Post = (props) => {
       return "0";
     }
   };
+  const likesUpdated = async (e) => {
+    debugger;
+    setCount(e.target.checked ? props.likes.total + 1 : props.likes.total -1, )
+    setChecked(e.target.checked ? true : false )
+    try {
+      const data = await makeApiCall('https://backend-justaskin-production.up.railway.app/api/blogPosts/updateLikes', {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(
+          {
+            "blogRefID":props.blogRefId,
+            "like":e.target.checked ? 1 : -1,
+            "user": {
+              "email":JSON.parse(JSON.parse(JSON.stringify(localStorage)).userDetail).email,
+              "userName": JSON.parse(JSON.parse(JSON.stringify(localStorage)).userDetail).name,
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const formData = new FormData(event.target);
-    const newComment = {
-      name: formData.get('name'),
-      comment: formData.get('comment'),
-      timestamp: new Date().toLocaleString(),
-    };
-    setComments((prevComments) => [...prevComments, newComment]);
-    event.target.reset();
-  };
-  
+            }
+          }
+        ),
+
+      });
+   
+      console.log(data);
+     
+    } catch (error) {
+      alert("hello")
+      // setCount(e.target.checked ? props.likes.total - 1 : props.likes.total + 1, )
+      // setChecked(false)
+      console.error(error);
+    }
+  }
 
   return (
     <Card>
@@ -117,11 +144,15 @@ const Post = (props) => {
       <CardMedia component="img" height="20%" image={post} alt="Paella dish" />
 
       <CardActions disableSpacing>
-        <IconButton aria-label="add to favorites">
+        <IconButton aria-label="add to favorites" 
+        >
           <Checkbox
+           checked={checked}
+          onChange={likesUpdated}
             icon={<FavoriteBorder />}
             checkedIcon={<Favorite sx={{ color: "red" }} />}
           />
+         
         </IconButton>
 
         <IconButton>
@@ -137,14 +168,15 @@ const Post = (props) => {
 
       <Box display="flex" ml={3} mb={2}>
         <Avatar alt="Remy Sharp" src={userimg} sx={{ width: 24, height: 24 }} />
-
         <Typography variant="body2" color="text.secondary" ml={1}>
-          <span style={{ fontWeight: "bold" }}>Umar Khan </span>
-          and <span style={{ fontWeight: "bold" }}>1 others </span> liked this.
+          <span style={{ fontWeight: "bold" }}> {props.likes.data[0] ? props.likes.data[0].user ? props.likes.data[0].user.userName: '' : ''} </span>
+          and <span style={{ fontWeight: "bold" }}>{likeCount !==-1 ? likeCount : props.likes.total} </span> liked this.
         </Typography>
       </Box>
+      <div className="m-5 h-20 overflow-y-scroll scrollbar-thumb-black scrollbar-thin">
+
       {props.comments.length > 0 ? (
-        <div className="m-5 h-20 overflow-y-scroll scrollbar-thumb-black scrollbar-thin">
+        <div>
           {props.comments.map((item, index) => (
             
              <div className="flex items-center space-x-2 mb-3">
@@ -154,7 +186,7 @@ const Post = (props) => {
              alt=""
              />
              <p className="text-sm flex-1">
-               <span className="font-bold">Abdul Haseeb</span>{" "}
+               <span className="font-bold">{item.userName}</span>{" "}
                <span>{item.comment}</span>
                
              </p>
@@ -165,7 +197,7 @@ const Post = (props) => {
         </div>
       ) : '' }
       {localComments.length > 0 ? (
-        <div className="m-5 h-20 overflow-y-scroll scrollbar-thumb-black scrollbar-thin">
+        <div>
           {localComments.map((item, index) => (
             <div className="flex items-center space-x-2 mb-3">
             <img
@@ -174,20 +206,23 @@ const Post = (props) => {
             alt=""
             />
             <p className="text-sm flex-1">
-              <span className="font-bold">Abdul Haseeb</span>{" "}
+              <span className="font-bold">{JSON.parse(JSON.parse(JSON.stringify(localStorage)).userDetail).name}</span>{" "}
               <span>{item.comment}</span>
-              
             </p>
-            <span className="text-xs pr-5">9 seconds ago</span>
-            
+            {/* <span className="text-xs pr-5">9 seconds ago</span> */}
+            {error === true ? <button onClick={()=>{
+              debugger;
+              postComment(props.blogRefId)
+              }} style={{color:"red",paddingLeft:"5px"}}>Retry</button> :'' }
           </div>
           ))}
         </div>
       ) : '' }
+      </div>
      
       {/* comments */}
 
-      {/* <div className="m-5 h-20 overflow-y-scroll scrollbar-thumb-black scrollbar-thin">
+      {/* {/* <div className="m-5 h-20 overflow-y-scroll scrollbar-thumb-black scrollbar-thin">
         <div className="flex items-center space-x-2 mb-3">
           <img
           className="h-7 rounded-full"
@@ -204,7 +239,7 @@ const Post = (props) => {
         </div>
       </div> */}
 
-      <form className="flex items-center p-5" onSubmit={handleSubmit}>
+      <form className="flex items-center p-5">
         <EmojiHappyIcon className="h-7" />
 
         <input
@@ -219,6 +254,7 @@ const Post = (props) => {
           className="font-semibold text-blue-400"
           disabled={!comment.trim()}
           onClick={((e)=>{
+            debugger;
             e.preventDefault();
             postComment(props.blogRefId);
           })}

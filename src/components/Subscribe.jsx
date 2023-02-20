@@ -4,8 +4,25 @@ import SuccessAlert from "../components/SuccessAlert";
 import ErrorAlerts from "../components/ErrorAlerts";
 import SelectField from "./SelectField";
 const Subscribe = () => {
+  const interests = [
+    "Artificial intelligence and machine learning",
+    "Data science and analytics",
+    "Software development and programming",
+    "Web and mobile app development",
+    "Cybersecurity and information security",
+    "Cloud computing and infrastructure",
+    "Internet of Things (IoT) and connected devices",
+    "Virtual and augmented reality (VR/AR)",
+    "Electronics and hardware design",
+    "Robotics and automation",
+    "Quantum computing and physics",
+    "Biology and biotechnology",
+    "Chemistry and materials science",
+    "Environmental science and sustainability",
+    "Astronomy and astrophysics"
+  ];
   const [email, setEmail] = useState("");
-  const [interest, setInterest] = useState("");
+  const [interest, setInterest] = useState([]);
   const [showSuccessAlert, setSuccessShowAlert] = useState(false);
   const [showErrorAlert, setErrorShowAlert] = useState(false);
   const [error, setError] = useState(false);
@@ -22,6 +39,7 @@ const Subscribe = () => {
           },
           body: JSON.stringify({
             email: email,
+            interest: interest
           }),
         }
       )
@@ -67,16 +85,17 @@ const Subscribe = () => {
       {showErrorAlert && <ErrorAlerts error={error} />}
 
       <h2 className="text-5xl font-bold mb-6 pt-20 lg:text-7xl">Learn, Share, Connect</h2>
+      <h2 className="text-5xl font-bold mb-6 pt-20 lg:text-7xl">Learn, Share, Connect</h2>
       <form onSubmit={handleSubmit} className="mx-auto my-8 flex flex-col sm:flex-row sm:justify-center sm:items-center">
-  <div className="ml-2 mb-6 sm:mb-0">
-    <input
-      type="email"
-      value={email}
-      onChange={(e) => setEmail(e.target.value)}
-      placeholder="Enter your email address"
-      className="px-3 py-2 rounded-lg w-64"
-    />
-  </div>
+        <div className="ml-2 mb-6 sm:mb-0">
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Enter your email address"
+            className="px-3 py-2 rounded-lg w-64"
+          />
+        </div>
 
   <div className="ml-2 mb-6 sm:mb-0">
     {/* <select
