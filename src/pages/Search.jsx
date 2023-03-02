@@ -2,9 +2,10 @@ import React from "react";
 import IconButton from "@mui/material/IconButton";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import ArrowBackOutlinedIcon from '@mui/icons-material/ArrowBackOutlined';
+import { useState } from "react";
 
 const Search = (props) => {
-  const [searchTerm, setSearchTerm] = React.useState("");
+  const [searchTerm, setSearchTerm] = useState("");
 
   const handleChange = (event) => {
     setSearchTerm(event.target.value);
