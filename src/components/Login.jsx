@@ -60,7 +60,7 @@ export default function Login() {
   };
   const loginUser = (e) => {
     debugger;
-    fetch("https://backend-justaskin-production.up.railway.app/api/users/login", {
+    fetch("https://jusaskin.herokuapp.com/api/users/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

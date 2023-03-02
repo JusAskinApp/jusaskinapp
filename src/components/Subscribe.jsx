@@ -38,7 +38,7 @@ const Subscribe = () => {
     debugger;
     if (email) {
       fetch(
-        "https://backend-justaskin-production.up.railway.app/api/email/sendEmail",
+        "https://jusaskin.herokuapp.com/api/email/sendEmail",
         {
           method: "POST",
           headers: {

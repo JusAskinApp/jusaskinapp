@@ -40,61 +40,14 @@ export default function AutoGrid() {
   const handleClose = (value) => {
     setOpen(false);
   };
-  let blogPost = {
-    id: "",
-    author: "",
-    content: "",
-    imageIDs: [],
-    videoIDs: [],
-  };
-  const createPost = (e) => {
-    console.log(blogPost);
-    debugger;
-    fetch(API_URL + "/api/blogPosts/addBlog", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(blogPost),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        alert("blog added");
-        // localStorage.setItem("userDetail", data);
-        // navigate('/home');
-      })
-      .catch((error) => {
-        // console.error(error);
-      });
-  };
+ 
+  
   useEffect(() => {
     // setUserObject(JSON.parse(localStorage.getItem("userDetail")));
   });
-  const getProfilePicture = async (id) => {
-    debugger;
-    fetch(`https://backend-justaskin-production.up.railway.app/${id}`, {
-      method: "GET",
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        return data.ProfilePicture;
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-  };
+  
   const handleClick = async () => {
-    debugger;
-    const userDetail = JSON.parse(localStorage.getItem("userDetail"));
-    let profilePic = await getProfilePicture(userDetail.id);
-    console.log(userDetail);
-    blogPost.author = userDetail.name;
-    blogPost.id = userDetail.id;
-    blogPost.content = content;
-    blogPost.profilePicture = profilePic;
-    createPost();
+   
   };
   return (
     <div>
