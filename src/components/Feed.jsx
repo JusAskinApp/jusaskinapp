@@ -9,7 +9,7 @@ const Feed = () => {
   const getBlogs = async (id) => {
     debugger;
     fetch(
-      `https://backend-justaskin-production.up.railway.app/api/blogPosts/blogs/`,
+      `https://jusaskin.herokuapp.com/api/blogPosts/blogs/`,
       {
         method: "POST",
       headers: {

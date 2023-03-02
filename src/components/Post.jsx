@@ -36,7 +36,7 @@ const Post = (props) => {
     setComment('')
     debugger;
     try {
-      const data = await makeApiCall('https://backend-justaskin-production.up.railway.app/api/blogPosts/addcomment', {
+      const data = await makeApiCall('"https://jusaskin.herokuapp.com/api/blogPosts/addcomment', {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -75,7 +75,7 @@ const Post = (props) => {
     setCount(e.target.checked ? props.likes.total + 1 : props.likes.total -1, )
     setChecked(e.target.checked ? true : false )
     try {
-      const data = await makeApiCall('https://backend-justaskin-production.up.railway.app/api/blogPosts/updateLikes', {
+      const data = await makeApiCall('"https://jusaskin.herokuapp.com/api/blogPosts/updateLikes', {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -140,8 +140,8 @@ const Post = (props) => {
         </Typography>
 
       </CardContent> */}
-
-      <CardMedia component="img" height="20%" image={post} alt="Paella dish" />
+     <CardMedia component="img" height="20%" image={props.images !== undefined && props.images.length>0 ? props.images[0] : post} alt="Paella dish" />
+      {/* <CardMedia component="img" height="20%" image={"https://storage.googleapis.com/jusaskinapp.appspot.com/pexels-pixabay-60597-50c8a256-6511-4a9f-a9f8-fba0f1f778b7.jpg"} alt="Paella dish" /> */}
 
       <CardActions disableSpacing>
         <IconButton aria-label="add to favorites" 
@@ -182,7 +182,7 @@ const Post = (props) => {
              <div className="flex items-center space-x-2 mb-3">
              <img
              className="h-7 rounded-full"
-             src="https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/462.jpg"
+              src="https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/462.jpg"
              alt=""
              />
              <p className="text-sm flex-1">

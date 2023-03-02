@@ -31,7 +31,7 @@ const Subscribe = () => {
     debugger;
     if (email) {
       fetch(
-        "https://backend-justaskin-production.up.railway.app/api/email/sendEmail",
+        "https://jusaskin.herokuapp.com/api/email/sendEmail",
         {
           method: "POST",
           headers: {
@@ -83,8 +83,6 @@ const Subscribe = () => {
     <div style={{ backgroundColor: "#F0F7F4" }} className="text-center">
       {showSuccessAlert && <SuccessAlert />}
       {showErrorAlert && <ErrorAlerts error={error} />}
-
-      <h2 className="text-5xl font-bold mb-6 pt-20 lg:text-7xl">Learn, Share, Connect</h2>
       <h2 className="text-5xl font-bold mb-6 pt-20 lg:text-7xl">Learn, Share, Connect</h2>
       <form onSubmit={handleSubmit} className="mx-auto my-8 flex flex-col sm:flex-row sm:justify-center sm:items-center">
         <div className="ml-2 mb-6 sm:mb-0">
