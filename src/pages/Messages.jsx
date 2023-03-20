@@ -2,7 +2,7 @@ import React from "react";
 import MessageList from "../components/MessageList";
 import { useEffect, useState } from "react";
 import { faker } from "@faker-js/faker";
-import Search from "./Search";
+import Search from "../components/Search";
 import IndividualChat from "../components/IndividualChat ";
 
 const Messaging = () => {

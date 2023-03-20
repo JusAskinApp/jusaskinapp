@@ -12,7 +12,7 @@ import MailIcon from '@mui/icons-material/Mail';
 import myIcon from "../assets/logo.png";
 import { useNavigate } from "react-router-dom";
 import Home from './Home';
-import Search from './Search';
+import SearchPage from './Search';
 import Sources from './Sources'
 import Group from './Group';
 import Messages from './Messages';
@@ -104,7 +104,7 @@ function Sidebar(props) {
       >
         {/* <Toolbar /> */}
       {activeItem === "Home" && <Home/>}
-      {activeItem  === "Search" && <Search/>}
+      {activeItem  === "Search" && <SearchPage/>}
       {activeItem  === "Sources" && <Sources/>}
       {activeItem  === "Group" && <Group/>}
       {activeItem  === "Messages" && <Messages/>}

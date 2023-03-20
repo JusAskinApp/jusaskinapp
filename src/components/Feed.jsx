@@ -47,7 +47,7 @@ const Feed = () => {
                 name={item.author}
                 date={item.date}
                 content={item.content}
-                images={item.imagesIDs}
+                images={item.imageIDs}
                 blogRefId={item.blogRefId}
                 comments={item.comments}
                 likes={item.likes}
