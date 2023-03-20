@@ -2,10 +2,10 @@ import React from "react";
 import MessageList from "../components/MessageList";
 import { useEffect, useState } from "react";
 import { faker } from "@faker-js/faker";
-import Search from "./Search";
 import IndividualChat from "../components/IndividualChat ";
 
 const Messaging = () => {
+  
   const [suggestions, setSuggestions] = useState([]);
   const [selectedProfile, setSelectedProfile] = useState(null);
   
@@ -27,22 +27,22 @@ const Messaging = () => {
 
   return (
     <div>
-      {!selectedProfile ? (
-        <>
-          <Search />
-          {suggestions.map((profile) => (
-            <MessageList
-              key={profile.Id}
-              img={profile.avatar}
-              username={profile.username}
-              onClick={() => handleProfileClick(profile)}
-            />
-          ))}
-        </>
-      ) : (
-        <IndividualChat profile={selectedProfile} onBackClick={handleBackClick}/>
-      )}
-    </div>
+  {!selectedProfile ? (
+    <>
+            {suggestions.map((profile) => (
+              <MessageList
+                key={profile.Id}
+                img={profile.avatar}
+                username={profile.username}
+                onClick={() => handleProfileClick(profile)}
+              />
+            ))}
+    </>
+  ) : (
+    <IndividualChat profile={selectedProfile} onBackClick={handleBackClick}/>
+  )}
+</div>
+
   );
 };
 
