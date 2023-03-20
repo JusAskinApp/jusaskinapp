@@ -20,16 +20,16 @@ const MenuProps = {
 };
 
 const names = [
-  'Oliver Hansen',
-  'Van Henry',
-  'April Tucker',
-  'Ralph Hubbard',
-  'Omar Alexander',
-  'Carlos Abbott',
-  'Miriam Wagner',
-  'Bradley Wilkerson',
-  'Virginia Andrews',
-  'Kelly Snyder',
+    'Business',
+    'Technology',
+    'Science',
+    'Arts & Humanities',
+    'Health & Medicine',
+    'Social Sciences',
+    'Environment',
+    'Education',
+    'Law & Politics',
+    'Lifestyle',
 ];
 
 function getStyles(name, personName, theme) {
@@ -41,7 +41,7 @@ function getStyles(name, personName, theme) {
   };
 }
 
-export default function SelectField() {
+export default function MultipleSelectChip() {
   const theme = useTheme();
   const [personName, setPersonName] = React.useState([]);
 
@@ -58,7 +58,7 @@ export default function SelectField() {
   return (
     <div>
       <FormControl sx={{ m: 1, width: 300 }}>
-        <InputLabel id="demo-multiple-chip-label">Select interest</InputLabel>
+        <InputLabel id="demo-multiple-chip-label">Select</InputLabel>
         <Select
           labelId="demo-multiple-chip-label"
           id="demo-multiple-chip"
@@ -69,11 +69,12 @@ export default function SelectField() {
           renderValue={(selected) => (
             <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
               {selected.map((value) => (
-                <Chip key={value} label={value}  />
+                <Chip key={value} label={value} />
               ))}
             </Box>
           )}
           MenuProps={MenuProps}
+          sx={{ background: "white" }}
         >
           {names.map((name) => (
             <MenuItem

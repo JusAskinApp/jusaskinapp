@@ -17,6 +17,7 @@ import Sources from './Sources'
 import Group from './Group';
 import Messages from './Messages';
 import Profile from './Profile';
+import TabSectionMessage from '../components/TabSectionMessage';
 const drawerWidth = 240;
 
 function Sidebar(props) {
@@ -107,7 +108,7 @@ function Sidebar(props) {
       {activeItem  === "Search" && <SearchPage/>}
       {activeItem  === "Sources" && <Sources/>}
       {activeItem  === "Group" && <Group/>}
-      {activeItem  === "Messages" && <Messages/>}
+      {activeItem  === "Messages" && <TabSectionMessage/>}
       {activeItem  === "Profile" && <Profile/>}
         
       </Box>

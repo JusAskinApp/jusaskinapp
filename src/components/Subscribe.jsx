@@ -3,6 +3,7 @@ import myImage from "../assets/LP.png";
 import SuccessAlert from "../components/SuccessAlert";
 import ErrorAlerts from "../components/ErrorAlerts";
 import SelectField from "./SelectField";
+import { TextField } from "@mui/material";
 const Subscribe = () => {
   const interests = [
     "Artificial intelligence and machine learning",
@@ -19,13 +20,19 @@ const Subscribe = () => {
     "Biology and biotechnology",
     "Chemistry and materials science",
     "Environmental science and sustainability",
-    "Astronomy and astrophysics"
+    "Astronomy and astrophysics",
   ];
   const [email, setEmail] = useState("");
   const [interest, setInterest] = useState([]);
   const [showSuccessAlert, setSuccessShowAlert] = useState(false);
   const [showErrorAlert, setErrorShowAlert] = useState(false);
   const [error, setError] = useState(false);
+  const [selectedValues, setSelectedValues] = useState([]);
+
+  const handleSelectChange = (values) => {
+    debugger;
+    setSelectedValues(values);
+  };
 
   const sendEmail = () => {
     debugger;
@@ -39,7 +46,7 @@ const Subscribe = () => {
           },
           body: JSON.stringify({
             email: email,
-            interest: interest
+            interest: interest,
           }),
         }
       )
@@ -83,20 +90,34 @@ const Subscribe = () => {
     <div style={{ backgroundColor: "#F0F7F4" }} className="text-center">
       {showSuccessAlert && <SuccessAlert />}
       {showErrorAlert && <ErrorAlerts error={error} />}
-      <h2 className="text-5xl font-bold mb-6 pt-20 lg:text-7xl">Learn, Share, Connect</h2>
-      <form onSubmit={handleSubmit} className="mx-auto my-8 flex flex-col sm:flex-row sm:justify-center sm:items-center">
-        <div className="ml-2 mb-6 sm:mb-0">
-          <input
+
+      <h2 className="text-5xl font-bold mb-6 pt-20 lg:text-7xl">
+        Learn, Share, Connect
+      </h2>
+      <form
+        onSubmit={handleSubmit}
+        className="mx-auto my-8 flex flex-col sm:flex-row sm:justify-center sm:items-center"
+      >
+        <div className="mb-1 sm:mb-0">
+          {/* <input
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Enter your email address"
             className="px-3 py-2 rounded-lg w-64"
+          /> */}
+          <TextField
+            sx={{ background: "white", width: 300 }}
+            onChange={(e) => setEmail(e.target.value)}
+            value={email}
+            label="Email"
+            id="outlined-size-normal"
+            defaultValue="Normal"
           />
         </div>
 
-  <div className="ml-2 mb-6 sm:mb-0">
-    {/* <select
+        <div className="mb-1 sm:mb-0">
+          {/* <select
       id="interest-select"
       value={interest}
       onChange={(e) => setInterest(e.target.value)}
@@ -107,19 +128,22 @@ const Subscribe = () => {
       <option value="Business">Business</option>
       <option value="Health">Health</option>
     </select> */}
-    <SelectField/>
-  </div>
-  <div className="mb-6 ml-2 sm:mb-0">
-  <button
-    className="bg-green-500 text-white px-3 py-2 rounded-lg hover:bg-green-600"
-    onClick={() => {
-      sendEmail();
-    }}
-  >
-    Subscribe
-  </button>
-  </div>
-</form>
+          <SelectField
+            sx={{ background: "white" }}
+            onChange={handleSelectChange}
+          />
+        </div>
+        <div className="mb-6 ml-2 sm:mb-0">
+          <button
+            className="bg-green-500 text-white px-3 py-2 rounded-lg hover:bg-green-600"
+            onClick={() => {
+              sendEmail();
+            }}
+          >
+            Subscribe
+          </button>
+        </div>
+      </form>
 
       <img src={myImage} alt="image" className="mx-auto" />
     </div>
