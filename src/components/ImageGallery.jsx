@@ -1,7 +1,22 @@
-import React from "react";
+import React,{useState} from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  IconButton,
+  makeStyles,
+} from "@material-ui/core";
+import { Close } from "@material-ui/icons";
 
+const useStyles = makeStyles((theme) => ({
+  closeButton: {
+    position: "absolute",
+    top: theme.spacing(1),
+    right: theme.spacing(1),
+  },
+}));
 const Container = styled.div`
   width: ${(props) => props.type !== "sm" && "150px"};
   margin-bottom: ${(props) => (props.type === "sm" ? "10px" : "25px")};
@@ -39,23 +54,43 @@ const Info = styled.div`
   color: #8BA1A6;
 `;
 
-const ImageGallery = ({ type }) => {
+const ImageGallery = ({ type,url,title }) => {
+  const classes = useStyles();
+const [open, setOpen] = useState(false);
+
+const handleOpen = () => {
+  setOpen(true);
+};
+
+const handleClose = () => {
+  setOpen(false);
+};
   return (
-    <Link to="/video/test" style={{ textDecoration: "none" }}>
-      <Container type={type}>
+    <div  style={{ textDecoration: "none" }}>
+      <Container type={type} style={{ height: "150px", width: "250px", padding: "2px" }}>
         <Image
           type={type}
-          src="https://i9.ytimg.com/vi_webp/k3Vfj-e1Ma4/mqdefault.webp?v=6277c159&sqp=CIjm8JUG&rs=AOn4CLDeKmf_vlMC1q9RBEZu-XQApzm6sA"
+          src={url}
+          onClick={handleOpen}
         />
-        <Details type={type}>
-          <Texts>
-            
-            <Title>Image Title</Title>
-            <Info>Creator</Info>
-          </Texts>
-        </Details>
       </Container>
-    </Link>
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>
+          Image Preview
+          <IconButton className={classes.closeButton} onClick={handleClose}>
+            <Close />
+          </IconButton>
+        </DialogTitle>
+        <DialogContent>
+          {/* <iframe src={url}></iframe> */}
+          <Image
+          type={type}
+          src={url}
+        
+        />
+        </DialogContent>
+      </Dialog>
+    </div>
   );
 };
 

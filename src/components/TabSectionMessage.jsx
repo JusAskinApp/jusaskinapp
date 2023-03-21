@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import Messages from '../pages/Messages';
-import Search from "../pages/Search";
+// import Search from "../pages/Search";
 import MessageList from './MessageList';
 
 const TabSectionMessage = () => {
@@ -12,7 +12,7 @@ const TabSectionMessage = () => {
 
   return (
     <div>
-    <Search />
+    {/* <Search /> */}
     <div className="p-4 max-w-full mx-auto">
       <div className="border-b border-gray-200">
         <nav className="-mb-px flex">

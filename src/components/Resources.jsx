@@ -1,64 +1,147 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import {Grid, Typography} from '@material-ui/core';
+import { Grid, Typography } from '@material-ui/core';
 import VideoPlayer from './VideoPlayer';
 import ImageGallery from './ImageGallery';
 import DocumentList from './DocumentList';
+import makeApiCall from '../Api/api';
+import { CardMedia } from '@mui/material';
+import { padding } from '@mui/system';
 //import { videoData, imageData, documentData } from './data';
 
-const useStyles = makeStyles((theme) => ({
-//   root: {
-//     flexGrow: 1,
-//     margin: theme.spacing(2),
-//   },
-//   videoContainer: {
-//     padding: theme.spacing(2),
-//   },
-//   imageContainer: {
-//     padding: theme.spacing(2),
-//   },
-//   documentContainer: {
-//     padding: theme.spacing(2),
-//   },
-}));
+// const useStyles = makeStyles((theme) => ({
+// }));
+
 
 export default function Resources() {
-  const classes = useStyles();
+  const [Resources, setResources] = useState([]);
+  const [imagesData, setImagesData] = useState({ title: '', urlLinks: [] });
+  const [videoData, setVideoData] = useState({ title: '', urlLinks: [] });
+  const [documentData, setDocumentData] = useState({ title: '', urlLinks: [] });
 
+  function determineMediaType(url) {
+    const videoExtensions = [".mp4", ".avi", ".mov", ".wmv"];
+    const imageExtensions = [".jpg", ".jpeg", ".png", ".gif", ".ico"];
+    const pdfExtensions = [".pdf"];
+    const pptExtensions = [".ppt", ".pptx"];
+    const docExtensions = [".doc", ".docx"];
+    const textExtensions = [".txt", ".md"];
+
+    const fileExtension = url.substring(url.lastIndexOf(".")).split("?")[0];
+
+    if (videoExtensions.includes(fileExtension)) {
+      return "video";
+    } else if (imageExtensions.includes(fileExtension)) {
+      return "image";
+    } else if (pdfExtensions.includes(fileExtension)) {
+      return "pdf";
+    } else if (pptExtensions.includes(fileExtension)) {
+      return "ppt";
+    } else if (docExtensions.includes(fileExtension)) {
+      return "doc";
+    } else if (textExtensions.includes(fileExtension)) {
+      return "text";
+    } else {
+      return null;
+    }
+  }
+  const getResources = async () => {
+    debugger;
+    setVideoData({ title: '', urlLinks: [] })
+    setImagesData({ title: '', urlLinks: [] })
+    setDocumentData({ title: '', urlLinks: [] })
+    try {
+      const data = await makeApiCall('http://localhost:4000/api/blogPosts/getresources', {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(
+          {
+            "email": JSON.parse(JSON.parse(JSON.stringify(localStorage)).userDetail).email,
+          }
+        ),
+
+      });
+      let imageObj = { title: '', urlLinks: []};
+      let videoObj =  { title: '', urlLinks: []};
+      let documentObj = { title: '', urlLinks: []};
+      data.forEach((value,index) => {
+        debugger;
+        let title = value.title;
+        value.urlLinks.forEach((url) => {
+          if (determineMediaType(url) === 'image') {
+            // imageObj['title'] = title;
+            imageObj['urlLinks'].push(url)
+           
+          } else if (determineMediaType(url) === 'video') {
+            // videoObj['title'] = title;
+            videoObj['urlLinks'].push(url);
+          
+          } else if (determineMediaType(url) === 'pdf') {
+            // documentObj['title'] = title;
+            documentObj['urlLinks'].push(url);
+          
+          }
+        });
+      });
+      // console.log(videoData)
+      setImagesData(imageObj);
+      setVideoData(videoObj);
+      setDocumentData(documentObj);
+    } catch (error) {
+      // setError(true)
+      console.error(error);
+    }
+  }
+
+  useEffect(() => {
+    getResources()
+  }, [])
   return (
     <div>
+      {console.log(documentData)}
+      {/* {console.log(videoData)} */}
       <Grid container spacing={3} fullWidth maxWidth="md">
         <Grid item xs={12}>
-        <Typography variant="h6" gutterBottom> Video(s) </Typography>
-          <div className='flex flex-no-wrap justify-between xs:flex-col sm:flex-row'>
-            <VideoPlayer/>
-            <VideoPlayer/>
-            <VideoPlayer/>
-            <VideoPlayer/>
+          <Typography variant="h6" gutterBottom> Video(s) </Typography>
+          <div className={`flex flex-no-wrap xs:flex-col sm:flex-row overflow-x-auto ${videoData && videoData.urlLinks && videoData.urlLinks.length < 3 ? 'justify-center' : 'justify-between'}`}>
+            {videoData && videoData.urlLinks ? videoData.urlLinks.map((value, index) => (
+              <CardMedia
+                key={index}
+                style={{ height: "200px", width: "250px", padding: "2px" }}
+                component="video"
+                src={value}
+                alt="ERROR"
+                controls={true}
+              />
+
+
+            )) : ''}
           </div>
         </Grid>
-        
+
         <Grid item xs={12}>
-        <Typography variant="h6" gutterBottom> Document(s) </Typography>
-          <div className='grid grid-cols-6 justify-between'>
-          <DocumentList/>
-          <DocumentList/>
-          <DocumentList/>
-          <DocumentList/> 
-          <DocumentList/> 
-          <DocumentList/> 
-          <DocumentList/>
-          <DocumentList/>
+          <Typography variant="h6" gutterBottom> Document(s) </Typography>
+          <div  style={{height:"180px"}} className={`flex flex-no-wrap xs:flex-col sm:flex-row overflow-x-auto `}>
+            {documentData && documentData.urlLinks ? documentData.urlLinks.map((value) => (
+              
+               <DocumentList url={value} />
+            )) : ''}
+
           </div>
         </Grid>
         <Grid item xs={12}>
-        <Typography variant="h6" gutterBottom> Image(s) </Typography>
-          <div className='flex flex-no-wrap justify-between xs:flex-col sm:flex-row'>
-          <ImageGallery/>
-          <ImageGallery/>
-          <ImageGallery/>
-          <ImageGallery/>
-          <ImageGallery/>
+          <Typography variant="h6" gutterBottom> Image(s) </Typography>
+          <div  style={{height:"180px"}} className={`flex flex-no-wrap xs:flex-col sm:flex-row overflow-x-auto `}>
+            {imagesData && imagesData.urlLinks ? imagesData.urlLinks.map((value) => (
+              <ImageGallery 
+              type="square"
+               url={value} 
+              
+               />
+            )) : ''}
+
           </div>
         </Grid>
       </Grid>

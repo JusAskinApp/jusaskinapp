@@ -23,20 +23,23 @@ const Subscribe = () => {
     "Astronomy and astrophysics",
   ];
   const [email, setEmail] = useState("");
-  const [interest, setInterest] = useState([]);
+  // const [interest, setInterest] = useState([]);
   const [showSuccessAlert, setSuccessShowAlert] = useState(false);
   const [showErrorAlert, setErrorShowAlert] = useState(false);
   const [error, setError] = useState(false);
   const [selectedValues, setSelectedValues] = useState([]);
-
+  let interest = [];
   const handleSelectChange = (values) => {
     debugger;
-    setSelectedValues(values);
+    interest.push(values);
+    setSelectedValues([...selectedValues, values]);
   };
 
   const sendEmail = () => {
     debugger;
     if (email) {
+      console.log(selectedValues)
+      debugger;
       fetch(
         "https://jusaskin.herokuapp.com/api/email/sendEmail",
         {
@@ -46,7 +49,7 @@ const Subscribe = () => {
           },
           body: JSON.stringify({
             email: email,
-            interest: interest,
+            interest: selectedValues,
           }),
         }
       )
@@ -130,7 +133,11 @@ const Subscribe = () => {
     </select> */}
           <SelectField
             sx={{ background: "white" }}
-            onChange={handleSelectChange}
+            // onChange={handleSelectChange}
+            onChange={(e) => {
+              const newValue = e.target.value;
+              setSelectedValues([...selectedValues, newValue]);
+            }}
           />
         </div>
         <div className="mb-6 ml-2 sm:mb-0">

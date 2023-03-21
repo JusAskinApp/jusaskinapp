@@ -112,7 +112,8 @@ const Post = (props) => {
   }
   const likesUpdated = async (e) => {
     debugger;
-    setCount(e.target.checked ? props.likes.total + 1 : props.likes.total - 1,)
+    console.log(likeCount);
+    setCount(e.target.checked ? props.likes.total + 1  : props.likes.total - 1,)
     setChecked(e.target.checked ? true : false)
     try {
       const data = await makeApiCall('https://jusaskin.herokuapp.com/api/blogPosts/updateLikes', {
@@ -127,7 +128,6 @@ const Post = (props) => {
             "user": {
               "email": JSON.parse(JSON.parse(JSON.stringify(localStorage)).userDetail).email,
               "userName": JSON.parse(JSON.parse(JSON.stringify(localStorage)).userDetail).name,
-
             }
           }
         ),

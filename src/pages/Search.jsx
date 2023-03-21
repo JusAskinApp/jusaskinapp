@@ -6,7 +6,7 @@ import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import ArrowBackOutlinedIcon from '@mui/icons-material/ArrowBackOutlined';
 function SearchPage() {
     const [searchTerm, setSearchTerm] = React.useState("");
-    const [usersData, setUsersData] = React.useState("");
+    const [usersData, setUsersData] = React.useState({});
 
 
     const handleChange = (event) => {
@@ -14,27 +14,31 @@ function SearchPage() {
     };
 
     const handleSubmit = async (event) => {
-
+        setUsersData({})
         event.preventDefault();
-        debugger;
-        fetch("https://jusaskin.herokuapp.com/api/users/searchUser", {
-            method: "POST",
-            body: JSON.stringify({
-                criteria: "name",
+        const criteria = "name"; // replace "name" with the actual value you want to use
+        fetch(
+            "https://jusaskin.herokuapp.com/api/users/searchUser",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                criteria: criteria,
                 query: searchTerm
               }),
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                console.log(data);
-                setUsersData(data)
-
-            })
-            .catch((error) => {
-                console.error(error);
-            });
-        console.log(searchTerm)
-        //   props.onFormSubmit(searchTerm);
+            }
+          )
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data);
+            setUsersData(data);
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+        console.log(searchTerm);
     };
     return (
         <>
@@ -58,8 +62,9 @@ function SearchPage() {
                     </div>
                 </form>
             </div>
-            {usersData}
-            <SearchedUser username="Abdul Haseeb" type="Student" />
+            {/* {usersData} */}
+            {Object.keys(usersData).length > 0 && <SearchedUser username={usersData.name} type={usersData.type} />}
+            {/* <SearchedUser username={usersData.name} type={usersData.type} /> */}
         </>
     )
 }

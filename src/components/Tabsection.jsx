@@ -1,45 +1,72 @@
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import Tab from '@mui/material/Tab';
-import TabContext from '@mui/lab/TabContext';
-import TabList from '@mui/lab/TabList';
-import { TabPanel } from '@mui/lab'
+import  React,{useState} from 'react';
 import About from './About';
 import Settings from './Settings';
 import Post from './Post';
 import Resources from './Resources';
+const TabSectionMessage = () => {
+  const [activeTab, setActiveTab] = useState(1);
 
-export default function Tabsection() {
-  const [value, setValue] = React.useState('1');
-
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
+  const handleTabClick = (tabIndex) => {
+    setActiveTab(tabIndex);
   };
 
   return (
-    <Box sx={{ width: '100%', typography: 'body1' }}>
-      <TabContext value={value}>
-        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-          <TabList onChange={handleChange} aria-label="lab API tabs example">
-            <Tab label="About" value="1" />
-            <Tab label="Setting" value="2" />
-            <Tab label="Saved" value="3" />
-            <Tab label="Resources" value="4" />
-          </TabList>
-        </Box>
-        <TabPanel value="1">
-            <About/>
-        </TabPanel>
-        <TabPanel value="2">
-            <Settings/>
-        </TabPanel>
-        <TabPanel value="3">
-          <Post/>
-        </TabPanel>
-        <TabPanel value="4">
-          <Resources/>
-        </TabPanel>
-      </TabContext>
-    </Box>
+    <div>
+    {/* <Search /> */}
+    <div className="p-4 max-w-full mx-auto">
+      <div className="border-b border-gray-200">
+        <nav className="-mb-px flex">
+          <button
+            className={`${
+              activeTab === 1
+                ? 'border-blue-500 text-blue-600'
+                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+            } w-1/2 py-4 px-1 text-center border-b-2 font-medium`}
+            onClick={() => handleTabClick(1)}
+          >
+            About
+          </button>
+          <button
+            className={`${
+              activeTab === 2
+                ? 'border-blue-500 text-blue-600'
+                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+            } w-1/2 py-4 px-1 text-center border-b-2 font-medium`}
+            onClick={() => handleTabClick(2)}
+          >
+            Settings
+          </button>
+          <button
+            className={`${
+              activeTab === 3
+                ? 'border-blue-500 text-blue-600'
+                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+            } w-1/2 py-4 px-1 text-center border-b-2 font-medium`}
+            onClick={() => handleTabClick(3)}
+          >
+            Saved
+          </button>
+          <button
+            className={`${
+              activeTab === 4
+                ? 'border-blue-500 text-blue-600'
+                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+            } w-1/2 py-4 px-1 text-center border-b-2 font-medium`}
+            onClick={() => handleTabClick(4)}
+          >
+            Resources
+          </button>
+        </nav>
+      </div>
+      <div className="py-4">
+        {activeTab === 1 && <About/>}
+        {activeTab === 2 &&  <Settings/>}
+        {activeTab === 3 &&   <Post/>}
+        {activeTab === 4 && <Resources/>}
+      </div>
+    </div>
+    </div>
   );
-}
+};
+
+export default TabSectionMessage;
