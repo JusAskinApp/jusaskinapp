@@ -3,7 +3,7 @@ import About from './About';
 import Settings from './Settings';
 import Post from './Post';
 import Resources from './Resources';
-const TabSectionMessage = () => {
+const TabSectionMessage = (props) => {
   const [activeTab, setActiveTab] = useState(1);
 
   const handleTabClick = (tabIndex) => {
@@ -60,9 +60,9 @@ const TabSectionMessage = () => {
       </div>
       <div className="py-4">
         {activeTab === 1 && <About/>}
-        {activeTab === 2 &&  <Settings/>}
+        {activeTab === 2 &&  <Settings currentUser={props.currentUser}/>}
         {activeTab === 3 &&   <Post/>}
-        {activeTab === 4 && <Resources/>}
+        {activeTab === 4 && <Resources currentUser={props.currentUser}/>}
       </div>
     </div>
     </div>

@@ -13,7 +13,7 @@ import { padding } from '@mui/system';
 // }));
 
 
-export default function Resources() {
+export default function Resources(props) {
   const [Resources, setResources] = useState([]);
   const [imagesData, setImagesData] = useState({ title: '', urlLinks: [] });
   const [videoData, setVideoData] = useState({ title: '', urlLinks: [] });
@@ -45,20 +45,22 @@ export default function Resources() {
       return null;
     }
   }
-  const getResources = async () => {
+  const getResources = async (currentUser) => {
     debugger;
+    console.log(props.currentUser)
+    console.log(currentUser)
     setVideoData({ title: '', urlLinks: [] })
     setImagesData({ title: '', urlLinks: [] })
     setDocumentData({ title: '', urlLinks: [] })
     try {
-      const data = await makeApiCall('http://localhost:4000/api/blogPosts/getresources', {
+      const data = await makeApiCall('https://jusaskin.herokuapp.com/api/blogPosts/getresources', {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(
           {
-            "email": JSON.parse(JSON.parse(JSON.stringify(localStorage)).userDetail).email,
+            "email":currentUser?currentUser.email : JSON.parse(JSON.parse(JSON.stringify(localStorage)).userDetail).email,
           }
         ),
 
@@ -96,7 +98,7 @@ export default function Resources() {
   }
 
   useEffect(() => {
-    getResources()
+    getResources(props.currentUser)
   }, [])
   return (
     <div>

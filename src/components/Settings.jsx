@@ -20,7 +20,7 @@ theme.overrides = {
 
 const responsiveTheme = responsiveFontSizes(theme);
 
-function Settings() {
+function Settings(props) {
   return (
     <Grid container spacing={1}>
       <ThemeProvider theme={responsiveTheme}>
@@ -29,7 +29,7 @@ function Settings() {
             label="Username"
             name="username"
             type="text"
-            value={JSON.parse(localStorage.userDetail).name}
+            value={props.currentUser ? props.currentUser.name :  JSON.parse(localStorage.userDetail).name}
             variant="outlined"
             disabled
           />
@@ -40,7 +40,7 @@ function Settings() {
             name="email"
             type="text"
             variant="outlined"
-            value={JSON.parse(localStorage.userDetail).email}
+            value={props.currentUser ? props.currentUser.email : JSON.parse(localStorage.userDetail).email}
             disabled
           />
         </Grid>
@@ -50,17 +50,17 @@ function Settings() {
             name="location"
             type="text"
             variant="outlined"
-            value={JSON.parse(localStorage.userDetail).email}
+            value={props.currentUser ? props.currentUser.email : JSON.parse(localStorage.userDetail).email}
             disabled
           />
         </Grid>
       </ThemeProvider>
-      <Grid item xs={6}>
+      {/* <Grid item xs={6}>
         Recieve Notifications
-      </Grid>
-      <Grid item xs={6}>
+      </Grid> */}
+      {/* <Grid item xs={6}>
         <Switch />
-      </Grid>
+      </Grid> */}
       <Grid item xs={12}>
         {/* <Button variant="outlined" color="error">
         Error

@@ -66,7 +66,7 @@ export default function Signup() {
   const [errors, setErrors] = useState({});
   const creatingUser = (e) => {
     debugger;
-    fetch("https://jusaskin.herokuapp.com/users/signup", {
+    fetch("https://jusaskin.herokuapp.com/api/users/signup", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

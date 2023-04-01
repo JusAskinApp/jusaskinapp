@@ -10,11 +10,11 @@ function MessageList({ img, username, onClick }) {
       />
       <div>
         <h2 className="font-bold text-lg">{username}</h2>
-        <p className="text-gray-600 text-sm">
+        {/* <p className="text-gray-600 text-sm">
           Hey dude are you joining us today...
-        </p>
+        </p> */}
       </div>
-      <p className="text-gray-600 text-sm ml-auto">Just Now</p>
+      {/* <p className="text-gray-600 text-sm ml-auto">Just Now</p> */}
       
     </div>
   );

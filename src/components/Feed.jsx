@@ -38,7 +38,7 @@ const Feed = () => {
     getBlogs();
   }, []);
   return (
-    <div>
+    <div >
       {blogData.length > 0 ? (
         <>
           {blogData.map((item, index) => (
