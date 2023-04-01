@@ -17,7 +17,6 @@ import Sources from './Sources'
 import Group from './Group';
 import Messages from './Messages';
 import Profile from './Profile';
-import TabSectionMessage from '../components/TabSectionMessage';
 const drawerWidth = 240;
 
 function Sidebar(props) {
@@ -40,7 +39,7 @@ function Sidebar(props) {
       
     
          <List style={{paddingLeft:"10px"}}>
-      {['Home', 'Search', 'Sources', 'Group', 'Messages', 'Profile'].map((text, index) => (
+      {['Home', 'Search', 'Resources', 'Group', 'Messages', 'Profile'].map((text, index) => (
         <ListItem key={text} disablePadding>
           <ListItemButton onClick={() => handleListItemClick(text)}>
             <ListItemIcon>
@@ -106,9 +105,9 @@ function Sidebar(props) {
         {/* <Toolbar /> */}
       {activeItem === "Home" && <Home/>}
       {activeItem  === "Search" && <SearchPage/>}
-      {activeItem  === "Sources" && <Sources/>}
+      {activeItem  === "Resources" && <Sources/>}
       {activeItem  === "Group" && <Group/>}
-      {activeItem  === "Messages" && <TabSectionMessage/>}
+      {activeItem  === "Messages" && <Messages/>}
       {activeItem  === "Profile" && <Profile/>}
         
       </Box>

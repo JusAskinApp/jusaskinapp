@@ -1,14 +1,18 @@
-import React from "react";
+import React, {useState} from "react";
 import Chip from '@mui/material/Chip';
 import { makeStyles } from '@material-ui/core/styles';
 import Stack from '@mui/material/Stack';
 import EditIcon from '@material-ui/icons/Edit';
 import Grid from '@material-ui/core/Grid';
 import { IconButton } from '@mui/material';
+import AlertDialogSlide from "./DialogForProfileSection";
+import AlertDialogSlideForInterest from "./DialogForInterest";
 
 const useStyles = makeStyles({
     chip: {
       backgroundColor: '#cff8e7',
+      marginRight: 5,
+    marginBottom: 10,
     },
     editIcon: {
       marginLeft: 10,
@@ -17,11 +21,32 @@ const useStyles = makeStyles({
   });
 
 function About() {
+  const [text, setText] = useState('');
+  const [selectedSkills, setSelectedSkills] = useState([]);
+  
+  const handleTextChange = (event) => {
+    setText(event.target.value);
+  };
+
+  const handleSave = (newText) => {
+    setText(newText);
+  };
+
+  const handleSaveInterest = (newSkills) => {
+    debugger
+    setSelectedSkills(newSkills);
+  };
+
+  
+  const handleDeleteSkill = (skill) => {
+    debugger;
+    setSelectedSkills(selectedSkills.filter((s) => s !== skill));
+  };
+  
+ 
     const classes = useStyles();
-    const handleDelete = () => {
-        console.info('You clicked the delete icon.');
-      };
    
+
   return (
     <div>
       <Grid container spacing={2}>
@@ -34,16 +59,22 @@ function About() {
           </label>
         </Grid>
         <Grid item xs={6} align="right">
-          <IconButton><EditIcon className={classes.editIcon} /></IconButton>
+         <AlertDialogSlide
+          onSave={handleSave}
+         
+          />
         </Grid>
       </Grid>
       <textarea
+      disabled
         id="message"
         rows="4"
         class="block p-2.5 w-full text-sm bg-gray-50 rounded-lg border dark:placeholder-gray-400"
         placeholder="Write your thoughts here..."
-      ></textarea>
-      
+        value={text}
+        onChange={handleTextChange}
+      >
+      </textarea>
       <div className="mt-5">
         <Grid container spacing={2}>
           <Grid item xs={6}>
@@ -55,17 +86,19 @@ function About() {
             </label>
           </Grid>
           <Grid item xs={6} align="right">
-          <IconButton><EditIcon className={classes.editIcon} /></IconButton>
+          <AlertDialogSlideForInterest
+          onSave={handleSaveInterest}
+          onDelete={handleDeleteSkill}
+           selectedSkills={selectedSkills} 
+           setSelectedSkills={setSelectedSkills}
+          />
           </Grid>
         </Grid>
         <Stack direction="row" spacing={1} style={{ flexWrap: 'wrap' }} fullWidth>
-          <Chip className={classes.chip} label="Deletable" onDelete={handleDelete} />
-          <Chip className={classes.chip} label="Deletable" variant="outlined" onDelete={handleDelete} />
-          <Chip className={classes.chip} label="Deletable" variant="outlined" onDelete={handleDelete} />
-          <Chip className={classes.chip} label="Deletable" variant="outlined" onDelete={handleDelete} />
-          <Chip className={classes.chip} label="Deletable" variant="outlined" onDelete={handleDelete} />
-          <Chip className={classes.chip} label="Deletable" variant="outlined" onDelete={handleDelete} />
-        </Stack>
+  {selectedSkills.map((skill, index) => (
+    <Chip className={classes.chip} label={skill} variant="outlined" onDelete={() => handleDeleteSkill(skill)} />
+  ))}
+</Stack>
       </div>
     </div>
   );
