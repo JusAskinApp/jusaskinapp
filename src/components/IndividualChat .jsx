@@ -10,7 +10,7 @@ import SendIcon from "@mui/icons-material/Send";
 
 const IndividualChat = ({ profile, onBackClick }) => {
   return (
-    <div className="h-100 w-100 rounded-lg m-4 flex flex-col">
+    <div className="h-100 w-100 rounded-lg flex flex-col">
       <div className="flex justify-between p-4">
         <IconButton onClick={onBackClick}>
           <ArrowBackOutlinedIcon />
@@ -19,7 +19,7 @@ const IndividualChat = ({ profile, onBackClick }) => {
         <MoreVertIcon />
       </div>
       <div
-        className="flex flex-col flex-1  p-4 max-h-[600px] overflow-y-auto"
+        className="flex flex-col flex-1 p-4 max-h-[325px] overflow-y-scroll"
         style={{ background: "#FAFAFA" }}
       >
         <ChatBubble

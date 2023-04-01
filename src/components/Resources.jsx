@@ -51,7 +51,7 @@ export default function Resources() {
     setImagesData({ title: '', urlLinks: [] })
     setDocumentData({ title: '', urlLinks: [] })
     try {
-      const data = await makeApiCall('http://localhost:4000/api/blogPosts/getresources', {
+      const data = await makeApiCall('https://jusaskin.herokuapp.com/api/blogPosts/getresources', {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
