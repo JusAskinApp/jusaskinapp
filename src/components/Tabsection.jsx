@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-const TabSection = ({ tabs }) => {
+const TabSection = ({ tabs,currentUser}) => {
   const [activeTab, setActiveTab] = useState(1);
 
   const handleTabClick = (tabIndex) => {
@@ -29,6 +29,7 @@ const TabSection = ({ tabs }) => {
         </div>
         <div className="py-4">
           {tabs[activeTab - 1].component}
+          {/* {tabs[activeTab - 1].component({ currentUser: currentUser})} */}
         </div>
       </div>
     </div>

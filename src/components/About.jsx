@@ -20,7 +20,7 @@ const useStyles = makeStyles({
     }
   });
 
-function About() {
+function About({currentUser}) {
   const [text, setText] = useState('');
   const [selectedSkills, setSelectedSkills] = useState([]);
   

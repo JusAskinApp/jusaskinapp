@@ -1,19 +1,12 @@
 import { Button } from "@material-ui/core";
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import Tabsection from "../components/Tabsection";
 import About from '../components/About';
 import Settings from '../components/Settings';
 import Post from '../components/Post';
 import Resources from '../components/Resources';
-import IconButton from '@mui/material/IconButton';
+// import IconButton from '@mui/material/IconButton';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
-
-const tabs = [
-  { label: 'About', component: <About/> },
-  { label: 'Settings', component: <Settings/> },
-  { label: 'Saved', component: "test" },
-  { label: 'My Resources', component: <Resources/> },
-];
 import IndividualChat from "../components/IndividualChat ";
 import { Favorite, FavoriteBorder } from "@mui/icons-material";
 // import { Button } from '@mui/material';
@@ -22,7 +15,20 @@ import {
   Checkbox,
   IconButton,
 } from "@mui/material";
+// const tabs = [
+//   { label: 'About', component: <About/> },
+//   { label: 'Settings', component: <Settings/> },
+//   { label: 'Saved', component: "test" },
+//   { label: 'My Resources', component: <Resources/> },
+// ];
+
 function Profile(props) {
+ const  tabs = [
+    { label: 'About', component: <About currentUser={props.currentUser}/> },
+    { label: 'Settings', component: <Settings/> },
+    { label: 'Saved', component: "test" },
+    { label: 'My Resources', component: <Resources currentUser={props.currentUser}/> },
+  ];
   const [selectedFile, setSelectedFile] = useState(null);
   const [imageUrl, setImageUrl] = useState("https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/462.jpg");
  debugger;
@@ -42,6 +48,9 @@ function Profile(props) {
     setSelectedFile(file);
     setImageUrl(imageUrl);
   };
+  useEffect(()=>{
+    
+  })
   return (
     <div>
 
