@@ -1,6 +1,32 @@
 import { useEffect, useState } from "react";
 import { faker } from "@faker-js/faker";
 import Story from "./Story";
+const addtofvt = async (currentUser) => {
+  fvt == false ? setfvt(true) : setfvt(false)
+  debugger;
+  try {
+    const data = await makeApiCall('http://localhost:4000/api/users/addtofvt', {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(
+        {
+          "email":JSON.parse(localStorage.userDetail).email,
+          "userobject":currentUser
+        }
+      ),
+
+    });
+   if (data.message = "Added"){
+    console.log("added")
+   }
+
+  } catch (error) {
+    // setError(true)
+    console.error(error);
+  }
+}
 function Stories() {
   const [suggestions, setSuggestions] = useState([]);
   useEffect(() => {

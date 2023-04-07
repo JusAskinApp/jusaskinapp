@@ -11,6 +11,7 @@ import IndividualChat from "../components/IndividualChat ";
 import { Favorite, FavoriteBorder } from "@mui/icons-material";
 // import { Button } from '@mui/material';
 import ChatIcon from '@mui/icons-material/Chat';
+import makeApiCall from "../Api/api";
 import {
   Checkbox,
   IconButton,
@@ -23,6 +24,33 @@ import {
 // ];
 
 function Profile(props) {
+  const [fvt,setfvt] = useState(false)
+  const addtofvt = async (currentUser) => {
+    fvt == false ? setfvt(true) : setfvt(false)
+    debugger;
+    try {
+      const data = await makeApiCall('http://localhost:4000/api/users/addtofvt', {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(
+          {
+            "email":JSON.parse(localStorage.userDetail).email,
+            "userobject":currentUser
+          }
+        ),
+
+      });
+     if (data.message = "Added"){
+      console.log("added")
+     }
+
+    } catch (error) {
+      // setError(true)
+      console.error(error);
+    }
+  }
  const  tabs = [
     { label: 'About', component: <About currentUser={props.currentUser}/> },
     { label: 'Settings', component: <Settings/> },
@@ -109,8 +137,8 @@ function Profile(props) {
                   </Button>
                   <IconButton aria-label="add to favorites">
                     <Checkbox
-                      checked={true}
-                      // onChange={likesUpdated}
+                      checked={fvt}
+                       onChange={()=>{addtofvt(props.currentUser)}}
                       icon={<FavoriteBorder />}
                       checkedIcon={<Favorite sx={{ color: "red" }} />}
                     />
