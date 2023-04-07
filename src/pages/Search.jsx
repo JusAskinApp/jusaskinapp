@@ -5,6 +5,7 @@ import IconButton from "@mui/material/IconButton";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import ArrowBackOutlinedIcon from '@mui/icons-material/ArrowBackOutlined';
 import Profile from '../pages/Profile'
+import './home.css';
 function SearchPage() {
   const [searchTerm, setSearchTerm] = React.useState("");
   const [usersData, setUsersData] = React.useState({});
@@ -23,6 +24,7 @@ function SearchPage() {
 setShowProfile(false)
   };
   const handleSubmit = async (event) => {
+    debugger
     setUsersData({})
     event.preventDefault();
     const criteria = "name"; // replace "name" with the actual value you want to use
@@ -51,35 +53,29 @@ setShowProfile(false)
   };
   return (
     <>
-      <div className="form-group p-4 ">
-        <form onSubmit={handleSubmit}>
-          <div style={{ display: "flex", alignItems: "center", width: "100%" }}>
-            <IconButton onClick={backClick}>
-              <ArrowBackOutlinedIcon />
-            </IconButton>
-            {!showProfile ? (<> <input
-              type="text"
-              className="form-control"
-              value={searchTerm}
-              onChange={handleChange}
-              placeholder="Search..."
-              style={{ borderBottom: "1px solid black", width: "100%" }}
-            />
-            <IconButton onClick={handleSubmit}>
-              <SearchOutlinedIcon />
-            </IconButton> </>):(<></>)}
-          </div>
-        </form>
-      </div>
-
-      {/* {Object.keys(usersData).length > 0 &&
-        <SearchedUser
-          username={usersData.name}
-          type={usersData.type}
-          onClick={handleUserClick}
-        />} */}
-
-      {showProfile ? (
+      <div className="header">
+  <form onSubmit={handleSubmit} className="flex items-center w-full px-4 py-2">
+    <IconButton onClick={backClick} className="text-white mr-4">
+      <ArrowBackOutlinedIcon />
+    </IconButton>
+    {!showProfile ? (
+      <>
+        <input
+          type="text"
+          className="form-control fancy-search bg-transparent border-b-2 border-black w-full focus:outline-none focus:border-blue-500"
+          value={searchTerm}
+          onChange={handleChange}
+          placeholder="Search..."
+        />
+        <IconButton onClick={handleSubmit} className="text-white ml-4">
+          <SearchOutlinedIcon />
+        </IconButton>
+      </>
+    ) : (
+      <></>
+    )}
+  </form>
+  {showProfile ? (
         <Profile currentUser={currentDataObject}/>
       ) : (
         Object.keys(usersData).length > 0 && (
@@ -90,6 +86,7 @@ setShowProfile(false)
           />
         )
       )}
+</div>
     </>
   )
 }
