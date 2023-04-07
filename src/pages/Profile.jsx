@@ -50,11 +50,6 @@ function Profile(props) {
       console.error(error);
     }
   }
- const  tabs = [
-    { label: 'About', component: <About currentUser={props.currentUser}/> },
-    { label: 'Settings', component: <Settings/> },
-    { label: 'Saved', component: "test" },
-    { label: 'My Resources', component: <Resources currentUser={props.currentUser}/> },
   const classes = useStyles();
   const tabs = [
     { label: "About", component: <About currentUser={props.currentUser} /> },
@@ -134,11 +129,6 @@ function Profile(props) {
                 />
               </div>
               <div className="flex justify-start">
-        {/* <span className="text-yellow-500 text-2xl">&#9733;</span>
-        <span className="text-yellow-500 text-2xl ml-1">&#9733;</span>
-        <span className="text-yellow-500 text-2xl ml-1">&#9733;</span>
-        <span className="text-yellow-500 text-2xl ml-1">&#9733;</span>
-        <span className="text-yellow-500 text-2xl ml-1">&#9733;</span> */}
         <Rating name="star-rating" value={5} />
       </div>
 
