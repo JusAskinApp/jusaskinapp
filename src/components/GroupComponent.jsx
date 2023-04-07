@@ -17,6 +17,8 @@ function GroupComponent() {
       setSuggestions(suggestions);
       console.log(suggestions)
     }, []);
+
+   
   return (
     <div>
       <p className="text-lg font-bold">Recommended for you</p>
@@ -59,6 +61,19 @@ function GroupComponent() {
       caption="Subtitle for the group"
       groupMembers={suggestions}
       />
+      {/* {groupData && groupData.length > 0 && (
+        <div>
+          {groupData.map((group) => (
+            <GroupsJoined
+              key={group.id}
+              image={JoinedgroupImage}
+              heading={group.groupName}
+              caption={group.subtitle}
+              groupMembers={suggestions}
+            />
+          ))}
+        </div>
+      )} */}
     </div>
   );
 }

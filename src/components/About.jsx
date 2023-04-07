@@ -49,22 +49,19 @@ function About({currentUser}) {
 
   return (
     <div>
-      <Grid container spacing={2}>
-        <Grid item xs={6}>
+    
+        <div className="flex items-center">
           <label
             for="message"
             class="block mb-2 text-sm font-medium text-gray-400 dark:text-white"
           >
             Description
           </label>
-        </Grid>
-        <Grid item xs={6} align="right">
-         <AlertDialogSlide
+          <AlertDialogSlide
           onSave={handleSave}
-         
           />
-        </Grid>
-      </Grid>
+          </div>
+      
       <textarea
       disabled
         id="message"
@@ -76,24 +73,21 @@ function About({currentUser}) {
       >
       </textarea>
       <div className="mt-5">
-        <Grid container spacing={2}>
-          <Grid item xs={6}>
+      <div className="flex items-center">
             <label
               for="message"
               class="block mb-2 text-sm font-medium text-gray-400 dark:text-white"
             >
               Your Interests
             </label>
-          </Grid>
-          <Grid item xs={6} align="right">
+        
           <AlertDialogSlideForInterest
           onSave={handleSaveInterest}
           onDelete={handleDeleteSkill}
            selectedSkills={selectedSkills} 
            setSelectedSkills={setSelectedSkills}
           />
-          </Grid>
-        </Grid>
+         </div>
         <Stack direction="row" spacing={1} style={{ flexWrap: 'wrap' }} fullWidth>
   {selectedSkills.map((skill, index) => (
     <Chip className={classes.chip} label={skill} variant="outlined" onDelete={() => handleDeleteSkill(skill)} />

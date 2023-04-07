@@ -10,7 +10,6 @@ import Slide from '@mui/material/Slide';
 import { makeStyles } from "@material-ui/core/styles";
 import { IconButton } from "@mui/material";
 import EditIcon from "@material-ui/icons/Edit";
-import TextField from '@mui/material/TextField';
 import AddIcon from '@mui/icons-material/Add';
 import Avatar from '@mui/material/Avatar';
 import CloseIcon from '@mui/icons-material/Close';
@@ -21,8 +20,8 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const useStyles = makeStyles({
   editIcon: {
-    marginLeft: 10,
-    fontSize: 15,
+    fontSize: 'medium',
+    marginBottom: 10,
   },
   skillsContainer: {
     marginTop: 10,
@@ -55,8 +54,6 @@ const suggestedSkills = [
 export default function AlertDialogSlideForInterest(props) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
-//   const [inputSkill, setInputSkill] = React.useState(false);
-//   const [skills, setSkills] = React.useState(false);
   const [selectedSkills, setSelectedSkills] = React.useState([]);
 
   const handleClickOpen = () => {

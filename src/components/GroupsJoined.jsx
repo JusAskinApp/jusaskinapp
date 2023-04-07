@@ -32,7 +32,6 @@ const useStyles = makeStyles({
 const GroupsJoined = ({ image, heading, caption, groupMembers }) => {
   const classes = useStyles();
  
-
   return (
     <div>
         <p className="mt-3 text-lg font-bold">Joined Groups</p>

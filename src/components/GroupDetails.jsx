@@ -41,8 +41,9 @@ function NewComponent({ onBackClick }) {
   };
   
   const handleCreateGroupClick = () => {
+debugger
 
-    console.log("group added successfully")
+   
   };
 
   return (

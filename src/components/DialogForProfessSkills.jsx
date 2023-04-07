@@ -17,8 +17,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const useStyles = makeStyles({
   editIcon: {
-    fontSize: 'medium',
-    marginBottom: 10,
+    fontSize: "medium",
   },
   textField: {
     marginTop: 10,
@@ -46,7 +45,6 @@ export default function AlertDialogSlide(props) {
     props.onSave(description);
     handleClose();
   };
-  
 
   return (
     <div>
@@ -60,22 +58,16 @@ export default function AlertDialogSlide(props) {
         onClose={handleClose}
         aria-describedby="alert-dialog-slide-description"
       >
-        <DialogTitle>{"Description"}</DialogTitle>
+        <DialogTitle>{"Edit Your Title"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
-            Use this space to show clients you have the skills and experience
-            they're looking for.<br></br>
-            <ul>
-              <li>- Describe your strengths and skills.</li>
-              <li>- Highlight projects, accomplishments and education.</li>
-              <li>- Keep it short and make sure it's error-free.</li>
-            </ul>
+          Enter a single sentence description of your professional skills/experience (e.g. Expert Web Designer with Ajax experience)
           </DialogContentText>
           <Textarea
-            onChange={handleDescriptionChange}
-            minRows={4}
-            className={classes.textField}
             value={description}
+            onChange={handleDescriptionChange}
+            placeholder="Enter a single sentence description of your professional skills/experience (e.g. Expert Web Designer with Ajax experience)"
+            className={classes.textField}
           />
         </DialogContent>
         <DialogActions>
