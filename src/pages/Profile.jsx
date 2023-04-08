@@ -23,7 +23,15 @@ const useStyles = makeStyles({
 });
 
 function Profile(props) {
-  const [fvt,setfvt] = useState(false)
+  alert(props)
+  const [fvt, setfvt] = useState(false)
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [text, setText] = useState('');
+  const [imageUrl, setImageUrl] = useState(
+    "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/462.jpg"
+  );
+  debugger;
+  const [showChats, setShowChat] = useState(false);
   const addtofvt = async (currentUser) => {
     fvt == false ? setfvt(true) : setfvt(false)
     debugger;
@@ -35,22 +43,48 @@ function Profile(props) {
         },
         body: JSON.stringify(
           {
-            "email":JSON.parse(localStorage.userDetail).email,
-            "userobject":currentUser
+            "email": JSON.parse(localStorage.userDetail).email,
+            "userobject": currentUser
           }
         ),
 
       });
-     if (data.message = "Added"){
-      console.log("added")
-     }
+      if (data.message = "Added") {
+        console.log("added")
+      }
 
     } catch (error) {
       // setError(true)
       console.error(error);
     }
+  };
+  const uploadFiles = async (FileInput) => {
+    debugger;
+    const formData = new FormData();
+    formData.append('files[]', FileInput);
+    let promise = new Promise((resolve, reject) => {
+      // https://jusaskin.herokuapp.com
+      fetch(" http://jusaskin.herokuapp.com/api/resources/upload", {
+        method: "POST",
+        body: formData,
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+          resolve(data['fileUrls'])
+        })
+        .catch((error) => {
+          console.error(error);
+          resolve([])
+        });
+      // resolve(true);
+    });
+    return promise;
   }
   const classes = useStyles();
+  useEffect(()=>{
+setText(JSON.parse(localStorage.userDetail).headline)
+  },[])
   const tabs = [
     { label: "About", component: <About currentUser={props.currentUser} /> },
     { label: "Settings", component: <Settings /> },
@@ -60,13 +94,7 @@ function Profile(props) {
       component: <Resources currentUser={props.currentUser} />,
     },
   ];
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [text, setText] = useState('');
-  const [imageUrl, setImageUrl] = useState(
-    "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/462.jpg"
-  );
-  debugger;
-  const [showChats, setShowChat] = useState(false);
+
   function handleStartChatClick() {
     debugger;
     console.log(props.currentUser);
@@ -80,13 +108,45 @@ function Profile(props) {
     debugger;
     setText(newText);
   };
-  const handleFileChange = (event) => {
+  const UploadPhotoToUserObject = async (links) => {
+    debugger;
+    try {
+      const data = await makeApiCall('http://localhost:4000/api/users/addPhoto', {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(
+          {
+            "email": JSON.parse(localStorage.userDetail).email,
+            "urlLink": links
+
+          }
+        ),
+
+      });
+      if (data) {
+        console.log("added")
+        alert("added")
+      }
+
+    } catch (error) {
+      // setError(true)
+      console.error(error);
+    }
+  }
+  const handleFileChange = async (event) => {
+    debugger;
     const file = event.target.files[0];
     const imageUrl = URL.createObjectURL(file);
-    setSelectedFile(file);
+
     setImageUrl(imageUrl);
+    const links = await uploadFiles(file)
+    setSelectedFile(links);
+    UploadPhotoToUserObject(links);
+
   };
-  useEffect(() => {});
+  useEffect(() => { });
   return (
     <div>
       {!showChats ? (
@@ -95,7 +155,7 @@ function Profile(props) {
             <div style={{ position: "relative" }}>
               <img
                 className="w-28 h-28 rounded-full border"
-                src={imageUrl}
+                src={selectedFile ? selectedFile[0] : JSON.parse(localStorage.userDetail).urlLink}
                 alt=""
               />
               <IconButton
@@ -125,12 +185,12 @@ function Profile(props) {
               <div className="flex items-center">
                 <h3 className="text-sm text-gray-400">{text}</h3>
                 <DialogForProfessSkills
-                onSave={handleSave}
+                  onSave={handleSave}
                 />
               </div>
               <div className="flex justify-start">
-        <Rating name="star-rating" value={5} />
-      </div>
+                <Rating name="star-rating" value={5} />
+              </div>
 
               {props.currentUser ? (
                 <div className="flex items-center space-x-4">
@@ -143,7 +203,7 @@ function Profile(props) {
                   <IconButton aria-label="add to favorites">
                     <Checkbox
                       checked={fvt}
-                       onChange={()=>{addtofvt(props.currentUser)}}
+                      onChange={() => { addtofvt(props.currentUser) }}
                       icon={<FavoriteBorder />}
                       checkedIcon={<Favorite sx={{ color: "red" }} />}
                     />

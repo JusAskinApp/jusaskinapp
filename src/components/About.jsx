@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import Chip from '@mui/material/Chip';
 import { makeStyles } from '@material-ui/core/styles';
 import Stack from '@mui/material/Stack';
@@ -21,9 +21,18 @@ const useStyles = makeStyles({
   });
 
 function About({currentUser}) {
+  // alert(currentUser)
   const [text, setText] = useState('');
   const [selectedSkills, setSelectedSkills] = useState([]);
-  
+  useEffect(()=>{
+    try{
+    setSelectedSkills(!currentUser ? JSON.parse(localStorage.getItem('userDetail')).interests : currentUser.interests ? currentUser.interests : []) 
+     setText(!currentUser ? JSON.parse(localStorage.getItem('userDetail')).discription : currentUser.discription ? currentUser.discription : '')
+    }
+    catch(e){
+
+    }
+  },[])
   const handleTextChange = (event) => {
     setText(event.target.value);
   };

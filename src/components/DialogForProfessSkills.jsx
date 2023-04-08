@@ -10,7 +10,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { IconButton } from "@mui/material";
 import EditIcon from "@material-ui/icons/Edit";
 import Textarea from "@mui/joy/Textarea";
-
+import makeApiCall from "../Api/api";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -28,7 +28,33 @@ export default function AlertDialogSlide(props) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const [description, setDescription] = useState("");
+  const addHeadline = async (headline)=>{
+    debugger;
+    try {
+      const data = await makeApiCall('http://localhost:4000/api/users/headline', {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(
+          {
+            "email": JSON.parse(localStorage.userDetail).email,
+            "headline": headline
 
+          }
+        ),
+
+      });
+      if (data) {
+        console.log("added")
+        alert("added")
+      }
+
+    } catch (error) {
+      // setError(true)
+      console.error(error);
+    }
+  }
   const handleDescriptionChange = (event) => {
     setDescription(event.target.value);
   };
@@ -42,6 +68,7 @@ export default function AlertDialogSlide(props) {
   };
 
   const handleSave = () => {
+    addHeadline(description)
     props.onSave(description);
     handleClose();
   };
