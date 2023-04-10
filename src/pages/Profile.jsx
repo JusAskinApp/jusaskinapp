@@ -10,6 +10,7 @@ import PhotoCamera from "@mui/icons-material/PhotoCamera";
 import IndividualChat from "../components/IndividualChat ";
 import { Favorite, FavoriteBorder } from "@mui/icons-material";
 import ChatIcon from "@mui/icons-material/Chat";
+import makeApiCall from "../Api/api";
 import { Checkbox, IconButton } from "@mui/material";
 import { makeStyles } from "@material-ui/core/styles";
 import { Rating } from '@mui/material';
@@ -22,16 +23,9 @@ const useStyles = makeStyles({
 });
 
 function Profile(props) {
-  const classes = useStyles();
-  const tabs = [
-    { label: "About", component: <About currentUser={props.currentUser} /> },
-    { label: "Settings", component: <Settings /> },
-    { label: "Saved", component: "test" },
-    {
-      label: "My Resources",
-      component: <Resources currentUser={props.currentUser} />,
-    },
-  ];
+  debugger;
+  // alert(props)
+  const [fvt, setfvt] = useState(false)
   const [selectedFile, setSelectedFile] = useState(null);
   const [text, setText] = useState('');
   const [imageUrl, setImageUrl] = useState(
@@ -39,6 +33,69 @@ function Profile(props) {
   );
   debugger;
   const [showChats, setShowChat] = useState(false);
+  const addtofvt = async (currentUser) => {
+    fvt == false ? setfvt(true) : setfvt(false)
+    debugger;
+    try {
+      const data = await makeApiCall('http://localhost:4000/api/users/addtofvt', {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(
+          {
+            "email": JSON.parse(localStorage.userDetail).email,
+            "userobject": currentUser
+          }
+        ),
+
+      });
+      if (data.message = "Added") {
+        console.log("added")
+      }
+
+    } catch (error) {
+      // setError(true)
+      console.error(error);
+    }
+  };
+  const uploadFiles = async (FileInput) => {
+    debugger;
+    const formData = new FormData();
+    formData.append('files[]', FileInput);
+    let promise = new Promise((resolve, reject) => {
+      // https://jusaskin.herokuapp.com
+      fetch(" http://jusaskin.herokuapp.com/api/resources/upload", {
+        method: "POST",
+        body: formData,
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+          resolve(data['fileUrls'])
+        })
+        .catch((error) => {
+          console.error(error);
+          resolve([])
+        });
+      // resolve(true);
+    });
+    return promise;
+  }
+  const classes = useStyles();
+  useEffect(()=>{
+setText(JSON.parse(localStorage.userDetail).headline)
+  },[])
+  const tabs = [
+    { label: "About", component: <About currentUser={props.currentUser} /> },
+    { label: "Settings", component: <Settings currentUser={props.currentUser}/> },
+    { label: "Saved", component: "test" },
+    {
+      label: "My Resources",
+      component: <Resources currentUser={props.currentUser} />,
+    },
+  ];
+
   function handleStartChatClick() {
     debugger;
     console.log(props.currentUser);
@@ -52,13 +109,44 @@ function Profile(props) {
     debugger;
     setText(newText);
   };
-  const handleFileChange = (event) => {
+  const UploadPhotoToUserObject = async (links) => {
+    debugger;
+    try {
+      const data = await makeApiCall('http://localhost:4000/api/users/addPhoto', {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(
+          {
+            "email": JSON.parse(localStorage.userDetail).email,
+            "urlLink": links
+
+          }
+        ),
+
+      });
+      if (data) {
+        console.log("added")
+        // alert("added")
+      }
+
+    } catch (error) {
+      // setError(true)
+      console.error(error);
+    }
+  }
+  const handleFileChange = async (event) => {
+    debugger;
     const file = event.target.files[0];
     const imageUrl = URL.createObjectURL(file);
-    setSelectedFile(file);
     setImageUrl(imageUrl);
+    const links = await uploadFiles(file)
+    setSelectedFile(links);
+    UploadPhotoToUserObject(links);
+
   };
-  useEffect(() => {});
+  useEffect(() => { });
   return (
     <div>
       {!showChats ? (
@@ -67,7 +155,7 @@ function Profile(props) {
             <div style={{ position: "relative" }}>
               <img
                 className="w-28 h-28 rounded-full border"
-                src={imageUrl}
+                src={selectedFile ? selectedFile[0] : props.currentUser ? props.currentUser.urlLink ? props.currentUser.urlLink[0] : '' :   JSON.parse(localStorage.userDetail).urlLink ? JSON.parse(localStorage.userDetail).urlLink[0] : ''}
                 alt=""
               />
               <IconButton
@@ -85,7 +173,9 @@ function Profile(props) {
                 }}
               >
                 <input hidden accept="image/*" type="file" />
-                <PhotoCamera />
+              
+                {!props.currentUser ?  <PhotoCamera /> : ''}
+
               </IconButton>
             </div>
             <div className="ml-11">
@@ -95,19 +185,15 @@ function Profile(props) {
                   : JSON.parse(localStorage.userDetail).name}
               </h2>
               <div className="flex items-center">
-                <h3 className="text-sm text-gray-400">{text}</h3>
-                <DialogForProfessSkills
-                onSave={handleSave}
-                />
+                <h3 className="text-sm text-gray-400">{props.currentUser ? props.currentUser.discription ? props.currentUser.discription  : '':text}</h3>
+                {/* <DialogForProfessSkills
+                  onSave={handleSave}
+                /> */}
+                {!props.currentUser ? <DialogForProfessSkills onSave={handleSave} /> : ''}
               </div>
               <div className="flex justify-start">
-        {/* <span className="text-yellow-500 text-2xl">&#9733;</span>
-        <span className="text-yellow-500 text-2xl ml-1">&#9733;</span>
-        <span className="text-yellow-500 text-2xl ml-1">&#9733;</span>
-        <span className="text-yellow-500 text-2xl ml-1">&#9733;</span>
-        <span className="text-yellow-500 text-2xl ml-1">&#9733;</span> */}
-        <Rating name="star-rating" value={5} />
-      </div>
+                <Rating name="star-rating" value={5} />
+              </div>
 
               {props.currentUser ? (
                 <div className="flex items-center space-x-4">
@@ -119,8 +205,8 @@ function Profile(props) {
                   </Button>
                   <IconButton aria-label="add to favorites">
                     <Checkbox
-                      checked={true}
-                      // onChange={likesUpdated}
+                      checked={fvt}
+                      onChange={() => { addtofvt(props.currentUser) }}
                       icon={<FavoriteBorder />}
                       checkedIcon={<Favorite sx={{ color: "red" }} />}
                     />

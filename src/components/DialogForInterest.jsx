@@ -13,7 +13,7 @@ import EditIcon from "@material-ui/icons/Edit";
 import AddIcon from '@mui/icons-material/Add';
 import Avatar from '@mui/material/Avatar';
 import CloseIcon from '@mui/icons-material/Close';
-
+import makeApiCall from '../Api/api';
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -52,6 +52,33 @@ const suggestedSkills = [
 ];
 
 export default function AlertDialogSlideForInterest(props) {
+  const saveInterest = async (interest) => {
+    debugger;
+    try {
+      const data = await makeApiCall('http://localhost:4000/api/users/addinterest', {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(
+          {
+            "email": JSON.parse(localStorage.userDetail).email,
+            "interests": interest
+
+          }
+        ),
+
+      });
+      if (data) {
+        console.log("added")
+        alert("added")
+      }
+
+    } catch (error) {
+      // setError(true)
+      console.error(error);
+    }
+  }
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const [selectedSkills, setSelectedSkills] = React.useState([]);
@@ -74,12 +101,15 @@ export default function AlertDialogSlideForInterest(props) {
     } else {
       setSelectedSkills([...selectedSkills, skill]);
     }
+
   };
 
 
   const handleSaveInterest = () => {
     debugger
+    saveInterest(selectedSkills);
     props.onSave(selectedSkills);
+ 
     handleClose();
   };
 

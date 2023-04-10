@@ -21,6 +21,7 @@ theme.overrides = {
 const responsiveTheme = responsiveFontSizes(theme);
 
 function Settings(props) {
+  debugger;
   return (
     <Grid container spacing={1}>
       <ThemeProvider theme={responsiveTheme}>

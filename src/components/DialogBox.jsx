@@ -128,7 +128,7 @@ export default function DialogBox(props) {
     const userDetail = JSON.parse(localStorage.getItem("userDetail"));
     // let profilePic = getProfilePicture(userDetail.id);
     console.log(userDetail);
-    blogPost.author = userDetail.name;
+    blogPost.author = userDetail;
     blogPost.id = userDetail.id;
     blogPost.content = postDescription;
     blogPost.imageIDs = links
@@ -162,7 +162,7 @@ export default function DialogBox(props) {
 
       <List style={{ padding: "20px 25px" }}>
         <ThemeProvider theme={responsiveTheme}>
-          <ListItem disableGutters>
+          {/* <ListItem disableGutters>
             <TextField
               label="Post Title"
               value={postTitle}
@@ -170,9 +170,9 @@ export default function DialogBox(props) {
               fullWidth
               variant="outlined"
             />
-          </ListItem>
+          </ListItem> */}
 
-          <ListItem disableGutters>
+          {/* <ListItem disableGutters>
             <TextField
               label="Post Author"
               value={postAuthor}
@@ -180,7 +180,7 @@ export default function DialogBox(props) {
               fullWidth
               variant="outlined"
             />
-          </ListItem>
+          </ListItem> */}
 
           <ListItem disableGutters>
             <TextField

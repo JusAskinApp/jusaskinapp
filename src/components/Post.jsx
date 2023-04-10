@@ -21,6 +21,7 @@ import MapsUgcOutlinedIcon from "@mui/icons-material/MapsUgcOutlined";
 import { useState, useEffect } from "react";
 
 const Post = (props) => {
+  debugger;
   const [comment, setComment] = useState("");
   const [checked, setChecked] = useState(false);
   const [localComments, setLocalComment] = useState([])
@@ -70,6 +71,7 @@ const Post = (props) => {
       setError(true)
       console.error(error);
     }
+
   }
   const dateGetter = (date) => {
     if (date) {
@@ -148,7 +150,7 @@ const Post = (props) => {
     <Card>
       <CardHeader
         avatar={
-          <Avatar src={userimg} alt="" aria-label="recipe">
+          <Avatar src={props.name.urlLink ? props.name.urlLink[0] : ''} alt="" aria-label="recipe">
             R
           </Avatar>
         }
@@ -157,7 +159,7 @@ const Post = (props) => {
             <MoreVert />
           </IconButton>
         }
-        title={props.name}
+        title={props.name.name}
         subheader={dateGetter(props.date)}
       />
 
