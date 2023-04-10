@@ -8,9 +8,9 @@ function Stories() {
   const [favoriteUsers, setfavoriteUsers] = useState([]);
   useEffect(() => {
     debugger;
-    addtofvt();
+    getFvt();
   }, []);
-  const addtofvt = async (currentUser) => {
+  const getFvt = async (currentUser) => {
     fvt == false ? setfvt(true) : setfvt(false)
     debugger;
     
@@ -30,6 +30,7 @@ function Stories() {
       });
       if (data) {
         const updatedFavoriteUsers = [...favoriteUsers, ...data.fvtdocs];
+        debugger;
         // Update the state with the new array
         setfavoriteUsers(updatedFavoriteUsers);
         console.log("added")
@@ -45,8 +46,10 @@ function Stories() {
       {favoriteUsers.map((profile) => (
         <Story
           // key={profile.Id}
-          // img={profile.avatar}
+          img={profile.urlLink ?profile.urlLink[0] : '' }
           username={profile.name}
+          onClick={() => console.log("Story clicked")}
+        
         />
       ))}
     </div>

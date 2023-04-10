@@ -23,7 +23,8 @@ const useStyles = makeStyles({
 });
 
 function Profile(props) {
-  alert(props)
+  debugger;
+  // alert(props)
   const [fvt, setfvt] = useState(false)
   const [selectedFile, setSelectedFile] = useState(null);
   const [text, setText] = useState('');
@@ -87,7 +88,7 @@ setText(JSON.parse(localStorage.userDetail).headline)
   },[])
   const tabs = [
     { label: "About", component: <About currentUser={props.currentUser} /> },
-    { label: "Settings", component: <Settings /> },
+    { label: "Settings", component: <Settings currentUser={props.currentUser}/> },
     { label: "Saved", component: "test" },
     {
       label: "My Resources",
@@ -127,7 +128,7 @@ setText(JSON.parse(localStorage.userDetail).headline)
       });
       if (data) {
         console.log("added")
-        alert("added")
+        // alert("added")
       }
 
     } catch (error) {
@@ -139,7 +140,6 @@ setText(JSON.parse(localStorage.userDetail).headline)
     debugger;
     const file = event.target.files[0];
     const imageUrl = URL.createObjectURL(file);
-
     setImageUrl(imageUrl);
     const links = await uploadFiles(file)
     setSelectedFile(links);
@@ -155,7 +155,7 @@ setText(JSON.parse(localStorage.userDetail).headline)
             <div style={{ position: "relative" }}>
               <img
                 className="w-28 h-28 rounded-full border"
-                src={selectedFile ? selectedFile[0] : JSON.parse(localStorage.userDetail).urlLink}
+                src={selectedFile ? selectedFile[0] : props.currentUser ? props.currentUser.urlLink ? props.currentUser.urlLink[0] : '' :   JSON.parse(localStorage.userDetail).urlLink ? JSON.parse(localStorage.userDetail).urlLink[0] : ''}
                 alt=""
               />
               <IconButton
@@ -173,7 +173,9 @@ setText(JSON.parse(localStorage.userDetail).headline)
                 }}
               >
                 <input hidden accept="image/*" type="file" />
-                <PhotoCamera />
+              
+                {!props.currentUser ?  <PhotoCamera /> : ''}
+
               </IconButton>
             </div>
             <div className="ml-11">
@@ -183,10 +185,11 @@ setText(JSON.parse(localStorage.userDetail).headline)
                   : JSON.parse(localStorage.userDetail).name}
               </h2>
               <div className="flex items-center">
-                <h3 className="text-sm text-gray-400">{text}</h3>
-                <DialogForProfessSkills
+                <h3 className="text-sm text-gray-400">{props.currentUser ? props.currentUser.discription ? props.currentUser.discription  : '':text}</h3>
+                {/* <DialogForProfessSkills
                   onSave={handleSave}
-                />
+                /> */}
+                {!props.currentUser ? <DialogForProfessSkills onSave={handleSave} /> : ''}
               </div>
               <div className="flex justify-start">
                 <Rating name="star-rating" value={5} />

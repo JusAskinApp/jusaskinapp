@@ -25,13 +25,9 @@ function About({currentUser}) {
   const [text, setText] = useState('');
   const [selectedSkills, setSelectedSkills] = useState([]);
   useEffect(()=>{
-    try{
-    setSelectedSkills(!currentUser ? JSON.parse(localStorage.getItem('userDetail')).interests : currentUser.interests ? currentUser.interests : []) 
-     setText(!currentUser ? JSON.parse(localStorage.getItem('userDetail')).discription : currentUser.discription ? currentUser.discription : '')
-    }
-    catch(e){
-
-    }
+     setSelectedSkills(!currentUser ? JSON.parse(localStorage.getItem('userDetail')).interests ? JSON.parse(localStorage.getItem('userDetail')).interests : [] : currentUser.interests ? currentUser.interests : []) 
+    
+     setText(!currentUser ? JSON.parse(localStorage.getItem('userDetail')).discription ? JSON.parse(localStorage.getItem('userDetail')).discription : []: currentUser.discription ? currentUser.discription : '')
   },[])
   const handleTextChange = (event) => {
     setText(event.target.value);
@@ -51,24 +47,21 @@ function About({currentUser}) {
     debugger;
     setSelectedSkills(selectedSkills.filter((s) => s !== skill));
   };
-  
- 
     const classes = useStyles();
-   
-
   return (
     <div>
     
         <div className="flex items-center">
           <label
             for="message"
-            class="block mb-2 text-sm font-medium text-gray-400 dark:text-white"
+            class="block mb-2 text-sm font-medium text-gray-400 dark"
           >
             Description
           </label>
-          <AlertDialogSlide
+         
+          {!currentUser ?  <AlertDialogSlide
           onSave={handleSave}
-          />
+          />: ''}
           </div>
       
       <textarea
@@ -85,17 +78,17 @@ function About({currentUser}) {
       <div className="flex items-center">
             <label
               for="message"
-              class="block mb-2 text-sm font-medium text-gray-400 dark:text-white"
+              class="block mb-2 text-sm font-medium text-gray-400 dark"
             >
               Your Interests
             </label>
         
-          <AlertDialogSlideForInterest
+         { !currentUser ?   <AlertDialogSlideForInterest
           onSave={handleSaveInterest}
           onDelete={handleDeleteSkill}
            selectedSkills={selectedSkills} 
            setSelectedSkills={setSelectedSkills}
-          />
+          /> : ''}
          </div>
         <Stack direction="row" spacing={1} style={{ flexWrap: 'wrap' }} fullWidth>
   {selectedSkills.map((skill, index) => (

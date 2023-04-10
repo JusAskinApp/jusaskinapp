@@ -85,7 +85,7 @@ const IndividualChat = ({ profile, onBackClick }) => {
         <MoreVertIcon />
       </div>
       <div
-        className="flex flex-col flex-1 p-4 max-h-[325px] overflow-y-scroll"
+        className="flex flex-col flex-1 p-4 max-h-[500px] overflow-y-scroll"
         style={{ background: "#FAFAFA" }}
       >
          <>
