@@ -21,12 +21,15 @@ import ResourcesIcon from '@mui/icons-material/Book';
 import GroupIcon from '@mui/icons-material/Group';
 import MessagesIcon from '@mui/icons-material/Chat';
 import ProfileIcon from '@mui/icons-material/AccountCircle';
+import BasicMenu from '../components/Menu';
+import { Routes, Route } from "react-router-dom"
 const drawerWidth = 240;
 
 function Sidebar(props) {
   const { window } = props;
   const navigate = useNavigate();
   const [activeItem, setSelectedItem] = useState('Home');
+  
 
   function handleListItemClick(item) {
     setSelectedItem(item);
@@ -62,6 +65,10 @@ function Sidebar(props) {
   </ListItem>
 ))}
     </List> 
+    
+        {/* menu icon here */}
+        <BasicMenu/>
+      
        </div>
   );
 
