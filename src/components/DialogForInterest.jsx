@@ -55,7 +55,7 @@ export default function AlertDialogSlideForInterest(props) {
   const saveInterest = async (interest) => {
     debugger;
     try {
-      const data = await makeApiCall('http://localhost:4000/api/users/addinterest', {
+      const data = await makeApiCall('https://jusaskin.herokuapp.com/api/users/addinterest', {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

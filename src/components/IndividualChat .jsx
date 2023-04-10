@@ -16,7 +16,7 @@ const IndividualChat = ({ profile, onBackClick }) => {
     const sender = JSON.parse(JSON.parse(JSON.stringify(localStorage)).userDetail).email
     const reciever = profile.email
     try {
-      const data = await makeApiCall('http://localhost:4000/api/chat/getMessages', {
+      const data = await makeApiCall('https://jusaskin.herokuapp.com/api/chat/getMessages', {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -54,7 +54,7 @@ const IndividualChat = ({ profile, onBackClick }) => {
   };
     setMessages([...messages, messagebody]);
     try {
-      const data = await makeApiCall('http://localhost:4000/api/chat/storeMessage', {
+      const data = await makeApiCall('https://jusaskin.herokuapp.com/api/chat/storeMessage', {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

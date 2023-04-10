@@ -15,7 +15,7 @@ function Stories() {
     debugger;
     
     try {
-      const data = await makeApiCall('http://localhost:4000/api/users/getfvt', {
+      const data = await makeApiCall('https://jusaskin.herokuapp.com/api/users/getfvt', {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

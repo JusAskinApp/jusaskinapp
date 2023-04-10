@@ -31,7 +31,7 @@ export default function AlertDialogSlide(props) {
   const addHeadline = async (headline)=>{
     debugger;
     try {
-      const data = await makeApiCall('http://localhost:4000/api/users/headline', {
+      const data = await makeApiCall('https://jusaskin.herokuapp.com/api/users/headline', {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

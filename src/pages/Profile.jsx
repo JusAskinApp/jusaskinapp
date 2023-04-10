@@ -37,7 +37,7 @@ function Profile(props) {
     fvt == false ? setfvt(true) : setfvt(false)
     debugger;
     try {
-      const data = await makeApiCall('http://localhost:4000/api/users/addtofvt', {
+      const data = await makeApiCall('https://jusaskin.herokuapp.com/api/users/addtofvt', {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -112,7 +112,7 @@ setText(JSON.parse(localStorage.userDetail).headline)
   const UploadPhotoToUserObject = async (links) => {
     debugger;
     try {
-      const data = await makeApiCall('http://localhost:4000/api/users/addPhoto', {
+      const data = await makeApiCall('https://jusaskin.herokuapp.com/api/users/addPhoto', {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

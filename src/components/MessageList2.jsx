@@ -11,7 +11,7 @@ const MessageList2 = () => {
   const getChatList = async () => {
     debugger;
     try {
-      const data = await makeApiCall('http://localhost:4000/api/chat/getChatList', {
+      const data = await makeApiCall('https://jusaskin.herokuapp.com/api/chat/getChatList', {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
