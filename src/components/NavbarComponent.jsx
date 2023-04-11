@@ -2,9 +2,7 @@ import React from "react";
 import myIcon from "../assets/logo.png";
 
 const Navbar = (props) => {
-  const handleClick = () => {
-    // window.location.href = "login"
-  };
+ 
 
   return (
     <nav style={{ backgroundColor: "#F0F7F4" }}>
@@ -33,7 +31,10 @@ const Navbar = (props) => {
           <a
             href="#"
             className="text-black font-medium mr-4"
-            onClick={handleClick}
+            onClick={()=>{
+              window.location.href = "login"
+
+            }}
           >
             Login
           </a>
@@ -42,7 +43,7 @@ const Navbar = (props) => {
             style={{ backgroundColor: "#4AE6A7" }}
             className="text-black font-medium py-2 px-4 rounded-full hover:bg-green-600"
             onClick={() => {
-              // window.location.href = "signup";
+              window.location.href = "signup";
             }}
           >
             Sign Up

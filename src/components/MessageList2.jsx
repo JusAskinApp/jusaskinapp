@@ -63,13 +63,17 @@ const MessageList2 = () => {
   {!selectedProfile ? (
     <>
             {AllChats.map((profile) => (
+              
               <MessageList
                 // key={profile.Id}
-                img="https://firebasestorage.googleapis.com/v0/b/jusaskinapp.appspot.com/o/149071-fb71c7c3-f1b1-4379-b4fa-65dc793d9125.png?alt=media&token=38953411-e32f-41fb-970c-d617b38749f6"
+                img={ profile.userObj ? profile.userObj.urlLink ? profile.userObj.urlLink[0] :'' :''}
                 username={profile.userObj ? profile.userObj.name : ''}
                 onClick={() => handleProfileClick(profile)}
               />
             ))}
+            {
+              console.log(AllChats)
+            }
     </>
   ) : (
     <IndividualChat profile={selectedProfile} onBackClick={handleBackClick}/>

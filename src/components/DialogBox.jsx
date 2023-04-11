@@ -3,6 +3,7 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import DialogTitle from "@mui/material/DialogTitle";
 import Dialog from "@mui/material/Dialog";
+import { useNavigate } from 'react-router-dom';
 import {
   TextField,
   ThemeProvider,
@@ -31,6 +32,7 @@ theme.overrides = {
 const responsiveTheme = responsiveFontSizes(theme);
 
 export default function DialogBox(props) {
+  // const navigate = useNavigate();
   const { onClose, open } = props;
   const [postTitle, setPostTitle] = useState("");
   const [postAuthor, setPostAuthor] = useState("");
@@ -61,6 +63,8 @@ export default function DialogBox(props) {
       .then((data) => {
         console.log(data);
         alert("blog added");
+        // location.reload();
+
         // localStorage.setItem("userDetail", data);
         // navigate('/home');
       })
@@ -68,21 +72,6 @@ export default function DialogBox(props) {
         // console.error(error);
       });
   };
-
-  // const getProfilePicture = async (id) => {
-  //   debugger;
-  //   fetch(`https://backend-justaskin-production.up.railway.app/${id}`, {
-  //     method: "GET",
-  //   })
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       console.log(data);
-  //       return data.ProfilePicture;
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error:", error);
-  //     });
-  // };
   const handleClose = () => {
     debugger;
     onClose(true);
@@ -101,7 +90,7 @@ export default function DialogBox(props) {
     });
     let promise = new Promise((resolve, reject) => {
       // https://jusaskin.herokuapp.com
-      fetch(" http://jusaskin.herokuapp.com/api/resources/upload", {
+      fetch("https://jusaskin.herokuapp.com/api/resources/upload", {
         method: "POST",
         body: formData,
       })

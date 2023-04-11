@@ -43,12 +43,12 @@ const IndividualChat = ({ profile, onBackClick }) => {
       "sender" : {
           "email" : JSON.parse(JSON.parse(JSON.stringify(localStorage)).userDetail).email,
           "id":JSON.parse(JSON.parse(JSON.stringify(localStorage)).userDetail).id,
-          "ProfilePic":"https://firebasestorage.googleapis.com/v0/b/jusaskinapp.appspot.com/o/149071-fb71c7c3-f1b1-4379-b4fa-65dc793d9125.png?alt=media&token=38953411-e32f-41fb-970c-d617b38749f6"
+          "ProfilePic":JSON.parse(JSON.parse(JSON.stringify(localStorage)).userDetail).urlLink ? JSON.parse(JSON.parse(JSON.stringify(localStorage)).userDetail).urlLink[0] : ''
       },
       "receiver" : {
             "email" : profile.chatPartnerEmail ? profile.chatPartnerEmail : profile.email,
           "id":"2",
-          "ProfilePic": "https://firebasestorage.googleapis.com/v0/b/jusaskinapp.appspot.com/o/149071-fb71c7c3-f1b1-4379-b4fa-65dc793d9125.png?alt=media&token=38953411-e32f-41fb-970c-d617b38749f6"
+          // "ProfilePic": "https://firebasestorage.googleapis.com/v0/b/jusaskinapp.appspot.com/o/149071-fb71c7c3-f1b1-4379-b4fa-65dc793d9125.png?alt=media&token=38953411-e32f-41fb-970c-d617b38749f6"
       },
       "text" : _message
   };
