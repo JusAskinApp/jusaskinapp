@@ -65,7 +65,7 @@ function Profile(props) {
     formData.append('files[]', FileInput);
     let promise = new Promise((resolve, reject) => {
       // https://jusaskin.herokuapp.com
-      fetch(" http://jusaskin.herokuapp.com/api/resources/upload", {
+      fetch("https://jusaskin.herokuapp.com/api/resources/upload", {
         method: "POST",
         body: formData,
       })
