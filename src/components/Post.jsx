@@ -60,7 +60,7 @@ const Post = (props) => {
               "userID": JSON.parse(JSON.parse(JSON.stringify(localStorage)).userDetail).id,
               "userName": JSON.parse(JSON.parse(JSON.stringify(localStorage)).userDetail).name,
               "comment": comment,
-              "Photo" : JSON.parse(JSON.parse(JSON.stringify(localStorage)).userDetail).urlLink ? JSON.parse(JSON.parse(JSON.stringify(localStorage)).userDetail).urlLink[0] : ''
+              "Photo": JSON.parse(JSON.parse(JSON.stringify(localStorage)).userDetail).urlLink ? JSON.parse(JSON.parse(JSON.stringify(localStorage)).userDetail).urlLink[0] : ''
 
             }
           }
@@ -91,7 +91,7 @@ const Post = (props) => {
 
   function determineMediaType(url) {
     const videoExtensions = [".mp4", ".avi", ".mov", ".wmv"];
-    const imageExtensions = [".jpg", ".jpeg", ".png", ".gif",".ico"];
+    const imageExtensions = [".jpg", ".jpeg", ".png", ".gif", ".ico"];
     const pdfExtensions = [".pdf"];
     const pptExtensions = [".ppt", ".pptx"];
     const docExtensions = [".doc", ".docx"];
@@ -118,7 +118,7 @@ const Post = (props) => {
   const likesUpdated = async (e) => {
     debugger;
     console.log(likeCount);
-    setCount(e.target.checked ? props.likes.total + 1  : props.likes.total - 1,)
+    setCount(e.target.checked ? props.likes.total + 1 : props.likes.total - 1,)
     setChecked(e.target.checked ? true : false)
     try {
       const data = await makeApiCall('https://jusaskin.herokuapp.com/api/blogPosts/updateLikes', {
@@ -183,9 +183,16 @@ const Post = (props) => {
               image={image}
               alt="ERROR"
               controls={determineMediaType(image) === "video"} />) :
-            <div>
-          {/* <FileViewerComp url={image} type="pdf"/> */}
-          <iframe src={image} width="100%" height="600"></iframe>
+              <div>
+                {determineMediaType(image) === 'ppt'? (
+                  <iframe
+                  title={'PDF-Viewer'}
+                  src={`https://view.officeapps.live.com/op/embed.aspx?src=${image}`}
+                  frameBorder={0}
+                  style={{ height: '100vh', width: '90vw' }}></iframe>
+                ) : (
+                  <iframe src={image} width="100%" height="600"></iframe>
+                )}
               </div>}
           </div>
         ))}
@@ -265,7 +272,7 @@ const Post = (props) => {
               <div className="flex items-center space-x-2 mb-3">
                 <img
                   className="h-7 rounded-full"
-                  src={ JSON.parse(JSON.parse(JSON.stringify(localStorage)).userDetail).urlLink ? JSON.parse(JSON.parse(JSON.stringify(localStorage)).userDetail).urlLink[0] : ''}
+                  src={JSON.parse(JSON.parse(JSON.stringify(localStorage)).userDetail).urlLink ? JSON.parse(JSON.parse(JSON.stringify(localStorage)).userDetail).urlLink[0] : ''}
                   alt=""
                 />
                 <p className="text-sm flex-1">
