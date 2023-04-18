@@ -63,7 +63,8 @@ const IndividualChat = ({ profile, onBackClick }) => {
       });
       console.log(messages)
       if(data){
-        alert("send")
+        _setMessage('')
+        // alert("send")
       }
      
     } catch (error) {
@@ -115,6 +116,7 @@ const IndividualChat = ({ profile, onBackClick }) => {
           placeholder="Type a message"
           className="flex-1 px-4 py-2 rounded-full bg-gray-200 focus:outline-none"
           onChange={(e)=>{_setMessage(e.target.value)}}
+          value={_message}
         />
         <div className="flex items-center ml-2">
           <SendIcon onClick={sendButtonClick}/>
