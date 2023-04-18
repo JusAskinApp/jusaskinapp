@@ -1,6 +1,5 @@
 import { Favorite, FavoriteBorder, MoreVert, Share } from "@mui/icons-material";
 import makeApiCall from '../Api/api';
-import FileViewerComp from "./FileViewerComp";
 import {
   Avatar,
   Card,
@@ -9,14 +8,12 @@ import {
   CardHeader,
   CardMedia,
   Checkbox,
-  Grid,
   IconButton,
   Typography,
   Box,
 } from "@mui/material";
 import EmojiHappyIcon from "@material-ui/icons/EmojiEmotions";
 import userimg from "../assets/userimg.png";
-// import post from "../assets/post.png";
 import MapsUgcOutlinedIcon from "@mui/icons-material/MapsUgcOutlined";
 import { useState, useEffect } from "react";
 
@@ -77,13 +74,38 @@ const Post = (props) => {
 
   }
   const dateGetter = (date) => {
-    if (date) {
-      return new Date(
-        date._seconds * 1000 + date._nanoseconds / 1000000
-      ).toString("dd-mmm-yyyy");
-    } else {
-      return "0";
-    }
+    debugger;
+      const TempDate = new Date(date._seconds * 1000 + date._nanoseconds / 1000000 ).toString("dd-mmm-yyyy");
+      const postDate = new Date(TempDate);
+      const seconds = Math.floor((new Date() - postDate) / 1000);
+
+      let interval = Math.floor(seconds / 31536000);
+    
+      if (interval >= 1) {
+        return "posted " + interval + " year" + (interval === 1 ? "" : "s") + " ago";
+      }
+    
+      interval = Math.floor(seconds / 2592000);
+      if (interval >= 1) {
+        return "posted " + interval + " month" + (interval === 1 ? "" : "s") + " ago";
+      }
+    
+      interval = Math.floor(seconds / 86400);
+      if (interval >= 1) {
+        return "posted " + interval + " day" + (interval === 1 ? "" : "s") + " ago";
+      }
+    
+      interval = Math.floor(seconds / 3600);
+      if (interval >= 1) {
+        return "posted " + interval + " hour" + (interval === 1 ? "" : "s") + " ago";
+      }
+    
+      interval = Math.floor(seconds / 60);
+      if (interval >= 1) {
+        return "posted " + interval + " minute" + (interval === 1 ? "" : "s") + " ago";
+      }
+    
+      return "posted " + Math.floor(seconds) + " second" + (Math.floor(seconds) === 1 ? "" : "s") + " ago";
   };
   const docs = [
     { uri: "https://url-to-my-pdf.pdf" }
@@ -139,9 +161,6 @@ const Post = (props) => {
       console.log(data);
 
     } catch (error) {
-      alert("hello")
-      // setCount(e.target.checked ? props.likes.total - 1 : props.likes.total + 1, )
-      // setChecked(false)
       console.error(error);
     }
   }
@@ -151,7 +170,7 @@ const Post = (props) => {
       <CardHeader
         avatar={
           <Avatar src={props.name.urlLink ? props.name.urlLink[0] : ''} alt="" aria-label="recipe">
-            R
+             {props.name.name && `${props.name.name.split(' ')[0][0]}`}
           </Avatar>
         }
         action={
@@ -218,15 +237,6 @@ const Post = (props) => {
         </IconButton>
       </CardActions>
 
-      {/* liked section */}
-
-      {/* <Box display="flex" ml={3} mb={2}>
-        <Avatar alt="Remy Sharp" src={userimg} sx={{ width: 24, height: 24 }} />
-        <Typography variant="body2" color="text.secondary" ml={1}>
-          <span style={{ fontWeight: "bold" }}> {props.likes.data[0] ? props.likes.data[0].user ? props.likes.data[0].user.userName : '' : ''} </span>
-          and <span style={{ fontWeight: "bold" }}>{likeCount !== -1 ? likeCount : props.likes.total} </span> liked this.
-        </Typography>
-      </Box> */}
       <Box display="flex" ml={3} mb={2}>
         <Avatar alt="Remy Sharp" src={JSON.parse(JSON.parse(JSON.stringify(localStorage)).userDetail).urlLink ? JSON.parse(JSON.parse(JSON.stringify(localStorage)).userDetail).urlLink[0] : ''} sx={{ width: 24, height: 24 }} />
         <Typography variant="body2" color="text.secondary" ml={1}>
