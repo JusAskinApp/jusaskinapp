@@ -140,10 +140,13 @@ setText(JSON.parse(localStorage.userDetail).headline)
     debugger;
     const file = event.target.files[0];
     const imageUrl = URL.createObjectURL(file);
+    localStorage.setItem('imageUrl', imageUrl);
     setImageUrl(imageUrl);
     const links = await uploadFiles(file)
     setSelectedFile(links);
     UploadPhotoToUserObject(links);
+    
+   // setSavedImage(image);
 
   };
   useEffect(() => { });

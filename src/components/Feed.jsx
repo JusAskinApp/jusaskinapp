@@ -6,33 +6,34 @@ import Post from "./Post";
 const Feed = () => {
   const [loading, setLoading] = useState(true);
   const [blogData, setBlogData] = useState([]);
-  const getBlogs = async (id) => {
-    debugger;
-    fetch(
-      `https://jusaskin.herokuapp.com/api/blogPosts/blogs/`,
-      {
-        method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(
-        { "interests": ["Nasir"]}
-      ),
-      })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        setBlogData(data);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-  };
+  
   setTimeout(() => {
     setLoading(false);
   }, [3000]);
   useEffect(() => {
     debugger;
+    const getBlogs = async (id) => {
+      debugger;
+      fetch(
+        `https://jusaskin.herokuapp.com/api/blogPosts/blogs/`,
+        {
+          method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(
+          { "interests": ["Nasir"]}
+        ),
+        })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+          setBlogData(data);
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    };
     const storedData = localStorage.getItem("userDetail");
     console.log("tes", storedData);
     getBlogs();

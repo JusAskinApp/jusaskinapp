@@ -86,6 +86,8 @@ export default function DialogBox(props) {
   const handleClose = () => {
     debugger;
     onClose(true);
+    setPostDescription('');
+    setFiles([]);
   };
 
   const handleChange = (e) => {
@@ -136,7 +138,7 @@ export default function DialogBox(props) {
     blogPost.userid = userDetail.id;
     // blogPost.profilePicture = profilePic;
     createPost();
-    console.log("hello");
+    handleClose();
   };
 
   return (
