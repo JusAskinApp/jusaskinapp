@@ -59,13 +59,25 @@ function Profile(props) {
       console.error(error);
     }
   };
+  const updateLocalStorage = (link) => {
+    debugger
+    let obj = JSON.parse(localStorage.userDetail);
+    const newProps = {
+      urlLink: [link],
+    };
+    const updatedObj = {
+      ...obj,
+      ...newProps
+    };
+    localStorage.setItem("userDetail", JSON.stringify(updatedObj));
+  }
   const uploadFiles = async (FileInput) => {
     debugger;
     const formData = new FormData();
     formData.append('files[]', FileInput);
     let promise = new Promise((resolve, reject) => {
       // https://jusaskin.herokuapp.com
-      fetch(" http://jusaskin.herokuapp.com/api/resources/upload", {
+      fetch("https://jusaskin.herokuapp.com/api/resources/upload", {
         method: "POST",
         body: formData,
       })
@@ -83,12 +95,12 @@ function Profile(props) {
     return promise;
   }
   const classes = useStyles();
-  useEffect(()=>{
-setText(JSON.parse(localStorage.userDetail).headline)
-  },[])
+  useEffect(() => {
+    setText(JSON.parse(localStorage.userDetail).headline)
+  }, [])
   const tabs = [
     { label: "About", component: <About currentUser={props.currentUser} /> },
-    { label: "Settings", component: <Settings currentUser={props.currentUser}/> },
+    { label: "Settings", component: <Settings currentUser={props.currentUser} /> },
     { label: "Saved", component: "test" },
     {
       label: "My Resources",
@@ -128,6 +140,7 @@ setText(JSON.parse(localStorage.userDetail).headline)
       });
       if (data) {
         console.log("added")
+        updateLocalStorage(links)
         // alert("added")
       }
 
@@ -158,7 +171,7 @@ setText(JSON.parse(localStorage.userDetail).headline)
             <div style={{ position: "relative" }}>
               <img
                 className="w-28 h-28 rounded-full border"
-                src={selectedFile ? selectedFile[0] : props.currentUser ? props.currentUser.urlLink ? props.currentUser.urlLink[0] : '' :   JSON.parse(localStorage.userDetail).urlLink ? JSON.parse(localStorage.userDetail).urlLink[0] : ''}
+                src={selectedFile ? selectedFile[0] : props.currentUser ? props.currentUser.urlLink ? props.currentUser.urlLink[0] : '' : JSON.parse(localStorage.userDetail).urlLink ? JSON.parse(localStorage.userDetail).urlLink[0] : ''}
                 alt=""
               />
               <IconButton
@@ -176,8 +189,8 @@ setText(JSON.parse(localStorage.userDetail).headline)
                 }}
               >
                 <input hidden accept="image/*" type="file" />
-              
-                {!props.currentUser ?  <PhotoCamera /> : ''}
+
+                {!props.currentUser ? <PhotoCamera /> : ''}
 
               </IconButton>
             </div>
@@ -188,7 +201,7 @@ setText(JSON.parse(localStorage.userDetail).headline)
                   : JSON.parse(localStorage.userDetail).name}
               </h2>
               <div className="flex items-center">
-                <h3 className="text-sm text-gray-400">{props.currentUser ? props.currentUser.discription ? props.currentUser.discription  : '':text}</h3>
+                <h3 className="text-sm text-gray-400">{props.currentUser ? props.currentUser.discription ? props.currentUser.discription : '' : text}</h3>
                 {/* <DialogForProfessSkills
                   onSave={handleSave}
                 /> */}

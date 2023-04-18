@@ -43,12 +43,12 @@ const IndividualChat = ({ profile, onBackClick }) => {
       "sender" : {
           "email" : JSON.parse(JSON.parse(JSON.stringify(localStorage)).userDetail).email,
           "id":JSON.parse(JSON.parse(JSON.stringify(localStorage)).userDetail).id,
-          "ProfilePic":"https://firebasestorage.googleapis.com/v0/b/jusaskinapp.appspot.com/o/149071-fb71c7c3-f1b1-4379-b4fa-65dc793d9125.png?alt=media&token=38953411-e32f-41fb-970c-d617b38749f6"
+          "ProfilePic":JSON.parse(JSON.parse(JSON.stringify(localStorage)).userDetail).urlLink ? JSON.parse(JSON.parse(JSON.stringify(localStorage)).userDetail).urlLink[0] : ''
       },
       "receiver" : {
             "email" : profile.chatPartnerEmail ? profile.chatPartnerEmail : profile.email,
           "id":"2",
-          "ProfilePic": "https://firebasestorage.googleapis.com/v0/b/jusaskinapp.appspot.com/o/149071-fb71c7c3-f1b1-4379-b4fa-65dc793d9125.png?alt=media&token=38953411-e32f-41fb-970c-d617b38749f6"
+          // "ProfilePic": "https://firebasestorage.googleapis.com/v0/b/jusaskinapp.appspot.com/o/149071-fb71c7c3-f1b1-4379-b4fa-65dc793d9125.png?alt=media&token=38953411-e32f-41fb-970c-d617b38749f6"
       },
       "text" : _message
   };
@@ -63,7 +63,8 @@ const IndividualChat = ({ profile, onBackClick }) => {
       });
       console.log(messages)
       if(data){
-        alert("send")
+        _setMessage('')
+        // alert("send")
       }
      
     } catch (error) {
@@ -115,6 +116,7 @@ const IndividualChat = ({ profile, onBackClick }) => {
           placeholder="Type a message"
           className="flex-1 px-4 py-2 rounded-full bg-gray-200 focus:outline-none"
           onChange={(e)=>{_setMessage(e.target.value)}}
+          value={_message}
         />
         <div className="flex items-center ml-2">
           <SendIcon onClick={sendButtonClick}/>

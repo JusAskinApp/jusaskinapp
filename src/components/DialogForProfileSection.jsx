@@ -28,6 +28,18 @@ const useStyles = makeStyles({
 export default function AlertDialogSlide(props) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
+  const updateLocalStorage = (description) => {
+    debugger
+    let obj = JSON.parse(localStorage.userDetail);
+    const newProps = {
+      discription: description,
+    };
+    const updatedObj = {
+      ...obj,
+      ...newProps
+    };
+    localStorage.setItem("userDetail", JSON.stringify(updatedObj));
+  }
   const addDescription = async (dis)=>{
     debugger;
     try {
@@ -47,7 +59,7 @@ export default function AlertDialogSlide(props) {
       });
       if (data) {
         console.log("added")
-        alert("added")
+        updateLocalStorage(description);
       }
 
     } catch (error) {

@@ -52,6 +52,18 @@ const suggestedSkills = [
 ];
 
 export default function AlertDialogSlideForInterest(props) {
+  const updateLocalStorage = (interest) => {
+    debugger
+    let obj = JSON.parse(localStorage.userDetail);
+    const newProps = {
+      interests: interest,
+    };
+    const updatedObj = {
+      ...obj,
+      ...newProps
+    };
+    localStorage.setItem("userDetail", JSON.stringify(updatedObj));
+  }
   const saveInterest = async (interest) => {
     debugger;
     try {
@@ -71,7 +83,8 @@ export default function AlertDialogSlideForInterest(props) {
       });
       if (data) {
         console.log("added")
-        alert("added")
+        // alert("added")
+        updateLocalStorage(interest)
       }
 
     } catch (error) {

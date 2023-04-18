@@ -19,6 +19,7 @@ import { useState, useEffect } from "react";
 
 const Post = (props) => {
   debugger;
+  debugger;
   const [comment, setComment] = useState("");
   const [checked, setChecked] = useState(false);
   const [localComments, setLocalComment] = useState([])
@@ -55,7 +56,9 @@ const Post = (props) => {
             "comment": {
               "userID": JSON.parse(JSON.parse(JSON.stringify(localStorage)).userDetail).id,
               "userName": JSON.parse(JSON.parse(JSON.stringify(localStorage)).userDetail).name,
-              "comment": comment
+              "comment": comment,
+              "Photo" : JSON.parse(JSON.parse(JSON.stringify(localStorage)).userDetail).urlLink ? JSON.parse(JSON.parse(JSON.stringify(localStorage)).userDetail).urlLink[0] : ''
+
             }
           }
         ),
@@ -149,10 +152,7 @@ const Post = (props) => {
           {
             "blogRefID": props.blogRefId,
             "like": e.target.checked ? 1 : -1,
-            "user": {
-              "email": JSON.parse(JSON.parse(JSON.stringify(localStorage)).userDetail).email,
-              "userName": JSON.parse(JSON.parse(JSON.stringify(localStorage)).userDetail).name,
-            }
+            "user": JSON.parse(JSON.parse(JSON.stringify(localStorage)).userDetail),
           }
         ),
 
@@ -230,7 +230,7 @@ const Post = (props) => {
       </CardActions>
 
       <Box display="flex" ml={3} mb={2}>
-        <Avatar alt="Remy Sharp" src={userimg} sx={{ width: 24, height: 24 }} />
+        <Avatar alt="Remy Sharp" src={JSON.parse(JSON.parse(JSON.stringify(localStorage)).userDetail).urlLink ? JSON.parse(JSON.parse(JSON.stringify(localStorage)).userDetail).urlLink[0] : ''} sx={{ width: 24, height: 24 }} />
         <Typography variant="body2" color="text.secondary" ml={1}>
           <span style={{ fontWeight: "bold" }}> {props.likes.data.length > 0 ? props.likes.data[0].user ? props.likes.data[0].user.userName : '' : ''} </span>
           {props.likes.total > 0 &&
@@ -256,7 +256,7 @@ const Post = (props) => {
                 <div className="flex items-center space-x-2 mb-3" key={index}>
                   <img
                     className="h-7 rounded-full"
-                    src="https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/462.jpg"
+                    src={item.Photo ? item.Photo : ''}
                     alt=""
                   />
                   <p className="text-sm flex-1">
@@ -274,7 +274,7 @@ const Post = (props) => {
               <div className="flex items-center space-x-2 mb-3">
                 <img
                   className="h-7 rounded-full"
-                  src="https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/462.jpg"
+                  src={ JSON.parse(JSON.parse(JSON.stringify(localStorage)).userDetail).urlLink ? JSON.parse(JSON.parse(JSON.stringify(localStorage)).userDetail).urlLink[0] : ''}
                   alt=""
                 />
                 <p className="text-sm flex-1">
