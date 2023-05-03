@@ -56,7 +56,7 @@ function Profile(props) {
 
     } catch (error) {
       // setError(true)
-      console.error(error);
+      console.log(error);
     }
   };
   const updateLocalStorage = (link) => {
