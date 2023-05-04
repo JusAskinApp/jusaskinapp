@@ -5,7 +5,11 @@ import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 import notfound from "../assets/404 not found.png";
 import SearchIcon from '@material-ui/icons/Search';
 import "./home.css";
-
+import makeApiCall from "../Api/api";
+import {
+  CardMedia
+  
+} from "@mui/material";
 function Sources() {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
@@ -13,28 +17,73 @@ function Sources() {
   const [selectedResource, setSelectedResource] = useState(null);
   const [selectedName, setSelectedName] = useState("");
 
-  const handleSearch = (event) => {
+  const handleSearch = async (event) => {
     const searchTerm = event.target.value;
     setSearchTerm(searchTerm);
     setLoading(true);
 
-    // Perform search logic here, and update searchResults with the results.
-    // For example, you might make an API request to a server and update the state accordingly.
+    try {
+      const data = await makeApiCall('https://jusaskin.herokuapp.com/api/users/searchresources', {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(
+          {
+            "q": searchTerm,
+          }
+        ),
 
-    // For this example, we'll just simulate a search and return some dummy data.
-    setTimeout(() => {
-      const results = [
-        { id: 1, name: "Object oriented programming" },
-        { id: 2, name: "Resource 2" },
-        { id: 3, name: "Resource 3" },
-      ].filter((resource) =>
-        resource.name.toLowerCase().includes(searchTerm.toLowerCase())
-      );
+      });
+      if (data){
+        debugger;
+        setSearchResults(data)
+        // determineMediaType(data)
+        // setTimeout(() => {
+        //   const results = data.filter((resource) =>
+        //     resource.name.toLowerCase().includes(searchTerm.toLowerCase())
+        //   );
+    
+        //   setSearchResults(results);
+        //   setLoading(false);
+        // }, 3000);
+        
+      }
+     
+    } catch (error) {
 
-      setSearchResults(results);
-      setLoading(false);
-    }, 3000);
+      console.error(error);
+    }
+   
   };
+
+  function determineMediaType(url) {
+    debugger
+    const videoExtensions = [".mp4", ".avi", ".mov", ".wmv"];
+    const imageExtensions = [".jpg", ".jpeg", ".png", ".gif", ".ico"];
+    const pdfExtensions = [".pdf"];
+    const pptExtensions = [".ppt", ".pptx"];
+    const docExtensions = [".doc", ".docx"];
+    const textExtensions = [".txt", ".md"];
+
+    const fileExtension = url.substring(url.lastIndexOf(".")).split("?")[0];
+
+    if (videoExtensions.includes(fileExtension)) {
+      return "video";
+    } else if (imageExtensions.includes(fileExtension)) {
+      return "image";
+    } else if (pdfExtensions.includes(fileExtension)) {
+      return "pdf";
+    } else if (pptExtensions.includes(fileExtension)) {
+      return "ppt";
+    } else if (docExtensions.includes(fileExtension)) {
+      return "doc";
+    } else if (textExtensions.includes(fileExtension)) {
+      return "text";
+    } else {
+      return null;
+    }
+  }
 
   const handleResourceClick = (resource) => {
     debugger;
@@ -91,12 +140,38 @@ function Sources() {
         </div>
       ) : searchResults.length > 0 ? (
         <div className="mt-4 items-center w-full px-4">
-          {searchResults.map((resource) => (
-            <SearchedResource
-              key={resource.id}
-              resource={resource}
-              handleResourceClick={handleResourceClick}
-            />
+          {searchResults.map((image) => (
+           <div
+          
+          
+         >
+           {console.log(image)}
+           {determineMediaType(image) === "video" ||
+           determineMediaType(image) === "image" ? (
+             <CardMedia
+               component={
+                 determineMediaType(image) === "video" ? "video" : "img"
+               }
+               height="100%"
+               image={image}
+               alt="ERROR"
+               controls={determineMediaType(image) === "video"}
+             />
+           ) : (
+             <div>
+               {determineMediaType(image) === "ppt" ? (
+                 <iframe
+                   title={"PDF-Viewer"}
+                   src={`https://view.officeapps.live.com/op/embed.aspx?src=${image}`}
+                   
+                   style={{ height: "100vh", width: "90vw" }}
+                 ></iframe>
+               ) : (
+                 <iframe src={image} width="100%" height="600"></iframe>
+               )}
+             </div>
+           )}
+         </div>
           ))}
         </div>
       ) : (

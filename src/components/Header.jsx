@@ -1,16 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
-// import Button from "@mui/material/Button";
 import Grid from "@mui/material/Unstable_Grid2";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import {
-  ThemeProvider,
   createTheme,
-  TextField,
   responsiveFontSizes,
-  InputAdornment,
-  Button
 } from "@material-ui/core";
 import AddIcon from "@mui/icons-material/Add";
 import IconButton from "@mui/material/IconButton";
@@ -18,6 +13,7 @@ import NotificationsOutlinedIcon from '@material-ui/icons/NotificationsOutlined'
 import Stories from "./Stories";
 import DialogBox from "./DialogBox";
 import PropTypes from "prop-types";
+import NotificationPopup from "./NotificationPopup";
 const theme = createTheme();
 theme.overrides = {
   MuiOutlinedInput: {
@@ -45,10 +41,6 @@ export default function AutoGrid() {
     setOpen(false);
   };
 
-
-  useEffect(() => {
-    // setUserObject(JSON.parse(localStorage.getItem("userDetail")));
-  });
   let blogPost = {
     id: "",
     author: "",
@@ -74,13 +66,9 @@ export default function AutoGrid() {
         console.log(data);
         alert("blog added");
         window.location.reload(true)
-        // location.reload();
-
-        // localStorage.setItem("userDetail", data);
-        // navigate('/home');
       })
       .catch((error) => {
-        // console.error(error);
+         console.error(error);
       });
   };
   const CreatePost =  () => {
@@ -110,43 +98,40 @@ export default function AutoGrid() {
       </IconButton>
     </Grid>
     <Grid item xs={1}>
-      <IconButton>
-        <NotificationsOutlinedIcon />
-      </IconButton>
+    <NotificationPopup/>
+    </Grid>
     </Grid>
     <Stories />
+    <Grid container spacing={2} style={{marginTop:'25px'}}>
     <Grid item xs={11}>
-      <ThemeProvider theme={responsiveTheme}>
-      <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', margin: '20px 0' }}>
-                <TextField
-                  style={{ width: "90%", marginTop: "20px", marginLeft: "2px" }}
-                  label="What's on your mind"
-                  id="outlined-size-small"
-                  variant="outlined"
-                  size="small"
-                  onChange={(e) => {
-                    setContent(e.target.value);
-                  }}
-                />
-                <Button
-                  variant="contained"
-                  style={{ marginTop: "20px" }}
-                  onClick={CreatePost}
-                >Post</Button>
-              </div>
-      </ThemeProvider>
+      <div className="flex flex-row items-center">
+  <input
+    className="w-full py-2 px-4 border border-gray-400 rounded-lg text-gray-700 leading-tight focus:outline-none focus:border-blue-500"
+    type="text"
+    placeholder="What's on your mind"
+    onChange={(e) => {
+      setContent(e.target.value);
+    }}
+  />
+  <button
+    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 ml-2 rounded-lg"
+    onClick={CreatePost}
+  >
+    Post
+  </button>
+</div>
     </Grid>
     <Grid item xs={1}>
       <IconButton onClick={handleClickOpen} style={{ marginTop: "20px" }}>
         <AddIcon
           fontSize="large"
           fontWeight="light"
-          style={{ color: "#8ca1a6", marginTop: "11px" }}
+          style={{ color: "#8ca1a6" }}
         />
       </IconButton>
       <DialogBox open={open} onClose={handleClose} />
     </Grid>
-  </Grid>
+    </Grid>
 </Box>
 
     </div>
