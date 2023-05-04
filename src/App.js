@@ -19,8 +19,8 @@ function App() {
        <Route path="/admin" element={ <SubscriberDetail/> } />
         <Route path="/login" element={ <Login/> } />
         <Route path="/signup" element={ <Signup/> } />
-        <Route path="/signup" element={ <Signup/> } />
-        <Route path="/home" element={ <Sidebar /> } />
+        {/* <Route path="/home" element={ <Sidebar /> } /> */}
+        <Route path="/home" element={ localStorage.length > 0 ?  <Sidebar /> : <div>404</div> } />1
       </Routes>
     </div>
   );

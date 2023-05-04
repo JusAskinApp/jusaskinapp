@@ -1,13 +1,13 @@
-import React, { useState } from 'react'
-import Search from '../components/Search';
+import React, { useState } from "react";
+import Search from "../components/Search";
 import { CircularProgress } from "@material-ui/core";
 
-import SearchedUser from '../components/SearchedUser';
+import SearchedUser from "../components/SearchedUser";
 import IconButton from "@mui/material/IconButton";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
-import ArrowBackOutlinedIcon from '@mui/icons-material/ArrowBackOutlined';
-import Profile from '../pages/Profile'
-import './home.css';
+import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined";
+import Profile from "../pages/Profile";
+import "./home.css";
 function SearchPage() {
   const [searchTerm, setSearchTerm] = React.useState("");
   const [usersData, setUsersData] = React.useState({});
@@ -21,58 +21,52 @@ function SearchPage() {
 
   const handleUserClick = (data) => {
     debugger;
-    setCurrentDataObject(data)
+    setCurrentDataObject(data);
     setShowProfile(true);
   };
   const backClick = () => {
-    setShowProfile(false)
+    setShowProfile(false);
   };
   const handleSubmit = async (event) => {
     debugger;
     setLoading(true);
-    setUsersData({})
+    setUsersData({});
     event.preventDefault();
     const criteria = "name"; // replace "name" with the actual value you want to use
-    fetch(
-      "https://jusaskin.herokuapp.com/api/users/searchUser",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          criteria: criteria,
-          query: searchTerm
-        }),
-      }
-    )
+    fetch("https://jusaskin.herokuapp.com/api/users/searchUser", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        criteria: criteria,
+        query: searchTerm,
+      }),
+    })
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
         debugger;
         setUsersData(data);
-        setTimeout(()=>{
+        setTimeout(() => {
           setLoading(false);
-
-        },3000)
-
+        }, 3000);
       })
       .catch((error) => {
         console.error(error);
-        setTimeout(()=>{
+        setTimeout(() => {
           setLoading(false);
-
-        },3000)
-
+        }, 3000);
       });
     console.log(searchTerm);
-    
-
   };
   return (
     <>
-      <div className="header">
-        <form onSubmit={handleSubmit} className="flex items-center w-full px-4 py-2">
+      <div>
+        <form
+          onSubmit={handleSubmit}
+          className="flex items-center w-full px-4 py-2"
+        >
           <IconButton onClick={backClick} className="text-white mr-4">
             <ArrowBackOutlinedIcon />
           </IconButton>
@@ -95,22 +89,31 @@ function SearchPage() {
         </form>
         {showProfile ? (
           <Profile currentUser={currentDataObject} />
-        ) : (
-          !loading ? (usersData && Object.keys(usersData).length > 0 ? (
-            <SearchedUser
-              img={usersData.urlLink ? usersData.urlLink[0] : ''}
-              username={usersData.name}
-              type={usersData.type}
-              onClick={() => handleUserClick(usersData)}
-            />
+        ) : !loading ? (
+          usersData && usersData.length > 0 ? (
+            <div>
+              {usersData.map((user, index) => (
+                <SearchedUser
+                  key={index}
+                  img={user.urlLink ? user.urlLink[0] : ''}
+                  username={user.name}
+                  type={user.type}
+                  onClick={() => handleUserClick(user)}
+                />
+              ))}
+            </div>
           ) : (
-            <div className="mt-4 flex items-center justify-center">No Profile found.</div>
-          )) : (<div className="mt-4 flex items-center justify-center">
+            <div className="mt-4 flex items-center justify-center">
+              No Profile found.
+            </div>
+          )
+        ) : (
+          <div className="mt-4 flex items-center justify-center">
             <CircularProgress />
-          </div>)
+          </div>
         )}
       </div>
     </>
-  )
+  );
 }
 export default SearchPage;

@@ -15,24 +15,25 @@ function Stories() {
     debugger;
     
     try {
-      const data = await makeApiCall('https://jusaskin.herokuapp.com/api/users/getfvt', {
+      const data = await makeApiCall('http://localhost:4000/api/users/getfvt', {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(
           {
-            "email": JSON.parse(localStorage.userDetail).email,
+            "currentUserEmail": JSON.parse(localStorage.userDetail).email,
 
           }
         ),
 
       });
       if (data) {
-        const updatedFavoriteUsers = [...favoriteUsers, ...data.fvtdocs];
+        debugger;
+        // const updatedFavoriteUsers = [...favoriteUsers, ...data.fvtdocs];
         debugger;
         // Update the state with the new array
-        setfavoriteUsers(updatedFavoriteUsers);
+        setfavoriteUsers(data);
         console.log("added")
       }
 

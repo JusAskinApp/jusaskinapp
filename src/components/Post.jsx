@@ -208,7 +208,7 @@ const Post = (props) => {
                   title={'PDF-Viewer'}
                   src={`https://view.officeapps.live.com/op/embed.aspx?src=${image}`}
                   frameBorder={0}
-                  style={{ height: '100vh', width: '90vw' }}></iframe>
+                  style={{ height: '100vh', width: '100%' }}></iframe>
                 ) : (
                   <iframe src={image} width="100%" height="600"></iframe>
                 )}
