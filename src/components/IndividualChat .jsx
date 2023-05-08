@@ -77,7 +77,7 @@ const IndividualChat = ({ profile, onBackClick }) => {
     getMessages();
   },[])
   return (
-    <div className="h-100 w-100 rounded-lg flex flex-col">
+    <div className="rounded-lg flex flex-col">
       <div className="flex justify-between p-4">
         <IconButton onClick={onBackClick}>
           <ArrowBackOutlinedIcon />
@@ -86,10 +86,10 @@ const IndividualChat = ({ profile, onBackClick }) => {
         <MoreVertIcon />
       </div>
       <div
-        className="flex flex-col flex-1 p-4 max-h-[500px] overflow-y-scroll"
+        className="flex flex-col flex-1 p-4 max-h-[50vh] overflow-y-scroll scrollbar-thin scrollbar-thumb-black"
         style={{ background: "#FAFAFA" }}
       >
-         <>
+         
             {messages.map((message) => (
             <ChatBubble
             position={message.sender.email === JSON.parse(JSON.parse(JSON.stringify(localStorage)).userDetail).email ? "right" : "left"}
@@ -97,7 +97,7 @@ const IndividualChat = ({ profile, onBackClick }) => {
              imageUrl={message.sender.ProfilePic}
           />
             ))}
-    </>
+    
       </div>
       <div className="mt-4 flex justify-between p-4">
         <div className="flex items-center space-x-2 text-gray-500">
@@ -107,9 +107,6 @@ const IndividualChat = ({ profile, onBackClick }) => {
           <IconButton>
             <AttachFileOutlinedIcon />
           </IconButton>
-          {/* <IconButton>
-            <MicIcon />
-          </IconButton> */}
         </div>
         <input
           type="text"

@@ -7,6 +7,9 @@ import google from "../assets/google-icon.png";
 import twitter from "../assets/twitter-icon.png";
 import FormLabel from "@mui/material/FormLabel";
 import { useNavigate } from "react-router-dom";
+import {GoogleLogin} from 'react-google-login';
+import { hash } from 'bcryptjs';
+
 import {
   TextField,
   Paper,
@@ -45,7 +48,10 @@ theme.overrides = {
 };
 const responsiveTheme = responsiveFontSizes(theme);
 
+const clientID = '644322334132-o3bvfqgckm43rq74dki8jb3jren3a5sj.apps.googleusercontent.com'
+
 export default function Signup() {
+  
   const navigate = useNavigate();
   const paperStyle = {
     padding: "40px 30px",
@@ -63,7 +69,20 @@ export default function Signup() {
     type: "",
     userType: "",
   });
+  const onSuccess =(res)=>{
+    console.log("success ! current user: ",res)
+    setFormData({
+      ...formData,
+      name: res.profileObj.name,
+      email: res.profileObj.email,
+    });
+    console.log(formData)
+      }
+      const onFailure =(res)=>{
+        console.log("error ! current user: ",res)
+          }
   const [errors, setErrors] = useState({});
+
   const creatingUser = (e) => {
     debugger;
     fetch("https://jusaskin.herokuapp.com/api/users/signup", {
@@ -79,24 +98,26 @@ export default function Signup() {
         if (data !== "Email already exists") {
           navigate("/login");
         } else {
-          alert("You have already account")
+          alert("You have already account");
         }
       })
       .catch((error) => {
-        // console.error(error);
+         console.error(error);
       });
   };
+
   const handleChange = (event) => {
     debugger;
     const { name, value } = event.target;
     setFormData({ ...formData, [name]: value });
     setErrors({ ...errors, [name]: "" });
   };
+  
 
   const validate = () => {
     const newErrors = {};
-    if (!formData.username) {
-      newErrors.username = "Username is required";
+    if (!formData.name) {
+      newErrors.name = "Username is required";
     }
     if (!formData.email) {
       newErrors.email = "Email is required";
@@ -119,6 +140,9 @@ export default function Signup() {
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
     } else {
+      const hashedPassword = await hash(formData.password, 10);
+      formData.password = hashedPassword
+      console.log(hashedPassword)
       // submit the form
       const options = {
         method: "POST",
@@ -161,12 +185,13 @@ export default function Signup() {
               <TextField
                 style={{ marginTop: "40px" }}
                 label="Full Name"
-                name="username"
+                name="name"
                 type="text"
                 variant="outlined"
                 onChange={handleChange}
-                error={!!errors.username}
-                helperText={errors.username}
+                error={!!errors.name}
+                helperText={errors.name}
+                value={formData.name}
               />
               <TextField
                 style={{ marginTop: "15px" }}
@@ -177,6 +202,7 @@ export default function Signup() {
                 onChange={handleChange}
                 error={!!errors.email}
                 helperText={errors.email}
+                value={formData.email}
               />
               <TextField
                 style={{ marginTop: "15px" }}
@@ -250,12 +276,20 @@ export default function Signup() {
                 alignItems="center"
                 spacing={1}
               >
-                <Grid item xs={3}>
-                  <IconButton>
+                <Grid item xs={12}>
+                  <GoogleLogin
+                    clientId={clientID}
+                    buttonText="Sign up with Google"
+                    onSuccess={onSuccess}
+                    onFailure={onFailure}
+                    cookiePolicy={"single_host_origin"}
+                    isSignedIn={false}
+                  />
+                  {/* <IconButton>
                     <img src={facebook} alt="" />
-                  </IconButton>
+                  </IconButton> */}
                 </Grid>
-                <Grid item xs={3}>
+                {/* <Grid item xs={3}>
                   <IconButton>
                     <img src={google} alt="" />
                   </IconButton>
@@ -264,7 +298,7 @@ export default function Signup() {
                   <IconButton>
                     <img src={twitter} alt="" />
                   </IconButton>
-                </Grid>
+                </Grid> */}
               </Grid>
             </FormControl>
           </form>

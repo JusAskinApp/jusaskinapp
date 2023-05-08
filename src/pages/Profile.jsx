@@ -35,7 +35,7 @@ function Profile(props) {
 
   const checkfvt = async (currentUser) => {
     debugger;
-    const data = await makeApiCall("http://localhost:4000/api/users/checkfvt", {
+    const data = await makeApiCall("https://jusaskin.herokuapp.com/api/users/checkfvt", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -55,11 +55,9 @@ function Profile(props) {
   };
   const [showChats, setShowChat] = useState(false);
   const addtofvt = async (currentUser) => {
-    fvt == false ? setfvt(true) : setfvt(false);
     debugger;
-
     const data = await makeApiCall(
-      "http://localhost:4000/api/users/addtofavorites",
+      "https://jusaskin.herokuapp.com/api/users/addtofavorites",
       {
         method: "POST",
         headers: {

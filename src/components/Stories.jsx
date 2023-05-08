@@ -2,10 +2,12 @@ import { useEffect, useState } from "react";
 import { faker } from "@faker-js/faker";
 import makeApiCall from "../Api/api";
 import Story from "./Story";
+import Profile from "../pages/Profile";
 
 function Stories() {
   const [fvt, setfvt] = useState({})
   const [favoriteUsers, setfavoriteUsers] = useState([]);
+  const [selectedUser, setSelectedUser] = useState(null);
   useEffect(() => {
     debugger;
     getFvt();
@@ -15,7 +17,7 @@ function Stories() {
     debugger;
     
     try {
-      const data = await makeApiCall('http://localhost:4000/api/users/getfvt', {
+      const data = await makeApiCall('https://jusaskin.herokuapp.com/api/users/getfvt', {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -31,8 +33,6 @@ function Stories() {
       if (data) {
         debugger;
         // const updatedFavoriteUsers = [...favoriteUsers, ...data.fvtdocs];
-        debugger;
-        // Update the state with the new array
         setfavoriteUsers(data);
         console.log("added")
       }
@@ -42,18 +42,29 @@ function Stories() {
       console.error(error);
     }
   }
+  const handleStoryClick = (user) => {
+    debugger;
+    setSelectedUser(user);
+    if (user) {
+      return <Profile currentUser={user} />;
+    }
+  };
+  
+  
   return (
-    <div className="flex space-x-9 p-6 bg-white rounded-sm border-gray-200 border overflow-x-hidden">
-      {favoriteUsers.map((profile) => (
-        <Story
-          // key={profile.Id}
-          img={profile.urlLink ?profile.urlLink[0] : '' }
-          username={profile.name}
-          onClick={() => console.log("Story clicked")}
-        
-        />
-      ))}
-    </div>
+    <>
+    {favoriteUsers.length > 0 ? (
+      <div className="flex space-x-8 p-6 bg-white rounded-sm border-gray-20 border overflow-x-scroll scrollbar-thin scrollbar-thumb-black">
+        {favoriteUsers.map((profile) => (
+          <Story
+            img={profile.urlLink ? profile.urlLink[0] : ''}
+            username={profile.name}
+            onClick={() => handleStoryClick(profile)}
+          />
+        ))}
+      </div>
+    ) : null}
+    </>
   );
 }
 

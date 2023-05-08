@@ -122,7 +122,7 @@ export default function AutoGrid() {
 </div>
     </Grid>
     <Grid item xs={1}>
-      <IconButton onClick={handleClickOpen} style={{ marginTop: "20px" }}>
+      <IconButton onClick={handleClickOpen}>
         <AddIcon
           fontSize="large"
           fontWeight="light"

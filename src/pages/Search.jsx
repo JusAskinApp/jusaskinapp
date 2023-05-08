@@ -62,7 +62,7 @@ function SearchPage() {
   };
   return (
     <>
-      <div>
+      <div className="header">
         <form
           onSubmit={handleSubmit}
           className="flex items-center w-full px-4 py-2"

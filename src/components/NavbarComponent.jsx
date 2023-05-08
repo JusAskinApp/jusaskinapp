@@ -8,13 +8,13 @@ const Navbar = (props) => {
     <nav style={{ backgroundColor: "#F0F7F4" }}>
       <div className="container mx-auto px-6 py-2 flex flex-col items-center justify-between md:flex-row">
         <div className="flex items-center md:mr-8 md:visible invisible">
-          <a href="#" className="text-black font-medium">
+          <a href="/" className="text-black font-medium">
             Home
           </a>
-          <a href="#" className="text-black font-medium ml-4">
+          <a href="/" className="text-black font-medium ml-4">
             Features
           </a>
-          <a href="#" className="text-black font-medium ml-4">
+          <a href="/" className="text-black font-medium ml-4">
             About us
           </a>
         </div>
