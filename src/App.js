@@ -6,9 +6,23 @@ import Sidebar from './pages/Sidebar';
 import { Routes, Route } from "react-router-dom"
 import LandingPage from './pages/LandingPage';
 import SubscriberDetail from './pages/SubscriberDetail';
+import WhitePaperPage from './components/WhitePaperPage';
+import {gapi} from 'gapi-script';
+import { useEffect } from 'react';
+
+const clientID = '644322334132-o3bvfqgckm43rq74dki8jb3jren3a5sj.apps.googleusercontent.com'
 function App() {
+  useEffect(() =>{
+    function start(){
+      gapi.client.init({
+        clientID: clientID,
+        scope: ""
+      })
+    }
+    gapi.load('client:auth2', start)
+  })
   return (
-    <div className="App">
+    <div className='bg-gray-50 h-screen overflow-y-scroll scrollbar-hide'>
      {/* <Signup/> */}
      {/* <Login/> */}
      {/* */}
@@ -19,7 +33,7 @@ function App() {
        <Route path="/admin" element={ <SubscriberDetail/> } />
         <Route path="/login" element={ <Login/> } />
         <Route path="/signup" element={ <Signup/> } />
-        {/* <Route path="/home" element={ <Sidebar /> } /> */}
+        <Route path="/whitepaperpage" element={ <WhitePaperPage/> } />
         <Route path="/home" element={<Sidebar />  } />
       </Routes>
     </div>

@@ -55,9 +55,7 @@ function Profile(props) {
   };
   const [showChats, setShowChat] = useState(false);
   const addtofvt = async (currentUser) => {
-    fvt == false ? setfvt(true) : setfvt(false);
     debugger;
-
     const data = await makeApiCall(
       "https://jusaskin.herokuapp.com/api/users/addtofavorites",
       {
