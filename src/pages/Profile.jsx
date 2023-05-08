@@ -35,7 +35,7 @@ function Profile(props) {
 
   const checkfvt = async (currentUser) => {
     debugger;
-    const data = await makeApiCall("http://localhost:4000/api/users/checkfvt", {
+    const data = await makeApiCall("https://jusaskin.herokuapp.com/api/users/checkfvt", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -59,7 +59,7 @@ function Profile(props) {
     debugger;
 
     const data = await makeApiCall(
-      "http://localhost:4000/api/users/addtofavorites",
+      "https://jusaskin.herokuapp.com/api/users/addtofavorites",
       {
         method: "POST",
         headers: {
@@ -232,8 +232,8 @@ function Profile(props) {
               <div className="flex items-center">
                 <h3 className="text-sm text-gray-400">
                   {props.currentUser
-                    ? props.currentUser.discription
-                      ? props.currentUser.discription
+                    ? props.currentUser.headline
+                      ? props.currentUser.headline
                       : ""
                     : text}
                 </h3>

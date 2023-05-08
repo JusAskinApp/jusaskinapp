@@ -20,7 +20,7 @@ function App() {
         <Route path="/login" element={ <Login/> } />
         <Route path="/signup" element={ <Signup/> } />
         {/* <Route path="/home" element={ <Sidebar /> } /> */}
-        <Route path="/home" element={ localStorage.length > 0 ?  <Sidebar /> : <div>404</div> } />1
+        <Route path="/home" element={<Sidebar />  } />
       </Routes>
     </div>
   );
