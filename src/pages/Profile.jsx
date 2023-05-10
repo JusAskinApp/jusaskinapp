@@ -15,6 +15,8 @@ import { Checkbox, IconButton } from "@mui/material";
 import { makeStyles } from "@material-ui/core/styles";
 import { Rating } from "@mui/material";
 import DialogForProfessSkills from "../components/DialogForProfessSkills";
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@material-ui/lab/Alert";
 
 const useStyles = makeStyles({
   editIcon: {
@@ -23,41 +25,21 @@ const useStyles = makeStyles({
 });
 
 function Profile(props) {
-  debugger;
-  // alert(props)
   const [fvt, setfvt] = useState(false);
+  const [showSnackbar, setShowSnackbar] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("success");
   const [selectedFile, setSelectedFile] = useState(null);
   const [text, setText] = useState("");
+  const [showChats, setShowChat] = useState(false);
   const [imageUrl, setImageUrl] = useState(
     "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/462.jpg"
   );
-  debugger;
 
   const checkfvt = async (currentUser) => {
     debugger;
-    const data = await makeApiCall("https://jusaskin.herokuapp.com/api/users/checkfvt", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        currentUserEmail: JSON.parse(localStorage.userDetail).email,
-        favoriteObj: currentUser,
-      }),
-    });
-    debugger;
-    console.log(data);
-    if (data.message === "true") {
-      setfvt(true);
-    } else {
-      setfvt(false);
-    }
-  };
-  const [showChats, setShowChat] = useState(false);
-  const addtofvt = async (currentUser) => {
-    debugger;
     const data = await makeApiCall(
-      "https://jusaskin.herokuapp.com/api/users/addtofavorites",
+      "https://jusaskin.herokuapp.com/api/users/checkfvt",
       {
         method: "POST",
         headers: {
@@ -69,12 +51,86 @@ function Profile(props) {
         }),
       }
     );
+    debugger;
     console.log(data);
-    if (data == "Favorites updated successfully" || data == "added") {
-      console.log("Updated");
+    if (data.message === "true") {
+      setfvt(true);
     } else {
-      console.log("error");
+      setfvt(false);
     }
+  };
+
+  // const addtofvt = async (currentUser) => {
+  //   debugger;
+  //   const data = await makeApiCall(
+  //     "https://jusaskin.herokuapp.com/api/users/addtofavorites",
+  //     {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({
+  //         currentUserEmail: JSON.parse(localStorage.userDetail).email,
+  //         favoriteObj: currentUser,
+  //       }),
+  //     }
+  //   );
+  //   console.log(data);
+  //   if (data == "Favorites updated successfully" || data == "added") {
+  //     console.log("Updated");
+  //   } else {
+  //     console.log("error");
+  //   }
+  // };
+  const addtofvt = async (currentUser) => {
+    debugger;
+    fvt === true ? setfvt(false) : setfvt(true);
+    try {
+      const response = await fetch(
+        "https://jusaskin.herokuapp.com/api/users/addtofavorites",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            currentUserEmail: JSON.parse(localStorage.userDetail).email,
+            favoriteObj: currentUser,
+          }),
+        }
+      );
+      const data = await response.json();
+      console.log(data);
+      if (response.ok) {
+        debugger;
+        console.log("User added to favorites successfully");
+        if (!fvt) {
+          setSnackbarMessage("User added to favorites successfully");
+          setSnackbarSeverity("success");
+          setShowSnackbar(true);
+        } else if (fvt) {
+          setSnackbarMessage("User Removed from favorites successfully");
+          setSnackbarSeverity("success");
+          setShowSnackbar(true);
+        }
+      } else {
+        console.log("Error while adding user to favorites");
+        setSnackbarMessage("Error while adding user to favorites");
+        setSnackbarSeverity("error");
+        setShowSnackbar(true);
+      }
+    } catch (error) {
+      console.log("Error while adding user to favorites: ", error);
+      setSnackbarMessage("Error while adding user to favorites");
+      setSnackbarSeverity("error");
+      setShowSnackbar(true);
+    }
+  };
+  const handleCloseSnackbar = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setShowSnackbar(false);
   };
   const updateLocalStorage = (link) => {
     debugger;
@@ -256,6 +312,7 @@ function Profile(props) {
                   >
                     Chat
                   </Button>
+
                   <IconButton aria-label="add to favorites">
                     <Checkbox
                       checked={fvt}
@@ -266,6 +323,20 @@ function Profile(props) {
                       checkedIcon={<Favorite sx={{ color: "red" }} />}
                     />
                   </IconButton>
+                  <Snackbar
+                    open={showSnackbar}
+                    autoHideDuration={6000}
+                    onClose={handleCloseSnackbar}
+                  >
+                    <MuiAlert
+                      elevation={6}
+                      variant="filled"
+                      severity={snackbarSeverity}
+                      onClose={handleCloseSnackbar}
+                    >
+                      {snackbarMessage}
+                    </MuiAlert>
+                  </Snackbar>
                   {/* <span>Add to favorites</span> */}
                 </div>
               ) : (

@@ -85,7 +85,7 @@ export default function AutoGrid() {
   return (
     <div>
       <Box sx={{ flexGrow: 1 }}>
-  <Grid container spacing={2}>
+  {/* <Grid container spacing={2}>
     <Grid item xs={9}></Grid>
     <Grid item xs={1}>
       <IconButton>
@@ -100,7 +100,20 @@ export default function AutoGrid() {
     <Grid item xs={1}>
     <NotificationPopup/>
     </Grid>
-    </Grid>
+    </Grid> */}
+     <div className="flex justify-end">
+        <div className="flex items-center space-x-2 text-gray-500">
+          <IconButton>
+            <SearchOutlinedIcon />
+          </IconButton>
+          <IconButton>
+          <EmailOutlinedIcon />
+          </IconButton>
+          <IconButton>
+          <NotificationPopup/>
+          </IconButton>
+        </div>
+      </div>
     <Stories />
     <Grid container spacing={2} style={{marginTop:'25px'}}>
     <Grid item xs={11}>

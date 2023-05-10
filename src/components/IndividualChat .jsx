@@ -29,17 +29,19 @@ const IndividualChat = ({ profile, onBackClick }) => {
 
       });
       setMessages(data.messages)
-      console.log(data)
+     
     } catch (error) {
       // setError(true)
       console.error(error);
     }
   }
-  async function   sendButtonClick(){
+  async function   sendButtonClick(e){
     debugger;
     console.log(messages)
+    if(_message == ''){
+      return;
+    }
     const messagebody = {
-            
       "sender" : {
           "email" : JSON.parse(JSON.parse(JSON.stringify(localStorage)).userDetail).email,
           "id":JSON.parse(JSON.parse(JSON.stringify(localStorage)).userDetail).id,
@@ -95,6 +97,7 @@ const IndividualChat = ({ profile, onBackClick }) => {
             position={message.sender.email === JSON.parse(JSON.parse(JSON.stringify(localStorage)).userDetail).email ? "right" : "left"}
             message={message.text}
              imageUrl={message.sender.ProfilePic}
+             time={message.timestamp ? message.timestamp :  new Date()}
           />
             ))}
     
