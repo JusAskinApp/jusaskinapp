@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Search from "../components/Search";
 import { CircularProgress } from "@material-ui/core";
 
@@ -17,6 +17,7 @@ function SearchPage() {
   const [currentDataObject, setCurrentDataObject] = useState({});
   const handleChange = (event) => {
     setSearchTerm(event.target.value);
+    search()
   };
 
   const handleUserClick = (data) => {
@@ -27,11 +28,10 @@ function SearchPage() {
   const backClick = () => {
     setShowProfile(false);
   };
-  const handleSubmit = async (event) => {
-    debugger;
+  async function search(){
     setLoading(true);
     setUsersData({});
-    event.preventDefault();
+   
     const criteria = "name"; // replace "name" with the actual value you want to use
     fetch("https://jusaskin.herokuapp.com/api/users/searchUser", {
       method: "POST",
@@ -58,8 +58,16 @@ function SearchPage() {
           setLoading(false);
         }, 3000);
       });
-    console.log(searchTerm);
+  }
+  const handleSubmit = async (event) => {
+    debugger;
+    event.preventDefault();
+    search()
+    // console.log(searchTerm);
   };
+  useEffect(()=>{
+    search();
+  },[])
   return (
     <>
       <div className="header">

@@ -286,8 +286,8 @@ function Profile(props) {
               <div className="flex items-center">
                 <h3 className="text-sm text-gray-400">
                   {props.currentUser
-                    ? props.currentUser.discription
-                      ? props.currentUser.discription
+                    ? props.currentUser.headline
+                      ? props.currentUser.headline
                       : ""
                     : text}
                 </h3>
