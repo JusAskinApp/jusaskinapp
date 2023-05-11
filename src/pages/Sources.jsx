@@ -14,8 +14,6 @@ function Sources() {
   const [selectedResource, setSelectedResource] = useState(null);
   const [selectedName, setSelectedName] = useState("");
 async function search(){
-
-async function search(){
   setLoading(true);
   try {
     const data = await makeApiCall(

@@ -158,9 +158,9 @@ export default function Signup() {
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
     } else {
-      const hashedPassword = await hash(formData.password, '$2a$10$abcdefghijklmnopqrstuv');
-      formData.password = hashedPassword
-      console.log(hashedPassword)
+      // const hashedPassword = await hash(formData.password, '$2a$10$abcdefghijklmnopqrstuv');
+      // formData.password = hashedPassword
+      // console.log(hashedPassword)
       // submit the form
       const options = {
         method: "POST",

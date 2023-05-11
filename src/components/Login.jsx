@@ -117,8 +117,8 @@ export default function Login() {
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
     } else {
-       const hashedPassword = await hash(formData.password, '$2a$10$abcdefghijklmnopqrstuv');
-       formData.password = hashedPassword
+      //  const hashedPassword = await hash(formData.password, '$2a$10$abcdefghijklmnopqrstuv');
+      //  formData.password = hashedPassword
      // $2a$10$tttiXVSRvTF/dT5wCnafF.GX12UnFzICIs0kGGQcD5LgN08vfWu0y
       loginUser();
       console.log(formData);
