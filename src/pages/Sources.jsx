@@ -1,15 +1,9 @@
 import React, { useState,useEffect} from "react";
-import React, { useState,useEffect} from "react";
 import SearchedResource from "../components/SearchedResource";
 import { CircularProgress } from "@material-ui/core";
-import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
-import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 import notfound from "../assets/404 not found.png";
-import SearchIcon from "@material-ui/icons/Search";
-import SearchIcon from "@material-ui/icons/Search";
 import "./home.css";
 import makeApiCall from "../Api/api";
-import { CardMedia } from "@mui/material";
 import { CardMedia } from "@mui/material";
 function Sources() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -17,12 +11,7 @@ function Sources() {
   const [loading, setLoading] = useState(false);
   const [selectedResource, setSelectedResource] = useState(null);
   const [selectedName, setSelectedName] = useState("");
-async function search(){
-  setLoading(true);
-  try {
-    const data = await makeApiCall(
-      "https://jusaskin.herokuapp.com/api/users/searchresources",
-      {
+
 async function search(){
   setLoading(true);
   try {
@@ -40,20 +29,6 @@ async function search(){
           q: searchTerm,
         }),
       }
-    );
-    if (data) {
-      debugger;
-      setSearchResults(data);
-      setLoading(false);
-    }
-  } catch (error) {
-    console.error(error);
-  }
-}
-  const handleSearch = async (event) => {
-    const searchTerm = event.target.value;
-    setSearchTerm(searchTerm);
-    search()
     );
     if (data) {
       debugger;
@@ -99,22 +74,20 @@ async function search(){
     }
   }
 
-  const handleResourceClick = (resource) => {
-    debugger;
-    setSelectedResource(resource);
-    setSelectedName(resource.name);
-  };
+  // const handleResourceClick = (resource) => {
+  //   debugger;
+  //   setSelectedResource(resource);
+  //   setSelectedName(resource.name);
+  // };
 
-  const handleClearSelected = () => {
-    setSelectedResource(null);
-    setSelectedName("");
-  };
+  // const handleClearSelected = () => {
+  //   setSelectedResource(null);
+  //   setSelectedName("");
+  // };
   useEffect(()=>{
     search()
   },[])
-  useEffect(()=>{
-    search()
-  },[])
+ 
 
   return (
     <div className="header">
@@ -137,19 +110,7 @@ async function search(){
             }}
           />
         )}
-        {/* {!loading && selectedName && (
-          <CancelOutlinedIcon
-            onClick={handleClearSelected}
-            size={16}
-            thickness={3}
-            style={{
-              position: "absolute",
-              top: "30%",
-              right: "25px",
-              cursor: "pointer",
-            }}
-          />
-        )} */}
+       
       </div>
 
     {loading ? (

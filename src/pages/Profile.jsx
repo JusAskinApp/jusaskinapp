@@ -17,6 +17,8 @@ import { Rating } from "@mui/material";
 import DialogForProfessSkills from "../components/DialogForProfessSkills";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
+import "./home.css";
+import CustomSnackbar from "../components/CustomSnackbar";
 
 const useStyles = makeStyles({
   editIcon: {
@@ -60,28 +62,6 @@ function Profile(props) {
     }
   };
 
-  // const addtofvt = async (currentUser) => {
-  //   debugger;
-  //   const data = await makeApiCall(
-  //     "https://jusaskin.herokuapp.com/api/users/addtofavorites",
-  //     {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({
-  //         currentUserEmail: JSON.parse(localStorage.userDetail).email,
-  //         favoriteObj: currentUser,
-  //       }),
-  //     }
-  //   );
-  //   console.log(data);
-  //   if (data == "Favorites updated successfully" || data == "added") {
-  //     console.log("Updated");
-  //   } else {
-  //     console.log("error");
-  //   }
-  // };
   const addtofvt = async (currentUser) => {
     debugger;
     fvt === true ? setfvt(false) : setfvt(true);
@@ -233,8 +213,6 @@ function Profile(props) {
     const links = await uploadFiles(file);
     setSelectedFile(links);
     UploadPhotoToUserObject(links);
-
-    // setSavedImage(image);
   };
   useEffect(() => {});
   return (
@@ -258,24 +236,28 @@ function Profile(props) {
                 }
                 alt=""
               />
-              <IconButton
-                onChange={handleFileChange}
-                color="primary"
-                aria-label="upload picture"
-                component="label"
-                style={{
-                  position: "absolute",
-                  bottom: "-6px",
-                  right: "-6px",
-                  borderRadius: "50%",
-                  backgroundColor: "#fff",
-                  boxShadow: "0 2px 5px rgba(0, 0, 0, 0.25)",
-                }}
-              >
-                <input hidden accept="image/*" type="file" />
+              {!props.currentUser ? (
+                <IconButton
+                  onChange={handleFileChange}
+                  color="primary"
+                  aria-label="upload picture"
+                  component="label"
+                  style={{
+                    position: "absolute",
+                    bottom: "-6px",
+                    right: "-6px",
+                    borderRadius: "50%",
+                    backgroundColor: "#fff",
+                    boxShadow: "0 2px 5px rgba(0, 0, 0, 0.25)",
+                  }}
+                >
+                  <input hidden accept="image/*" type="file" />
 
-                {!props.currentUser ? <PhotoCamera /> : ""}
-              </IconButton>
+                  <PhotoCamera />
+                </IconButton>
+              ) : (
+                ""
+              )}
             </div>
             <div className="ml-11">
               <h2 className="font-bold text-lg mb-1">
@@ -323,21 +305,14 @@ function Profile(props) {
                       checkedIcon={<Favorite sx={{ color: "red" }} />}
                     />
                   </IconButton>
-                  <Snackbar
+                  <CustomSnackbar
                     open={showSnackbar}
-                    autoHideDuration={6000}
-                    onClose={handleCloseSnackbar}
-                  >
-                    <MuiAlert
-                      elevation={6}
-                      variant="filled"
-                      severity={snackbarSeverity}
-                      onClose={handleCloseSnackbar}
-                    >
-                      {snackbarMessage}
-                    </MuiAlert>
-                  </Snackbar>
-                  {/* <span>Add to favorites</span> */}
+                    autoHideDuration={5000}
+                    handleClose={handleCloseSnackbar}
+                    message={snackbarMessage}
+                    severity={snackbarSeverity}
+                    anchorOrigin={{ vertical: "top", horizontal: "center" }}
+                  />
                 </div>
               ) : (
                 <></>

@@ -9,11 +9,11 @@ import {
 } from "@material-ui/core";
 import AddIcon from "@mui/icons-material/Add";
 import IconButton from "@mui/material/IconButton";
-import NotificationsOutlinedIcon from '@material-ui/icons/NotificationsOutlined';
 import Stories from "./Stories";
 import DialogBox from "./DialogBox";
 import PropTypes from "prop-types";
 import NotificationPopup from "./NotificationPopup";
+import HeaderIcons from "./HeaderIcons";
 const theme = createTheme();
 theme.overrides = {
   MuiOutlinedInput: {
@@ -84,36 +84,8 @@ export default function AutoGrid() {
 
   return (
     <div>
-      <Box sx={{ flexGrow: 1 }}>
-  {/* <Grid container spacing={2}>
-    <Grid item xs={9}></Grid>
-    <Grid item xs={1}>
-      <IconButton>
-        <SearchOutlinedIcon />
-      </IconButton>
-    </Grid>
-    <Grid item xs={1}>
-      <IconButton>
-        <EmailOutlinedIcon />
-      </IconButton>
-    </Grid>
-    <Grid item xs={1}>
-    <NotificationPopup/>
-    </Grid>
-    </Grid> */}
-     <div className="flex justify-end">
-        <div className="flex items-center space-x-2 text-gray-500">
-          <IconButton>
-            <SearchOutlinedIcon />
-          </IconButton>
-          <IconButton>
-          <EmailOutlinedIcon />
-          </IconButton>
-          <IconButton>
-          <NotificationPopup/>
-          </IconButton>
-        </div>
-      </div>
+      {/* <Box sx={{ flexGrow: 1 }}> */}
+      <HeaderIcons/>
     <Stories />
     <Grid container spacing={2} style={{marginTop:'25px'}}>
     <Grid item xs={11}>
@@ -145,7 +117,7 @@ export default function AutoGrid() {
       <DialogBox open={open} onClose={handleClose} />
     </Grid>
     </Grid>
-</Box>
+{/* </Box> */}
 
     </div>
   );

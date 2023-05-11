@@ -8,6 +8,7 @@ import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined";
 import Profile from "../pages/Profile";
 import "./home.css";
+import HeaderIcons from "../components/HeaderIcons";
 function SearchPage() {
   const [searchTerm, setSearchTerm] = React.useState("");
   const [usersData, setUsersData] = React.useState({});
@@ -71,6 +72,7 @@ function SearchPage() {
   return (
     <>
       <div className="header">
+        <HeaderIcons/>
         <form
           onSubmit={handleSubmit}
           className="flex items-center w-full px-4 py-2"

@@ -8,6 +8,7 @@ import IndividualChat from "../components/IndividualChat ";
 import TabSection from "../components/Tabsection";
 import './home.css';
 import MessageList2 from "../components/MessageList2";
+import HeaderIcons from "../components/HeaderIcons";
 
 
 const tabs = [
@@ -19,6 +20,7 @@ const Messaging = () => {
 
   return (
     <div className="header">
+      <HeaderIcons/>
       <TabSection tabs={tabs}/>
 </div>
 
