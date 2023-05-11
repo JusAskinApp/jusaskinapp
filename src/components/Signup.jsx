@@ -7,8 +7,9 @@ import google from "../assets/google-icon.png";
 import twitter from "../assets/twitter-icon.png";
 import FormLabel from "@mui/material/FormLabel";
 import { useNavigate } from "react-router-dom";
-import {GoogleLogin} from 'react-google-login';
-import { hash } from 'bcryptjs';
+import { GoogleLogin } from "react-google-login";
+import { hash } from "bcryptjs";
+import makeApiCall from "../Api/api";
 
 import {
   TextField,
@@ -48,10 +49,10 @@ theme.overrides = {
 };
 const responsiveTheme = responsiveFontSizes(theme);
 
-const clientID = '644322334132-o3bvfqgckm43rq74dki8jb3jren3a5sj.apps.googleusercontent.com'
+const clientID =
+  "644322334132-o3bvfqgckm43rq74dki8jb3jren3a5sj.apps.googleusercontent.com";
 
 export default function Signup() {
-  
   const navigate = useNavigate();
   const paperStyle = {
     padding: "40px 30px",
@@ -69,22 +70,40 @@ export default function Signup() {
     type: "",
     userType: "",
   });
-  const onSuccess =(res)=>{
-    console.log("success ! current user: ",res)
+  const onSuccess = (res) => {
+    console.log("success ! current user: ", res);
     setFormData({
       ...formData,
       name: res.profileObj.name,
       email: res.profileObj.email,
     });
-    console.log(formData)
-      }
-      const onFailure =(res)=>{
-        console.log("error ! current user: ",res)
-          }
+    console.log(formData);
+  };
+  const onFailure = (res) => {
+    console.log("error ! current user: ", res);
+  };
   const [errors, setErrors] = useState({});
 
-  const creatingUser = (e) => {
+  const creatingUser = async (e) => {
     debugger;
+    // try {
+    //   const data = await makeApiCall(
+    //     "https://jusaskin.herokuapp.com/api/users/signup",
+    //     {
+    //       method: "POST",
+    //       headers: {
+    //         "Content-Type": "application/json",
+    //       },
+    //       body: JSON.stringify(formData),
+    //     }
+    //   );
+    //   if (data){
+    //     alert('done')
+    //   }
+    // } catch (e) {
+    //   console.log(e);
+    // }
+
     fetch("https://jusaskin.herokuapp.com/api/users/signup", {
       method: "POST",
       headers: {
@@ -112,7 +131,6 @@ export default function Signup() {
     setFormData({ ...formData, [name]: value });
     setErrors({ ...errors, [name]: "" });
   };
-  
 
   const validate = () => {
     const newErrors = {};
@@ -141,8 +159,8 @@ export default function Signup() {
       setErrors(newErrors);
     } else {
       const hashedPassword = await hash(formData.password, 10);
-      formData.password = hashedPassword
-      console.log(hashedPassword)
+      formData.password = hashedPassword;
+      console.log(hashedPassword);
       // submit the form
       const options = {
         method: "POST",

@@ -9,6 +9,7 @@ import SubscriberDetail from './pages/SubscriberDetail';
 import WhitePaperPage from './components/WhitePaperPage';
 import {gapi} from 'gapi-script';
 import { useEffect } from 'react';
+import Profile from './pages/Profile';
 
 const clientID = '644322334132-o3bvfqgckm43rq74dki8jb3jren3a5sj.apps.googleusercontent.com'
 function App() {
@@ -35,6 +36,8 @@ function App() {
         <Route path="/signup" element={ <Signup/> } />
         <Route path="/whitepaperpage" element={ <WhitePaperPage/> } />
         <Route path="/home" element={<Sidebar />  } />
+        <Route path="/profile" element={<Profile />  } />
+
       </Routes>
     </div>
   );

@@ -179,21 +179,6 @@ export default function Login() {
                 alignItems="center"
                 spacing={1}
               >
-                <Grid item xs={3}>
-                  <IconButton>
-                    <img src={facebook} alt="" />
-                  </IconButton>
-                </Grid>
-                <Grid item xs={3}>
-                  <IconButton>
-                    <img src={google} alt="" />
-                  </IconButton>
-                </Grid>
-                <Grid item xs={3}>
-                  <IconButton>
-                    <img src={twitter} alt="" />
-                  </IconButton>
-                </Grid>
               </Grid>
             </FormControl>
           </form>
