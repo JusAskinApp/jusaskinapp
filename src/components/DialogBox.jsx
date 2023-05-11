@@ -153,26 +153,6 @@ export default function DialogBox(props) {
 
       <List style={{ padding: "20px 25px" }}>
         <ThemeProvider theme={responsiveTheme}>
-          {/* <ListItem disableGutters>
-            <TextField
-              label="Post Title"
-              value={postTitle}
-              onChange={(event) => setPostTitle(event.target.value)}
-              fullWidth
-              variant="outlined"
-            />
-          </ListItem> */}
-
-          {/* <ListItem disableGutters>
-            <TextField
-              label="Post Author"
-              value={postAuthor}
-              onChange={(event) => setPostAuthor(event.target.value)}
-              fullWidth
-              variant="outlined"
-            />
-          </ListItem> */}
-
           <ListItem disableGutters>
             <TextField
               label="Post Description"

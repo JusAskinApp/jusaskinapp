@@ -14,8 +14,11 @@ import {
   Grid,
   FormControl,
   Button,
+  CircularProgress,
 } from "@material-ui/core";
-import { IconButton } from "@mui/material";
+import CustomSnackbar from "./CustomSnackbar";
+import { hash } from 'bcryptjs';
+
 
 const theme = createTheme();
 theme.overrides = {
@@ -53,6 +56,10 @@ export default function Login() {
     password: "",
   });
   const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [showSnackbar, setShowSnackbar] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("success");
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormData({ ...formData, [name]: value });
@@ -60,6 +67,7 @@ export default function Login() {
   };
   const loginUser = (e) => {
     debugger;
+    setLoading(true);
     fetch("https://jusaskin.herokuapp.com/api/users/login", {
       method: "POST",
       headers: {
@@ -71,14 +79,25 @@ export default function Login() {
       .then((data) => {
         console.log(data);
         if (data == "Email or password is wrong") {
-          alert("Email Or Password Is Wrong")
+          setSnackbarMessage("Email or password is wrong");
+          setSnackbarSeverity("error");
+          setShowSnackbar(true);
         } else {
           localStorage.setItem("userDetail", JSON.stringify(data));
-          navigate("/home");
+          setSnackbarMessage("Login Successfull");
+          setSnackbarSeverity("success");
+          setShowSnackbar(true);
+          setTimeout(() => {
+            navigate("/home");
+          }, 2000);
+          
         }
       })
       .catch((error) => {
         // console.error(error);
+      })
+      .finally(() => {
+        setLoading(false); // Stop the loading spinner
       });
   };
   const validate = () => {
@@ -91,20 +110,36 @@ export default function Login() {
     }
     return newErrors;
   };
-  const handleSubmit = (event) => {
+  const handleSubmit = async(event) => {
     debugger;
     event.preventDefault();
     const newErrors = validate();
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
     } else {
-      // submit the form
+       const hashedPassword = await hash(formData.password, '$2a$10$abcdefghijklmnopqrstuv');
+       formData.password = hashedPassword
+     // $2a$10$tttiXVSRvTF/dT5wCnafF.GX12UnFzICIs0kGGQcD5LgN08vfWu0y
       loginUser();
       console.log(formData);
     }
   };
+  const handleCloseSnackbar = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setShowSnackbar(false);
+  };
   return (
     <Grid>
+       <CustomSnackbar
+        open={showSnackbar}
+        autoHideDuration={6000}
+        handleClose={handleCloseSnackbar}
+        message={snackbarMessage}
+        severity={snackbarSeverity}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      />
       <Paper style={paperStyle}>
         <Grid align="center">
           <img src={myIcon} alt="My Icon" />
@@ -157,8 +192,26 @@ export default function Login() {
               >
                 Forgot Password
               </Typography>
-
               <Button
+                style={{
+                  width: "100%",
+                  height: "60px",
+                  marginTop: "15px",
+                  borderRadius: "40px",
+                  fontSize: "18px",
+                  fontWeight: "700",
+                }}
+                variant="contained"
+                type="submit"
+                disabled={loading} // Disable the button when loading is true
+              >
+                {loading ? ( // Display spinner when loading is true
+                  <CircularProgress size={24} color="inherit" />
+                ) : (
+                  "Log in"
+                )}
+              </Button>
+              {/* <Button
                 style={{
                   width: "100%",
                   height: "60px",
@@ -171,15 +224,30 @@ export default function Login() {
                 type="submit"
               >
                 Log in
-              </Button>
-              <Grid
+              </Button> */}
+              {/* <Grid
                 container
                 style={{ marginTop: "30px" }}
                 justify="center"
                 alignItems="center"
                 spacing={1}
               >
-              </Grid>
+                <Grid item xs={3}>
+                  <IconButton>
+                    <img src={facebook} alt="" />
+                  </IconButton>
+                </Grid>
+                <Grid item xs={3}>
+                  <IconButton>
+                    <img src={google} alt="" />
+                  </IconButton>
+                </Grid>
+                <Grid item xs={3}>
+                  <IconButton>
+                    <img src={twitter} alt="" />
+                  </IconButton>
+                </Grid>
+              </Grid> */}
             </FormControl>
           </form>
         </ThemeProvider>

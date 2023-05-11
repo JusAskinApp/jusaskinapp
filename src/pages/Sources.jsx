@@ -14,6 +14,8 @@ function Sources() {
   const [selectedResource, setSelectedResource] = useState(null);
   const [selectedName, setSelectedName] = useState("");
 async function search(){
+
+async function search(){
   setLoading(true);
   try {
     const data = await makeApiCall(
@@ -71,19 +73,20 @@ async function search(){
     }
   }
 
-  const handleResourceClick = (resource) => {
-    debugger;
-    setSelectedResource(resource);
-    setSelectedName(resource.name);
-  };
+  // const handleResourceClick = (resource) => {
+  //   debugger;
+  //   setSelectedResource(resource);
+  //   setSelectedName(resource.name);
+  // };
 
-  const handleClearSelected = () => {
-    setSelectedResource(null);
-    setSelectedName("");
-  };
+  // const handleClearSelected = () => {
+  //   setSelectedResource(null);
+  //   setSelectedName("");
+  // };
   useEffect(()=>{
     search()
   },[])
+ 
 
   return (
     <div className="header">
@@ -106,19 +109,7 @@ async function search(){
             }}
           />
         )}
-        {/* {!loading && selectedName && (
-          <CancelOutlinedIcon
-            onClick={handleClearSelected}
-            size={16}
-            thickness={3}
-            style={{
-              position: "absolute",
-              top: "30%",
-              right: "25px",
-              cursor: "pointer",
-            }}
-          />
-        )} */}
+       
       </div>
 
     {loading ? (

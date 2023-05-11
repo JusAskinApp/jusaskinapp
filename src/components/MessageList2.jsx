@@ -3,11 +3,13 @@ import MessageList from "../components/MessageList";
 import { useEffect, useState } from "react";
 import { faker } from "@faker-js/faker";
 import makeApiCall from '../Api/api';
-
 import IndividualChat from "../components/IndividualChat ";
+import HeaderIcons from "../components/HeaderIcons";
 
 const MessageList2 = () => {
   const [AllChats,setChatList]= useState([])
+  const [selectedProfile, setSelectedProfile] = useState(null);
+  const [newMessageCount, setNewMessageCount] = useState(0);
   const getChatList = async () => {
     debugger;
     try {
@@ -36,19 +38,7 @@ const MessageList2 = () => {
       console.error(error);
     }
   }
-  const [suggestions, setSuggestions] = useState([]);
-  const [selectedProfile, setSelectedProfile] = useState(null);
   
-  useEffect(() => {
-    // const suggestions = [...Array(5)].map((_, i) => ({
-    //   Id: i,
-    //   username: faker.internet.userName(),
-    //   avatar: faker.image.avatar(),
-    // }));
-    // setSuggestions(suggestions);
-    getChatList();
-  }, []);
-
   const handleProfileClick = (profile) => {
     debugger;
     setSelectedProfile(profile);
@@ -57,6 +47,10 @@ const MessageList2 = () => {
     debugger;
     setSelectedProfile(null);
   };
+  
+  useEffect(() => {
+    getChatList();
+  }, []);
 
   return (
     <div>
@@ -65,7 +59,6 @@ const MessageList2 = () => {
             {AllChats.map((profile) => (
               
               <MessageList
-                // key={profile.Id}
                 img={ profile.userObj ? profile.userObj.urlLink ? profile.userObj.urlLink[0] :'' :''}
                 username={profile.userObj ? profile.userObj.name : ''}
                 onClick={() => handleProfileClick(profile)}

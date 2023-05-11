@@ -1,9 +1,16 @@
 import React, { useState } from "react";
 import { IconButton, List, ListItem, ListItemText, Divider, Popover, Typography } from "@material-ui/core";
 import NotificationsOutlinedIcon from "@material-ui/icons/NotificationsOutlined";
+import Badge from "@mui/material/Badge";
+
 
 function NotificationPopup() {
   const [anchorEl, setAnchorEl] = useState(null);
+  const [invisible, setInvisible] = React.useState(false);
+
+  const handleBadgeVisibility = () => {
+    setInvisible(!invisible);
+  };
 
   const notifications = [
     "You have a new notification!",
@@ -29,7 +36,9 @@ function NotificationPopup() {
   return (
     <>
       <IconButton onClick={handleClick}>
+      <Badge color="error" variant="dot" invisible={invisible}>
           <NotificationsOutlinedIcon />
+          </Badge>
       </IconButton>
       <Popover
         id={id}
