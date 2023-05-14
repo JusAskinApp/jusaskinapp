@@ -92,7 +92,7 @@ function About({currentUser}) {
          </div>
         <Stack direction="row" spacing={1} style={{ flexWrap: 'wrap' }} fullWidth>
   {selectedSkills.map((skill, index) => (
-    <Chip className={classes.chip} label={skill} variant="outlined" onDelete={() => handleDeleteSkill(skill)} />
+    <Chip className={classes.chip} label={skill} variant="outlined"/>
   ))}
 </Stack>
       </div>

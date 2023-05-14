@@ -5,14 +5,27 @@ import notfound from "../assets/404 not found.png";
 import "./home.css";
 import makeApiCall from "../Api/api";
 import { CardMedia } from "@mui/material";
+import TabSection from "../components/Tabsection";
+import AllResourcesMapper from "../components/AllResourcesMapper";
+
 function Sources() {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [loading, setLoading] = useState(false);
   const [selectedResource, setSelectedResource] = useState(null);
   const [selectedName, setSelectedName] = useState("");
+  const [apiData, setApiData] = useState([]);
 
+ 
+  const tabs = [
+    { label: 'All', component: <AllResourcesMapper data={apiData}/>},
+    { label: 'Videos', component: "videos" },
+    { label: 'Docs', component: "Documents" },
+    { label: 'Books', component: "Images" },
+    { label: 'Images', component: "Images" },
+  ];
 async function search(){
+  debugger;
   setLoading(true);
   try {
     const data = await makeApiCall(
@@ -33,6 +46,7 @@ async function search(){
     if (data) {
       debugger;
       setSearchResults(data);
+      setApiData(data)
       setLoading(false);
     }
   } catch (error) {
@@ -73,17 +87,9 @@ async function search(){
       return null;
     }
   }
+  
 
-  // const handleResourceClick = (resource) => {
-  //   debugger;
-  //   setSelectedResource(resource);
-  //   setSelectedName(resource.name);
-  // };
 
-  // const handleClearSelected = () => {
-  //   setSelectedResource(null);
-  //   setSelectedName("");
-  // };
   useEffect(()=>{
     search()
   },[])
@@ -91,6 +97,7 @@ async function search(){
 
   return (
     <div className="header">
+      
       <div className="flex items-center w-full px-4 py-2 relative">
         <input
           type="text"
@@ -112,10 +119,11 @@ async function search(){
         )}
        
       </div>
-
+      <TabSection tabs={tabs}/>
     {loading ? (
   <div className="mt-4 flex items-center justify-center">
     <CircularProgress />
+    
   </div>
 ) : searchResults.length > 0 ? (
   <div>
@@ -126,7 +134,8 @@ async function search(){
         {result.imageIDs.map((image) => (
           
           <div key={image}>
-            <SearchedResource image={image} heading={result.title}/>
+            
+            {/* <SearchedResource image={image} heading={result.title}/> */}
             {/* {determineMediaType(image) === "video" || determineMediaType(image) === "image" ? (
               <CardMedia
                 component={determineMediaType(image) === "video" ? "video" : "img"}

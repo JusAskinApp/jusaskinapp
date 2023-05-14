@@ -7,8 +7,9 @@ import google from "../assets/google-icon.png";
 import twitter from "../assets/twitter-icon.png";
 import FormLabel from "@mui/material/FormLabel";
 import { useNavigate } from "react-router-dom";
-import {GoogleLogin} from 'react-google-login';
-import { hash } from 'bcryptjs';
+import { GoogleLogin } from "react-google-login";
+import { hash } from "bcryptjs";
+import makeApiCall from "../Api/api";
 
 import {
   TextField,
@@ -23,7 +24,10 @@ import {
   IconButton,
   Checkbox,
   FormControlLabel,
+  CircularProgress
 } from "@material-ui/core";
+import CustomSnackbar from "./CustomSnackbar";
+import Navbar from "./NavbarComponent";
 
 const theme = createTheme();
 theme.overrides = {
@@ -48,11 +52,15 @@ theme.overrides = {
 };
 const responsiveTheme = responsiveFontSizes(theme);
 
-const clientID = '644322334132-o3bvfqgckm43rq74dki8jb3jren3a5sj.apps.googleusercontent.com'
+const clientID =
+  "644322334132-o3bvfqgckm43rq74dki8jb3jren3a5sj.apps.googleusercontent.com";
 
 export default function Signup() {
-  
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [showSnackbar, setShowSnackbar] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("success");
   const paperStyle = {
     padding: "40px 30px",
     width: 450,
@@ -69,22 +77,23 @@ export default function Signup() {
     type: "",
     userType: "",
   });
-  const onSuccess =(res)=>{
-    console.log("success ! current user: ",res)
+  const onSuccess = (res) => {
+    console.log("success ! current user: ", res);
     setFormData({
       ...formData,
       name: res.profileObj.name,
       email: res.profileObj.email,
     });
-    console.log(formData)
-      }
-      const onFailure =(res)=>{
-        console.log("error ! current user: ",res)
-          }
+    console.log(formData);
+  };
+  const onFailure = (res) => {
+    console.log("error ! current user: ", res);
+  };
   const [errors, setErrors] = useState({});
 
-  const creatingUser = (e) => {
+  const creatingUser = async (e) => {
     debugger;
+    setLoading(true)
     fetch("https://jusaskin.herokuapp.com/api/users/signup", {
       method: "POST",
       headers: {
@@ -96,13 +105,23 @@ export default function Signup() {
       .then((data) => {
         console.log(data);
         if (data !== "Email already exists") {
-          navigate("/login");
+          setSnackbarMessage("Signup successful");
+          setSnackbarSeverity("success");
+          setShowSnackbar(true);
+          setTimeout(() => {
+            navigate("/login");
+          }, 2000);
         } else {
           alert("You have already account");
+          setSnackbarMessage("You already have an account");
+          setSnackbarSeverity("error");
+          setShowSnackbar(true);
         }
       })
       .catch((error) => {
          console.error(error);
+      }).finally(() => {
+        setLoading(false); // Stop the loading spinner
       });
   };
 
@@ -112,7 +131,6 @@ export default function Signup() {
     setFormData({ ...formData, [name]: value });
     setErrors({ ...errors, [name]: "" });
   };
-  
 
   const validate = () => {
     const newErrors = {};
@@ -140,10 +158,6 @@ export default function Signup() {
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
     } else {
-      const hashedPassword = await hash(formData.password, '$2a$10$abcdefghijklmnopqrstuv');
-      formData.password = hashedPassword
-      console.log(hashedPassword)
-      // submit the form
       const options = {
         method: "POST",
         body: JSON.stringify({
@@ -158,9 +172,24 @@ export default function Signup() {
       creatingUser();
     }
   };
+  const handleCloseSnackbar = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setShowSnackbar(false);
+  };
 
   return (
     <Grid>
+      <Navbar/>
+      <CustomSnackbar
+       open={showSnackbar}
+       autoHideDuration={6000}
+       handleClose={handleCloseSnackbar}
+       message={snackbarMessage}
+       severity={snackbarSeverity}
+       anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      />
       <Paper style={paperStyle}>
         <Grid align="center">
           <img src={myIcon} alt="My Icon" />
@@ -266,8 +295,13 @@ export default function Signup() {
                 }}
                 variant="contained"
                 type="submit"
+                disabled={loading}
               >
-                Sign up
+                 {loading ? ( // Display spinner when loading is true
+                  <CircularProgress size={24} color="inherit" />
+                ) : (
+                  "Sign up"
+                )}
               </Button>
               <Grid
                 container

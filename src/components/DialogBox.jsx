@@ -3,42 +3,43 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import DialogTitle from "@mui/material/DialogTitle";
 import Dialog from "@mui/material/Dialog";
-import { useNavigate } from 'react-router-dom';
 import {
   TextField,
   ThemeProvider,
   createTheme,
   responsiveFontSizes,
+  Stack
 } from "@mui/material";
 import Button from "@mui/material/Button";
 import { useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import Grid from "@material-ui/core/Grid";
-import { IconButton } from "@mui/material";
+import { IconButton, CircularProgress  } from "@mui/material";
+import {
+  Add as AddIcon,
+  EmojiEmotions,
+  Image,
+  PersonAdd,
+  VideoCameraBack,
+} from "@mui/icons-material";
+import CustomSnackbar from "./CustomSnackbar";
+
 
 const theme = createTheme();
-theme.overrides = {
-  MuiOutlinedInput: {
-    root: {
-      borderRadius: "30px",
-    },
-  },
-  MuiButton: {
-    contained: {
-      backgroundColor: "#4ae6a7",
-    },
-  },
-};
+
+
 const responsiveTheme = responsiveFontSizes(theme);
 
 export default function DialogBox(props) {
-  // const navigate = useNavigate();
   const { onClose, open } = props;
   const [postTitle, setPostTitle] = useState("");
   const [postAuthor, setPostAuthor] = useState("");
   const [postDescription, setPostDescription] = useState("");
-  // const [userDetail, setUserObject] = useState({});
   const [files, setFiles] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [showSnackbar, setShowSnackbar] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("success");
   let blogPost = {
     id: "",
     author: "",
@@ -61,15 +62,15 @@ export default function DialogBox(props) {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
-        alert("blog added");
-        // location.reload();
-
-        // localStorage.setItem("userDetail", data);
-        // navigate('/home');
+        setSnackbarMessage("Post added successfully");
+          setSnackbarSeverity("success");
+          setShowSnackbar(true);
       })
       .catch((error) => {
-        // console.error(error);
+        setSnackbarMessage("Please try again later");
+        setSnackbarSeverity("error");
+        setShowSnackbar(true);
+         console.error(error);
       });
   };
   const handleClose = () => {
@@ -91,7 +92,6 @@ export default function DialogBox(props) {
       formData.append('files[]', file);
     });
     let promise = new Promise((resolve, reject) => {
-      // https://jusaskin.herokuapp.com
       fetch("https://jusaskin.herokuapp.com/api/resources/upload", {
         method: "POST",
         body: formData,
@@ -100,9 +100,6 @@ export default function DialogBox(props) {
         .then((data) => {
           console.log(data);
           resolve(data['fileUrls'])
-          // alert("blog added");
-          // localStorage.setItem("userDetail", data);
-          // navigate('/home');
         })
         .catch((error) => {
           console.error(error);
@@ -114,7 +111,7 @@ export default function DialogBox(props) {
   }
   const handlePost = async () => {
     debugger;
-    debugger;
+    setLoading(true);
     let links = await uploadFiles();
     const userDetail = JSON.parse(localStorage.getItem("userDetail"));
     // let profilePic = getProfilePicture(userDetail.id);
@@ -128,9 +125,25 @@ export default function DialogBox(props) {
     // blogPost.profilePicture = profilePic;
     createPost();
     handleClose();
+    setLoading(false)
+  };
+  const handleCloseSnackbar = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setShowSnackbar(false);
   };
 
   return (
+    <>
+     <CustomSnackbar
+        open={showSnackbar}
+        autoHideDuration={6000}
+        handleClose={handleCloseSnackbar}
+        message={snackbarMessage}
+        severity={snackbarSeverity}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      />
     <Dialog
       onClose={handleClose}
       open={open}
@@ -138,7 +151,6 @@ export default function DialogBox(props) {
       maxWidth="xs"
       height="30%"
     >
-
 
       <div class="flex justify-between items-center">
         <Grid item xs={6}>
@@ -155,14 +167,22 @@ export default function DialogBox(props) {
         <ThemeProvider theme={responsiveTheme}>
           <ListItem disableGutters>
             <TextField
-              label="Post Description"
-              value={postDescription}
-              onChange={(event) => setPostDescription(event.target.value)}
-              fullWidth
-              multiline
-              variant="outlined"
-            />
+            sx={{ width: "100%" }}
+            id="standard-multiline-static"
+            value={postDescription}
+            onChange={(event) => setPostDescription(event.target.value)}
+            multiline
+            rows={3}
+            placeholder="What's on your mind?"
+            variant="standard"
+          />
           </ListItem>
+          <Stack direction="row" gap={1} mt={2} mb={3}>
+             <EmojiEmotions color="primary" />
+             <Image color="secondary" />
+             <VideoCameraBack color="success" />
+             <PersonAdd color="error" />
+           </Stack>
           <ListItem disableGutters>
             <div class="outline-dashed border-gray-400 rounded w-full flex items-center justify-center mt-2">
               <button class="font-bold py-2 px-4 rounded-lg">
@@ -195,24 +215,24 @@ export default function DialogBox(props) {
             </div>
           </ListItem>
           <ListItem disableGutters>
+           
             <Button
-              onClick={handlePost}
-              style={{
-                width: "100%",
-                height: "60px",
-                marginTop: "15px",
-                borderRadius: "40px",
-                fontSize: "18px",
-                fontWeight: "700",
-              }}
-              variant="contained"
-              type="submit"
-            >
-              Add Post
-            </Button>
+            onClick={handlePost} 
+             fullWidth
+             variant="contained"
+             aria-label="outlined primary button group"
+             >
+                {loading ? ( // Render spinner if loading state is true
+            <CircularProgress size={24} color="secondary" />
+          ) : (
+            "Post"
+          )}
+              </Button>
+           
           </ListItem>
         </ThemeProvider>
       </List>
     </Dialog>
+    </>
   );
 }
