@@ -14,11 +14,11 @@ import {
 } from "@mui/material";
 import EmojiHappyIcon from "@material-ui/icons/EmojiEmotions";
 import MapsUgcOutlinedIcon from "@mui/icons-material/MapsUgcOutlined";
-import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
-import BookmarkIcon from '@mui/icons-material/Bookmark';
+import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
+import BookmarkIcon from "@mui/icons-material/Bookmark";
 import { useState, useEffect } from "react";
-import Tooltip from '@mui/material/Tooltip';
-
+import Tooltip from "@mui/material/Tooltip";
+import UrlParser from "./UrlParser";
 const Post = (props) => {
   debugger;
   debugger;
@@ -30,9 +30,10 @@ const Post = (props) => {
 
   const [saved, setSaved] = useState(false);
 
-const handleSaveClick = () => {
-  setSaved(!saved);
-};
+  const handleSaveClick = () => {
+    setSaved(!saved);
+  };
+
   useEffect(() => {
     debugger;
     const likes = props.likes.data;
@@ -96,6 +97,7 @@ const handleSaveClick = () => {
       console.error(error);
     }
   };
+
   const dateGetter = (date) => {
     debugger;
     const TempDate = new Date(
@@ -226,12 +228,19 @@ const handleSaveClick = () => {
         subheader={dateGetter(props.date)}
       />
 
-      <CardContent>
+      {/* <CardContent>
         <Typography variant="body2" color="text.secondary">
           <span style={{ fontWeight: "bold" }}></span>
 
           {props.content}
 
+          {props.author}
+        </Typography>
+      </CardContent> */}
+      <CardContent>
+        <Typography variant="body2" color="text.secondary">
+          <span style={{ fontWeight: "bold" }}></span>
+          {UrlParser(props.content)}
           {props.author}
         </Typography>
       </CardContent>
@@ -286,29 +295,29 @@ const handleSaveClick = () => {
             <Checkbox
               checked={checked}
               onChange={likesUpdated}
-              icon={<FavoriteBorder sx={{ fontSize: 30 }}/>}
-              checkedIcon={<Favorite sx={{ color: "red",  fontSize: 30 }} />}
+              icon={<FavoriteBorder sx={{ fontSize: 30 }} />}
+              checkedIcon={<Favorite sx={{ color: "red", fontSize: 30 }} />}
             />
           </IconButton>
 
           <IconButton>
-            <MapsUgcOutlinedIcon sx={{ fontSize: 30 }}/>
+            <MapsUgcOutlinedIcon sx={{ fontSize: 30 }} />
           </IconButton>
 
           <IconButton aria-label="share">
-            <Share sx={{ fontSize: 30 }}/>
+            <Share sx={{ fontSize: 30 }} />
           </IconButton>
         </div>
 
         <Tooltip title={saved ? "Remove from saved" : "Save post"}>
-        <IconButton onClick={handleSaveClick}>
-      {saved ? (
-        <BookmarkIcon sx={{ fontSize: 30, color: "black" }} />
-      ) : (
-        <BookmarkBorderIcon sx={{ fontSize: 30 }} />
-      )}
-    </IconButton>
-  </Tooltip>
+          <IconButton onClick={handleSaveClick}>
+            {saved ? (
+              <BookmarkIcon sx={{ fontSize: 30, color: "black" }} />
+            ) : (
+              <BookmarkBorderIcon sx={{ fontSize: 30 }} />
+            )}
+          </IconButton>
+        </Tooltip>
       </CardActions>
 
       <Box display="flex" ml={3} mb={2}>

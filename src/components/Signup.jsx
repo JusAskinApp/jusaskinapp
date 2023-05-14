@@ -2,14 +2,8 @@ import React, { useEffect, useState } from "react";
 import myIcon from "../assets/logo.png";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
-import facebook from "../assets/facebook-icon.png";
-import google from "../assets/google-icon.png";
-import twitter from "../assets/twitter-icon.png";
-import FormLabel from "@mui/material/FormLabel";
 import { useNavigate } from "react-router-dom";
 import { GoogleLogin } from "react-google-login";
-import { hash } from "bcryptjs";
-import makeApiCall from "../Api/api";
 
 import {
   TextField,
@@ -114,7 +108,7 @@ export default function Signup() {
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
-        if (data !== "Email already exists") {
+        if (data.message !== "Email already exists") {
           navigate("/login");
         } else {
           alert("You have already account");
