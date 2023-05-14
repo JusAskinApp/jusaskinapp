@@ -10,6 +10,9 @@ import { useNavigate } from "react-router-dom";
 import { GoogleLogin } from "react-google-login";
 import { hash } from "bcryptjs";
 import makeApiCall from "../Api/api";
+import { GoogleLogin } from "react-google-login";
+import { hash } from "bcryptjs";
+import makeApiCall from "../Api/api";
 
 import {
   TextField,
@@ -131,6 +134,7 @@ export default function Signup() {
     setFormData({ ...formData, [name]: value });
     setErrors({ ...errors, [name]: "" });
   };
+
 
   const validate = () => {
     const newErrors = {};

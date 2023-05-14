@@ -1,7 +1,9 @@
 import React, { useState,useEffect} from "react";
 import SearchedResource from "../components/SearchedResource";
 import { CircularProgress } from "@material-ui/core";
+import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 import notfound from "../assets/404 not found.png";
+import SearchIcon from "@material-ui/icons/Search";
 import "./home.css";
 import makeApiCall from "../Api/api";
 import { CardMedia } from "@mui/material";
@@ -38,9 +40,6 @@ async function search(){
         body: JSON.stringify({
           q: searchTerm,
         }),
-        body: JSON.stringify({
-          q: searchTerm,
-        }),
       }
     );
     if (data) {
@@ -60,7 +59,6 @@ async function search(){
   };
 
   function determineMediaType(url) {
-    debugger;
     debugger;
     const videoExtensions = [".mp4", ".avi", ".mov", ".wmv"];
     const imageExtensions = [".jpg", ".jpeg", ".png", ".gif", ".ico"];
