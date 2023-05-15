@@ -30,6 +30,7 @@ function SearchPage() {
     setShowProfile(false);
   };
   async function search(){
+    debugger;
     setLoading(true);
     setUsersData({});
    

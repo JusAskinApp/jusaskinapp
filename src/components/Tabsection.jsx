@@ -29,7 +29,6 @@ const TabSection = ({ tabs,currentUser}) => {
         </div>
         <div className="py-4">
           {tabs[activeTab - 1].component}
-          {/* {tabs[activeTab - 1].component({ currentUser: currentUser})} */}
         </div>
       </div>
     </div>

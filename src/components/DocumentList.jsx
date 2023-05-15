@@ -7,6 +7,7 @@ import {
   DialogTitle,
   IconButton,
   makeStyles,
+  Typography
 } from "@material-ui/core";
 import { Close } from "@material-ui/icons";
 const Container = styled.div`
@@ -32,10 +33,16 @@ const Title = styled.h1`
 `;
 const Image = styled.img`
   width: 100%;
-  height: ${(props) => (props.type === "sm" ? "150px" : "180px")};
+  height: ${(props) => (props.type === 'sm' ? '100px' : '120px')};
   background-color: #999;
   flex: 1;
-  border-radius: 10px
+  border-radius: 10px;
+  overflow: "hidden";
+`;
+const Info = styled.p`
+  font-size: 14px;
+  margin: 0;
+  color: gray;
 `;
 const useStyles = makeStyles((theme) => ({
   closeButton: {
@@ -86,11 +93,6 @@ const DocumentList = ({ type, url,title}) => {
         </DialogTitle>
         <DialogContent>
           <iframe resizable="true" src={url} width="1000vh" height="600"></iframe>
-          {/* <Image
-          type={type}
-          src={url}
-        
-        /> */}
         </DialogContent>
       </Dialog>
     </div>

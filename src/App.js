@@ -11,8 +11,10 @@ import {gapi} from 'gapi-script';
 import { useEffect } from 'react';
 import Profile from './pages/Profile';
 
+
 const clientID = '644322334132-o3bvfqgckm43rq74dki8jb3jren3a5sj.apps.googleusercontent.com'
 function App() {
+ 
   useEffect(() =>{
     function start(){
       gapi.client.init({
@@ -23,11 +25,8 @@ function App() {
     gapi.load('client:auth2', start)
   })
   return (
+    
     <div className='bg-gray-50 h-screen overflow-y-scroll scrollbar-hide'>
-     {/* <Signup/> */}
-     {/* <Login/> */}
-     {/* */}
-     {/* <Sidebar/> */}
      
      <Routes>
      <Route path="/" element={ <LandingPage/> } />
