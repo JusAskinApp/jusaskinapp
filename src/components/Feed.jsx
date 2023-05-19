@@ -6,7 +6,13 @@ import Post from "./Post";
 const Feed = () => {
   const [loading, setLoading] = useState(true);
   const [blogData, setBlogData] = useState([]);
-  
+  function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  }
   setTimeout(() => {
     setLoading(false);
   }, [5000]);
@@ -14,20 +20,18 @@ const Feed = () => {
     debugger;
     const getBlogs = async (id) => {
       debugger;
-      fetch(
-        `https://jusaskin.herokuapp.com/api/blogPosts/blogs/`,
-        {
-          method: "POST",
+      fetch(`https://jusaskin.herokuapp.com/api/blogPosts/blogs/`, {
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(
-          { "interests": ["Nasir"]}
-        ),
-        })
+        body: JSON.stringify({ interests: ["Nasir"] }),
+      })
         .then((response) => response.json())
         .then((data) => {
-          console.log(data);
+          const randomizedData = shuffleArray(data);
+          console.log(randomizedData);
+          setBlogData(randomizedData);
           setBlogData(data);
         })
         .catch((error) => {
@@ -43,8 +47,7 @@ const Feed = () => {
       {blogData.length > 0 ? (
         <>
           {blogData.map((item, index) => (
-            
-            <Box style={{marginTop:'25px'}}>
+            <Box style={{ marginTop: "25px" }}>
               <Post
                 name={item.author}
                 date={item.date}

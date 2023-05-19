@@ -76,7 +76,6 @@ const handleClose = () => {
         />
         <Details type={props.type}>
           <Texts>
-            
             <Title>{props.title}</Title>
             <Info>{props.creator}</Info>
           </Texts>

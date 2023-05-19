@@ -2,17 +2,8 @@ import React, { useEffect, useState } from "react";
 import myIcon from "../assets/logo.png";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
-import facebook from "../assets/facebook-icon.png";
-import google from "../assets/google-icon.png";
-import twitter from "../assets/twitter-icon.png";
-import FormLabel from "@mui/material/FormLabel";
 import { useNavigate } from "react-router-dom";
-// import { GoogleLogin } from "react-google-login";
-import { hash } from "bcryptjs";
-import makeApiCall from "../Api/api";
 import { GoogleLogin } from "react-google-login";
-// import { hash } from "bcryptjs";
-// import makeApiCall from "../Api/api";
 
 import {
   TextField,
@@ -27,10 +18,7 @@ import {
   IconButton,
   Checkbox,
   FormControlLabel,
-  CircularProgress
 } from "@material-ui/core";
-import CustomSnackbar from "./CustomSnackbar";
-import Navbar from "./NavbarComponent";
 
 const theme = createTheme();
 theme.overrides = {
@@ -60,10 +48,6 @@ const clientID =
 
 export default function Signup() {
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
-  const [showSnackbar, setShowSnackbar] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState("");
-  const [snackbarSeverity, setSnackbarSeverity] = useState("success");
   const paperStyle = {
     padding: "40px 30px",
     width: 450,
@@ -96,7 +80,24 @@ export default function Signup() {
 
   const creatingUser = async (e) => {
     debugger;
-    setLoading(true)
+    // try {
+    //   const data = await makeApiCall(
+    //     "https://jusaskin.herokuapp.com/api/users/signup",
+    //     {
+    //       method: "POST",
+    //       headers: {
+    //         "Content-Type": "application/json",
+    //       },
+    //       body: JSON.stringify(formData),
+    //     }
+    //   );
+    //   if (data){
+    //     alert('done')
+    //   }
+    // } catch (e) {
+    //   console.log(e);
+    // }
+
     fetch("https://jusaskin.herokuapp.com/api/users/signup", {
       method: "POST",
       headers: {
@@ -107,24 +108,14 @@ export default function Signup() {
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
-        if (data !== "Email already exists") {
-          setSnackbarMessage("Signup successful");
-          setSnackbarSeverity("success");
-          setShowSnackbar(true);
-          setTimeout(() => {
-            navigate("/login");
-          }, 2000);
+        if (data.message !== "Email already exists") {
+          navigate("/login");
         } else {
           alert("You have already account");
-          setSnackbarMessage("You already have an account");
-          setSnackbarSeverity("error");
-          setShowSnackbar(true);
         }
       })
       .catch((error) => {
          console.error(error);
-      }).finally(() => {
-        setLoading(false); // Stop the loading spinner
       });
   };
 
@@ -134,7 +125,6 @@ export default function Signup() {
     setFormData({ ...formData, [name]: value });
     setErrors({ ...errors, [name]: "" });
   };
-
 
   const validate = () => {
     const newErrors = {};
@@ -162,6 +152,10 @@ export default function Signup() {
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
     } else {
+      // const hashedPassword = await hash(formData.password, '$2a$10$abcdefghijklmnopqrstuv');
+      // formData.password = hashedPassword
+      // console.log(hashedPassword)
+      // submit the form
       const options = {
         method: "POST",
         body: JSON.stringify({
@@ -176,24 +170,9 @@ export default function Signup() {
       creatingUser();
     }
   };
-  const handleCloseSnackbar = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    setShowSnackbar(false);
-  };
 
   return (
     <Grid>
-      <Navbar/>
-      <CustomSnackbar
-       open={showSnackbar}
-       autoHideDuration={6000}
-       handleClose={handleCloseSnackbar}
-       message={snackbarMessage}
-       severity={snackbarSeverity}
-       anchorOrigin={{ vertical: "top", horizontal: "center" }}
-      />
       <Paper style={paperStyle}>
         <Grid align="center">
           <img src={myIcon} alt="My Icon" />
@@ -299,13 +278,8 @@ export default function Signup() {
                 }}
                 variant="contained"
                 type="submit"
-                disabled={loading}
               >
-                 {loading ? ( // Display spinner when loading is true
-                  <CircularProgress size={24} color="inherit" />
-                ) : (
-                  "Sign up"
-                )}
+                Sign up
               </Button>
               <Grid
                 container
