@@ -1,31 +1,20 @@
 import React, { useState,useEffect} from "react";
-import SearchedResource from "../components/SearchedResource";
 import { CircularProgress } from "@material-ui/core";
-import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 import notfound from "../assets/404 not found.png";
-import SearchIcon from "@material-ui/icons/Search";
 import "./home.css";
 import makeApiCall from "../Api/api";
-import { CardMedia } from "@mui/material";
 import TabSection from "../components/Tabsection";
 import AllResourcesMapper from "../components/AllResourcesMapper";
-
+import ImageComponentMapper from "../components/ImageComponentMapper";
+import VideoComponent from "../components/VideoComponent";
+import DocsComponentMapper from "../components/DocsComponentMapper";
 function Sources() {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [selectedResource, setSelectedResource] = useState(null);
   const [selectedName, setSelectedName] = useState("");
   const [apiData, setApiData] = useState([]);
 
- 
-  const tabs = [
-    { label: 'All', component: <AllResourcesMapper data={apiData}/>},
-    { label: 'Videos', component: "videos" },
-    { label: 'Docs', component: "Documents" },
-    { label: 'Books', component: "Images" },
-    { label: 'Images', component: "Images" },
-  ];
 async function search(){
   debugger;
   setLoading(true);
@@ -58,35 +47,49 @@ async function search(){
     search()
   };
 
-  function determineMediaType(url) {
-    debugger;
-    const videoExtensions = [".mp4", ".avi", ".mov", ".wmv"];
-    const imageExtensions = [".jpg", ".jpeg", ".png", ".gif", ".ico"];
-    const pdfExtensions = [".pdf"];
-    const pptExtensions = [".ppt", ".pptx"];
-    const docExtensions = [".doc", ".docx"];
-    const textExtensions = [".txt", ".md"];
-
-    const fileExtension = url.substring(url.lastIndexOf(".")).split("?")[0];
-
-    if (videoExtensions.includes(fileExtension)) {
-      return "video";
-    } else if (imageExtensions.includes(fileExtension)) {
-      return "image";
-    } else if (pdfExtensions.includes(fileExtension)) {
-      return "pdf";
-    } else if (pptExtensions.includes(fileExtension)) {
-      return "ppt";
-    } else if (docExtensions.includes(fileExtension)) {
-      return "doc";
-    } else if (textExtensions.includes(fileExtension)) {
-      return "text";
+  const determineMediaType = (url) => {
+    if (url) {
+      const videoExtensions = [".mp4", ".avi", ".mov", ".wmv"];
+      const imageExtensions = [".jpg", ".jpeg", ".png", ".gif", ".ico"];
+      const pdfExtensions = [".pdf"];
+      const pptExtensions = [".ppt", ".pptx"];
+      const docExtensions = [".doc", ".docx"];
+      const textExtensions = [".txt", ".md"];
+  
+      const fileExtension = url.substring(url.lastIndexOf(".")).split("?")[0];
+  
+      if (videoExtensions.includes(fileExtension)) {
+        return "video";
+      } else if (imageExtensions.includes(fileExtension)) {
+        return "image";
+      } else if (pdfExtensions.includes(fileExtension)) {
+        return "pdf";
+      } else if (pptExtensions.includes(fileExtension)) {
+        return "ppt";
+      } else if (docExtensions.includes(fileExtension)) {
+        return "doc";
+      } else if (textExtensions.includes(fileExtension)) {
+        return "text";
+      } else {
+        return null;
+      }
     } else {
       return null;
     }
-  }
-  
+  };
 
+  const tabs = [
+    { label: 'All', component: <AllResourcesMapper data={apiData} /> },
+    { label: 'Videos', component: <VideoComponent videos={apiData.filter(item => determineMediaType(item.imageIDs[0]) === 'video')} /> },
+    { label: 'Docs', component: <DocsComponentMapper docs={apiData.filter(item => {
+      debugger;
+      const fileExtension = item.imageIDs[0] ? item.imageIDs[0].substring(item.imageIDs[0].lastIndexOf(".")).split("?")[0] :'';
+      const docExtensions = [".doc", ".docx", ".ppt", ".pptx", ".pdf"];
+      return docExtensions.includes(fileExtension);
+    })} />  },
+  
+    { label: 'Images', component: <ImageComponentMapper images={apiData.filter(item => determineMediaType(item.imageIDs[0]) === 'image')} /> },
+  ];
 
   useEffect(()=>{
     search()
@@ -127,34 +130,10 @@ async function search(){
   <div>
     {searchResults.map((result) => (
       <div key={result.title}>
-        
-        {/* <h2>{result.title}</h2> */}
         {result.imageIDs.map((image) => (
           
           <div key={image}>
             
-            {/* <SearchedResource image={image} heading={result.title}/> */}
-            {/* {determineMediaType(image) === "video" || determineMediaType(image) === "image" ? (
-              <CardMedia
-                component={determineMediaType(image) === "video" ? "video" : "img"}
-                height="100%"
-                image={image}
-                alt="ERROR"
-                controls={determineMediaType(image) === "video"}
-              />
-            ) : (
-              <div>
-                {determineMediaType(image) === "ppt" ? (
-                  <iframe
-                    title={"PDF-Viewer"}
-                    src={`https://view.officeapps.live.com/op/embed.aspx?src=${image}`}
-                    style={{ height: "100vh", width: "90vw" }}
-                  ></iframe>
-                ) : (
-                  <iframe src={image} width="100%" height="600"></iframe>
-                )}
-              </div>
-            )} */}
           </div>
         ))}
       </div>
@@ -172,3 +151,4 @@ async function search(){
 }
 
 export default Sources;
+

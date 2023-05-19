@@ -7,12 +7,12 @@ import google from "../assets/google-icon.png";
 import twitter from "../assets/twitter-icon.png";
 import FormLabel from "@mui/material/FormLabel";
 import { useNavigate } from "react-router-dom";
-import { GoogleLogin } from "react-google-login";
+// import { GoogleLogin } from "react-google-login";
 import { hash } from "bcryptjs";
 import makeApiCall from "../Api/api";
 import { GoogleLogin } from "react-google-login";
-import { hash } from "bcryptjs";
-import makeApiCall from "../Api/api";
+// import { hash } from "bcryptjs";
+// import makeApiCall from "../Api/api";
 
 import {
   TextField,

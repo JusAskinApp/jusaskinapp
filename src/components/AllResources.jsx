@@ -1,51 +1,23 @@
 import React from 'react';
-import groupImage from "../assets/image99.png";
 import ImageGallery from "./ImageGallery";
-import { Grid } from '@material-ui/core';
-
-
 
 const AllResources = ({ imageSrc, title }) => {
+    const trimmedTitle = title.length > 44 ? title.substring(0, 44) + '...' : title;
   return (
-    <div>
-    <p className="text-lg font-bold">All Results</p>
-    <div className="flex flex-no-wrap xs:flex-col sm:flex-row justify-between overflow-x-auto h-60">
-    
-      <ImageGallery
-        url={groupImage}
-        title="First Image Title"
-        creator="First Image Creator"
-        className="flex-shrink-0"
-      />
-
-      <ImageGallery
-        url={groupImage}
-        title="First Image Title"
-        creator="First Image Creator"
-        className="flex-shrink-0"
-      />
-      <ImageGallery
-        url={groupImage}
-        title="First Image Title"
-        creator="First Image Creator"
-        className="flex-shrink-0"
-      />
-      <ImageGallery
-        url={groupImage}
-        title="First Image Title"
-        creator="First Image Creator"
-        className="flex-shrink-0"
-      />
-      <ImageGallery
-        url={groupImage}
-        title="First Image Title"
-        creator="First Image Creator"
-        className="flex-shrink-0"
-      />
-    </div>
-   
-  </div>
+<div>
+<div className="flex flex-wrap justify-between h-auto">
+  <ImageGallery
+    url={imageSrc}
+    title={trimmedTitle}
+    // creator="Umar Khan"
+    className="flex-shrink-0 max-w-full h-auto"
+  />
+</div>
+</div>
   );
 };
 
 export default AllResources;
+
+
+
