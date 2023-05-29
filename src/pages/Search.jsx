@@ -9,12 +9,13 @@ import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined";
 import Profile from "../pages/Profile";
 import "./home.css";
 import HeaderIcons from "../components/HeaderIcons";
+import { useNavigate } from "react-router-dom";
 function SearchPage() {
   const [searchTerm, setSearchTerm] = React.useState("");
   const [usersData, setUsersData] = React.useState({});
   const [showProfile, setShowProfile] = useState(false);
   const [loading, setLoading] = useState(false);
-
+  const navigate = useNavigate();
   const [currentDataObject, setCurrentDataObject] = useState({});
   const handleChange = (event) => {
     setSearchTerm(event.target.value);
@@ -25,15 +26,17 @@ function SearchPage() {
     debugger;
     setCurrentDataObject(data);
     setShowProfile(true);
+      navigate('/profile', { state  : {currentUser: data} });
+
   };
   const backClick = () => {
     setShowProfile(false);
   };
-  async function search(){
+  async function search() {
     debugger;
     setLoading(true);
     setUsersData({});
-   
+
     const criteria = "name"; // replace "name" with the actual value you want to use
     fetch("https://jusaskin.herokuapp.com/api/users/searchUser", {
       method: "POST",
@@ -64,16 +67,18 @@ function SearchPage() {
   const handleSubmit = async (event) => {
     debugger;
     event.preventDefault();
-    search()
+    await search()
+    console.log("here")
+
     // console.log(searchTerm);
   };
-  useEffect(()=>{
+  useEffect(() => {
     search();
-  },[])
+  }, [])
   return (
     <>
       <div className="header">
-        <HeaderIcons/>
+        <HeaderIcons />
         <form
           onSubmit={handleSubmit}
           className="flex items-center w-full px-4 py-2"
@@ -98,8 +103,9 @@ function SearchPage() {
             <></>
           )}
         </form>
+        {/* <Profile currentUser={currentDataObject} /> */}
         {showProfile ? (
-          <Profile currentUser={currentDataObject} />
+          ''
         ) : !loading ? (
           usersData && usersData.length > 0 ? (
             <div>

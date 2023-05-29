@@ -7,16 +7,29 @@ import { Routes, Route } from "react-router-dom"
 import LandingPage from './pages/LandingPage';
 import SubscriberDetail from './pages/SubscriberDetail';
 import WhitePaperPage from './components/WhitePaperPage';
-import {gapi} from 'gapi-script';
+import { gapi } from 'gapi-script';
 import { useEffect } from 'react';
 import Profile from './pages/Profile';
-
-
+import SearchPage from "./pages/Search";
+import Sources from "./pages/Sources";
+import Group from "./pages/Group";
+import Messages from "./pages/Messages";
+// import Resources from './components/Resources';
+import { useLocation } from 'react-router-dom';
 const clientID = '644322334132-o3bvfqgckm43rq74dki8jb3jren3a5sj.apps.googleusercontent.com'
 function App() {
- 
-  useEffect(() =>{
-    function start(){
+  const location = useLocation();
+  const currentPath = location.pathname;
+  const isLoginPage = currentPath === '/login';
+  const isSignupPage = currentPath === '/signup';
+  const isLandingPage = currentPath === '/';
+
+
+  // Render the Sidebar component conditionally
+  const renderSidebar = !isLoginPage && !isSignupPage && !isLandingPage;
+  debugger;
+  useEffect(() => {
+    function start() {
       gapi.client.init({
         clientID: clientID,
         scope: ""
@@ -25,20 +38,28 @@ function App() {
     gapi.load('client:auth2', start)
   })
   return (
-    
-    <div className='bg-gray-50 h-screen overflow-y-scroll scrollbar-hide'>
-     
-     <Routes>
-     <Route path="/" element={ <LandingPage/> } />
-       <Route path="/admin" element={ <SubscriberDetail/> } />
-        <Route path="/login" element={ <Login/> } />
-        <Route path="/signup" element={ <Signup/> } />
-        <Route path="/whitepaperpage" element={ <WhitePaperPage/> } />
-        <Route path="/home" element={<Sidebar />  } />
-        <Route path="/profile" element={<Profile />  } />
+    <div className='bg-gray-50 h-screen overflow-y-scroll scrollbar-hide app-container'>
+      {renderSidebar && <div className='sidebar'>
+        <Sidebar />
+      </div>}
+      <div className='content'>
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/admin" element={<SubscriberDetail />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/whitepaperpage" element={<WhitePaperPage />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/search" element={<SearchPage />} />
+          <Route path="/resource" element={<Sources />} />
+          <Route path="/group" element={<Group />} />
+          <Route path="/messages" element={<Messages />} />
+          <Route path="/home" element={<Home />} />
 
-      </Routes>
+        </Routes>
+      </div>
     </div>
+
   );
 }
 
