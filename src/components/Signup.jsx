@@ -18,7 +18,11 @@ import {
   IconButton,
   Checkbox,
   FormControlLabel,
+  CircularProgress
 } from "@material-ui/core";
+
+import CustomSnackbar from "./CustomSnackbar";
+import Navbar from "./NavbarComponent";
 
 const theme = createTheme();
 theme.overrides = {
@@ -47,6 +51,11 @@ const clientID =
   "644322334132-o3bvfqgckm43rq74dki8jb3jren3a5sj.apps.googleusercontent.com";
 
 export default function Signup() {
+  const [showSnackbar, setShowSnackbar] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("success");
+  const [loading, setLoading] = useState(false);
+
   const navigate = useNavigate();
   const paperStyle = {
     padding: "40px 30px",
@@ -80,23 +89,7 @@ export default function Signup() {
 
   const creatingUser = async (e) => {
     debugger;
-    // try {
-    //   const data = await makeApiCall(
-    //     "https://jusaskin.herokuapp.com/api/users/signup",
-    //     {
-    //       method: "POST",
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //       },
-    //       body: JSON.stringify(formData),
-    //     }
-    //   );
-    //   if (data){
-    //     alert('done')
-    //   }
-    // } catch (e) {
-    //   console.log(e);
-    // }
+    setLoading(true);
 
     fetch("https://jusaskin.herokuapp.com/api/users/signup", {
       method: "POST",
@@ -109,13 +102,23 @@ export default function Signup() {
       .then((data) => {
         console.log(data);
         if (data.message !== "Email already exists") {
-          navigate("/login");
+          setSnackbarMessage("Sign up successful");
+          setSnackbarSeverity("success");
+          setShowSnackbar(true);
+          setTimeout(() => {
+            navigate("/login");
+          }, 2000);
         } else {
-          alert("You have already account");
+          // alert("You have already account");
+          setSnackbarMessage("You already have an account");
+          setSnackbarSeverity("error");
+          setShowSnackbar(true);
         }
       })
       .catch((error) => {
          console.error(error);
+      }).finally(() => {
+        setLoading(false); // Stop the loading spinner
       });
   };
 
@@ -171,8 +174,24 @@ export default function Signup() {
     }
   };
 
+  const handleCloseSnackbar = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setShowSnackbar(false);
+  };
+
   return (
     <Grid>
+      <Navbar/>
+       <CustomSnackbar
+        open={showSnackbar}
+        autoHideDuration={6000}
+        handleClose={handleCloseSnackbar}
+        message={snackbarMessage}
+        severity={snackbarSeverity}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      />
       <Paper style={paperStyle}>
         <Grid align="center">
           <img src={myIcon} alt="My Icon" />
@@ -278,8 +297,13 @@ export default function Signup() {
                 }}
                 variant="contained"
                 type="submit"
+                disabled={loading}
               >
-                Sign up
+                {loading ? ( // Display spinner when loading is true
+                  <CircularProgress size={24} color="inherit" />
+                ) : (
+                  "Sign up"
+                )}
               </Button>
               <Grid
                 container

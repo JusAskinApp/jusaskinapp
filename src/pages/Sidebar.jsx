@@ -2,11 +2,6 @@ import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
 import Drawer from "@mui/material/Drawer";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
 import myIcon from "../assets/logo.png";
 import { useNavigate } from "react-router-dom";
 import Home from "./Home";
@@ -15,15 +10,7 @@ import Sources from "./Sources";
 import Group from "./Group";
 import Messages from "./Messages";
 import Profile from "./Profile";
-import HomeIcon from "@mui/icons-material/Home";
-import SearchIcon from "@mui/icons-material/Search";
-import ResourcesIcon from "@mui/icons-material/Book";
-import GroupIcon from "@mui/icons-material/Group";
-import MessagesIcon from "@mui/icons-material/Chat";
-import ProfileIcon from "@mui/icons-material/AccountCircle";
-import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
-import LogoutIcon from "@material-ui/icons/ExitToApp";
-import IconButton from "@mui/material/IconButton";
+import { Home as HomeIcon, Search as SearchIcon, LocalLibrary as ResourcesIcon, Group as GroupIcon, Message as MessagesIcon, AccountCircle as ProfileIcon, ExitToApp as LogoutIcon } from '@mui/icons-material';
 const drawerWidth = 240;
 
 function Sidebar(props) {
@@ -36,41 +23,13 @@ function Sidebar(props) {
   }
   const handleLogout = () => {
     localStorage.removeItem("userDetail");
-    navigate('/')
+    navigate("/");
   };
   const drawer = (
     <div>
       <div style={{ margin: "15px 26px" }}>
         <img style={{ width: " 150px", height: "30px" }} src={myIcon} alt="" />
       </div>
-
-      {/* <List style={{paddingLeft:"10px"}}>
-    
-      {[
-  { text: 'Home', icon: <HomeIcon /> },
-  { text: 'Search', icon: <SearchIcon /> },
-  { text: 'Resources', icon: <ResourcesIcon /> },
-  { text: 'Group', icon: <GroupIcon /> },
-  { text: 'Messages', icon: <MessagesIcon /> },
-  { text: 'Profile', icon: <ProfileIcon /> },
-].map((item, index) => (
-  <ListItem key={item.text} disablePadding>
-    <ListItemButton onClick={() => handleListItemClick(item.text)}>
-      <ListItemIcon>
-        {item.icon}
-      </ListItemIcon>
-      <ListItemText primary={item.text} />
-    </ListItemButton>
-    {activeItem === item.text && (
-      <div style={{
-        backgroundColor: 'blue',
-        color: 'red',
-        fontWeight: 'bold',
-      }} />
-    )}
-  </ListItem>
-))}
-    </List>  */}
       <div className="pl-6 pt-2">
         {[
           { text: "Home", icon: <HomeIcon style={{ color: "#757575" }} /> },
@@ -109,13 +68,15 @@ function Sidebar(props) {
           </div>
         ))}
         <div className="absolute bottom-0">
-    <div className="flex items-center py-3 cursor-pointer hover:text-green-500" onClick={handleLogout}>
-      <LogoutIcon style={{ color: "#757575" }} />
-      <div className="ml-6">Logout</div>
-    </div>
-  </div>
+          <div
+            className="flex items-center py-3 cursor-pointer hover:text-green-500"
+            onClick={handleLogout}
+          >
+            <LogoutIcon style={{ color: "#757575" }} />
+            <div className="ml-6">Logout</div>
+          </div>
+        </div>
       </div>
-     
     </div>
   );
 

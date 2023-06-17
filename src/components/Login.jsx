@@ -90,7 +90,7 @@ export default function Login() {
           setShowSnackbar(true);
           setTimeout(() => {
             navigate("/home");
-          }, 2000);
+          }, 500);
           
         }
       })

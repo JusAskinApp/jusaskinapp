@@ -21,6 +21,7 @@
     "gapi-script": "^1.2.0",
     "jss-plugin-nested": "^10.10.0",
     "react": "^18.2.0",
+    "react-device-detect": "^2.2.3",
     "react-dom": "^18.2.0",
     "react-file-viewer": "^1.2.1",
     "react-google-login": "^5.2.2",

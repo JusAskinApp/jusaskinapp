@@ -6,6 +6,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import { TextField } from '@material-ui/core';
 import Slide from '@mui/material/Slide';
 import { makeStyles } from "@material-ui/core/styles";
 import { IconButton } from "@mui/material";
@@ -38,17 +39,17 @@ const useStyles = makeStyles({
 });
 
 const suggestedSkills = [
-  'JavaScript',
-  'React',
-  'Node.js',
-  'HTML',
-  'CSS',
-  'Python',
-  'Java',
-  'PHP',
-  'SQL',
-  'Git',
-  'AWS',
+  'Business',
+  'Technology',
+  'Science',
+  'Arts & Humanities',
+  'Health & Medicine',
+  'Social Sciences',
+  'Enviroment',
+  'Education',
+  'Law & Politics',
+  'Lifestyle',
+  'Other',
 ];
 
 export default function AlertDialogSlideForInterest(props) {
@@ -95,6 +96,7 @@ export default function AlertDialogSlideForInterest(props) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const [selectedSkills, setSelectedSkills] = React.useState([]);
+  const [otherInterest, setOtherInterest] = React.useState('');
 
   const handleClickOpen = () => {
     debugger;
@@ -125,6 +127,7 @@ export default function AlertDialogSlideForInterest(props) {
  
     handleClose();
   };
+  
 
   const handleDeleteSkill = (deletedSkill) => {
     const updatedSkills = selectedSkills.filter((skill) => skill !== deletedSkill);
@@ -148,6 +151,7 @@ export default function AlertDialogSlideForInterest(props) {
         aria-describedby="alert-dialog-slide-description"
       >
         <DialogTitle>{"Edit Interests"}</DialogTitle>
+
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
             Keeping your skills up to date helps you get the jobs you want.
