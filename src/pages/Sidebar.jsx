@@ -4,13 +4,15 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Drawer from "@mui/material/Drawer";
 import myIcon from "../assets/logo.png";
 import { useNavigate } from "react-router-dom";
-import Home from "./Home";
-import SearchPage from "./Search";
-import Sources from "./Sources";
-import Group from "./Group";
-import Messages from "./Messages";
-import Profile from "./Profile";
-import { Home as HomeIcon, Search as SearchIcon, LocalLibrary as ResourcesIcon, Group as GroupIcon, Message as MessagesIcon, AccountCircle as ProfileIcon, ExitToApp as LogoutIcon } from '@mui/icons-material';
+import {
+  Home as HomeIcon,
+  Search as SearchIcon,
+  LocalLibrary as ResourcesIcon,
+  Group as GroupIcon,
+  Message as MessagesIcon,
+  AccountCircle as ProfileIcon,
+  ExitToApp as LogoutIcon,
+} from "@mui/icons-material";
 const drawerWidth = 240;
 
 function Sidebar(props) {
@@ -53,7 +55,12 @@ function Sidebar(props) {
               className={`flex cursor-pointer items-center justify-center${
                 activeItem === item.text ? "bg-blue-500" : ""
               }`}
-              onClick={() => handleListItemClick(item.text)}
+              onClick={() =>
+                handleListItemClick(() => {
+                  debugger;
+                  console.log(item.text);
+                })
+              }
             >
               {item.icon}
             </div>
@@ -61,7 +68,25 @@ function Sidebar(props) {
               className={`ml-6 cursor-pointer ${
                 activeItem === item.text ? "text-green-500" : ""
               } hover:text-green-500`}
-              onClick={() => handleListItemClick(item.text)}
+              onClick={() =>
+                handleListItemClick(() => {
+                  debugger;
+                  console.log(item);
+                  if (item.text == "Home") {
+                    navigate("/home");
+                  } else if (item.text == "Search") {
+                    navigate("/search");
+                  } else if (item.text == "Group") {
+                    navigate("/group");
+                  } else if (item.text == "Resources") {
+                    navigate("/resource");
+                  } else if (item.text === "Messages") {
+                    navigate("/messages");
+                  } else if (item.text === "Profile") {
+                    navigate("/profile");
+                  }
+                })
+              }
             >
               {item.text}
             </div>
@@ -109,14 +134,7 @@ function Sidebar(props) {
           p: 3,
           width: { sm: `calc(100% - ${drawerWidth}px)` },
         }}
-      >
-        {activeItem === "Home" && <Home />}
-        {activeItem === "Search" && <SearchPage />}
-        {activeItem === "Resources" && <Sources />}
-        {activeItem === "Group" && <Group />}
-        {activeItem === "Messages" && <Messages />}
-        {activeItem === "Profile" && <Profile />}
-      </Box>
+      ></Box>
     </Box>
   );
 }

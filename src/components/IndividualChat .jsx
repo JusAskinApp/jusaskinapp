@@ -35,6 +35,9 @@ const IndividualChat = ({ profile, onBackClick }) => {
       console.error(error);
     }
   }
+  function getUserObject(){
+    
+  }
   async function   sendButtonClick(e){
     debugger;
     console.log(messages)

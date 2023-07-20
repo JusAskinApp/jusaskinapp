@@ -18,6 +18,7 @@ import DialogForProfessSkills from "../components/DialogForProfessSkills";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
 import "./home.css";
+import { useLocation } from "react-router-dom";
 import CustomSnackbar from "../components/CustomSnackbar";
 
 const useStyles = makeStyles({
@@ -37,7 +38,11 @@ function Profile(props) {
   const [imageUrl, setImageUrl] = useState(
     "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/462.jpg"
   );
-
+  debugger;
+  const {state} = useLocation();
+//  const currentUser = !props.location.currentUser ? null : props.location.currentUser 
+    const currentUser = state ? state.currentUser : null;
+    console.log(currentUser)
   const checkfvt = async (currentUser) => {
     debugger;
     const data = await makeApiCall(
@@ -150,24 +155,24 @@ function Profile(props) {
   const classes = useStyles();
   useEffect(() => {
     setText(JSON.parse(localStorage.userDetail).headline);
-    checkfvt(props.currentUser);
+    checkfvt(currentUser);
   }, []);
   const tabs = [
-    { label: "About", component: <About currentUser={props.currentUser} /> },
+    { label: "About", component: <About currentUser={currentUser} /> },
     {
       label: "Settings",
-      component: <Settings currentUser={props.currentUser} />,
+      component: <Settings currentUser={currentUser} />,
     },
     { label: "Saved", component: "test" },
     {
       label: "My Resources",
-      component: <Resources currentUser={props.currentUser} />,
+      component: <Resources currentUser={currentUser} />,
     },
   ];
 
   function handleStartChatClick() {
     debugger;
-    console.log(props.currentUser);
+    console.log(currentUser);
     setShowChat(true);
   }
   const handleBackClick = () => {
@@ -226,9 +231,9 @@ function Profile(props) {
                 src={
                   selectedFile
                     ? selectedFile[0]
-                    : props.currentUser
-                    ? props.currentUser.urlLink
-                      ? props.currentUser.urlLink[0]
+                    : currentUser
+                    ? currentUser.urlLink
+                      ? currentUser.urlLink[0]
                       : ""
                     : JSON.parse(localStorage.userDetail).urlLink
                     ? JSON.parse(localStorage.userDetail).urlLink[0]
@@ -236,7 +241,7 @@ function Profile(props) {
                 }
                 alt=""
               />
-              {!props.currentUser ? (
+              {!currentUser ? (
                 <IconButton
                   onChange={handleFileChange}
                   color="primary"
@@ -261,22 +266,22 @@ function Profile(props) {
             </div>
             <div className="ml-11">
               <h2 className="font-bold text-lg mb-1">
-                {props.currentUser
-                  ? props.currentUser.name
+                {currentUser
+                  ? currentUser.name
                   : JSON.parse(localStorage.userDetail).name}
               </h2>
               <div className="flex items-center">
                 <h3 className="text-sm text-gray-400">
-                  {props.currentUser
-                    ? props.currentUser.headline
-                      ? props.currentUser.headline
+                  {currentUser
+                    ? currentUser.headline
+                      ? currentUser.headline
                       : ""
                     : text}
                 </h3>
                 {/* <DialogForProfessSkills
                   onSave={handleSave}
                 /> */}
-                {!props.currentUser ? (
+                {!currentUser ? (
                   <DialogForProfessSkills onSave={handleSave} />
                 ) : (
                   ""
@@ -286,7 +291,7 @@ function Profile(props) {
                 <Rating name="star-rating" value={5} />
               </div>
 
-              {props.currentUser ? (
+              {currentUser ? (
                 <div className="flex items-center space-x-4">
                   <Button
                     onClick={handleStartChatClick}
@@ -299,7 +304,7 @@ function Profile(props) {
                     <Checkbox
                       checked={fvt}
                       onChange={() => {
-                        addtofvt(props.currentUser);
+                        addtofvt(currentUser);
                       }}
                       icon={<FavoriteBorder />}
                       checkedIcon={<Favorite sx={{ color: "red" }} />}
@@ -321,12 +326,12 @@ function Profile(props) {
           </div>
 
           <div className="mt-8 px-22 sm:px-4 xs:px-2 md:px-20">
-            <Tabsection currentUser={props.currentUser} tabs={tabs} />
+            <Tabsection currentUser={currentUser} tabs={tabs} />
           </div>
         </>
       ) : (
         <IndividualChat
-          profile={props.currentUser}
+          profile={currentUser}
           onBackClick={handleBackClick}
         />
       )}

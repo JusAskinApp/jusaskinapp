@@ -4,6 +4,7 @@ import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import { useNavigate } from "react-router-dom";
 import { GoogleLogin } from "react-google-login";
+import { Link } from "react-router-dom";
 
 import {
   TextField,
@@ -18,7 +19,7 @@ import {
   IconButton,
   Checkbox,
   FormControlLabel,
-  CircularProgress
+  CircularProgress,
 } from "@material-ui/core";
 
 import CustomSnackbar from "./CustomSnackbar";
@@ -116,8 +117,9 @@ export default function Signup() {
         }
       })
       .catch((error) => {
-         console.error(error);
-      }).finally(() => {
+        console.error(error);
+      })
+      .finally(() => {
         setLoading(false); // Stop the loading spinner
       });
   };
@@ -155,10 +157,6 @@ export default function Signup() {
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
     } else {
-      // const hashedPassword = await hash(formData.password, '$2a$10$abcdefghijklmnopqrstuv');
-      // formData.password = hashedPassword
-      // console.log(hashedPassword)
-      // submit the form
       const options = {
         method: "POST",
         body: JSON.stringify({
@@ -183,8 +181,8 @@ export default function Signup() {
 
   return (
     <Grid>
-      <Navbar/>
-       <CustomSnackbar
+      <Navbar />
+      <CustomSnackbar
         open={showSnackbar}
         autoHideDuration={6000}
         handleClose={handleCloseSnackbar}
@@ -279,9 +277,12 @@ export default function Signup() {
                     style={{ color: "#8CA1A6" }}
                     gutterBottom
                   >
-                    By creating your account you agree to JusAskin's terms and
-                    Privacy Policy
+                    By creating your account you agree to JusAskin's
+                    <Link to="/terms" style={{ textDecoration: "none" }}>  <span style={{ textDecoration: "underline" }}>terms</span> </Link>
+                     and
+                     <Link to="/privacypolicy" style={{ textDecoration: "none" }}> <span style={{ textDecoration: "underline" }}>Privacy Policy</span> </Link>
                   </Typography>
+                 
                 }
                 labelPlacement="end"
               />

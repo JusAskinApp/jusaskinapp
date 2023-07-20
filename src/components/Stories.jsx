@@ -3,11 +3,12 @@ import { faker } from "@faker-js/faker";
 import makeApiCall from "../Api/api";
 import Story from "./Story";
 import Profile from "../pages/Profile";
-
+import { useNavigate } from "react-router-dom";
 function Stories() {
   const [fvt, setfvt] = useState({})
   const [favoriteUsers, setfavoriteUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
+  const navigate = useNavigate();
   useEffect(() => {
     debugger;
     getFvt();
@@ -46,7 +47,7 @@ function Stories() {
     debugger;
     setSelectedUser(user);
     if (user) {
-      return <Profile currentUser={user} />;
+      navigate('/profile', { state  : {currentUser: user} });
     }
   };
   

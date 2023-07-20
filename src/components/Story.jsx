@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 function Story({ img, username, onClick }) {
   return (
-    <Link to={`/profile/${username}`}>
+
     <div onClick={onClick}>
       <Avatar
         sx={{
@@ -23,7 +23,6 @@ function Story({ img, username, onClick }) {
     
       <p className="text-xs mt-1 w-14 text-center truncate">{username}</p>
     </div>
-    </Link>
   );
 }
 

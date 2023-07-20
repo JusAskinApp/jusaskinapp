@@ -1,20 +1,17 @@
 import * as React from 'react';
 import Button from '@mui/material/Button';
-import Chip from '@mui/material/Chip';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import { TextField } from '@material-ui/core';
 import Slide from '@mui/material/Slide';
 import { makeStyles } from "@material-ui/core/styles";
 import { IconButton } from "@mui/material";
 import EditIcon from "@material-ui/icons/Edit";
-import AddIcon from '@mui/icons-material/Add';
-import Avatar from '@mui/material/Avatar';
-import CloseIcon from '@mui/icons-material/Close';
+
 import makeApiCall from '../Api/api';
+import FixedTags from './AutoComplete';
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -38,19 +35,6 @@ const useStyles = makeStyles({
   }
 });
 
-const suggestedSkills = [
-  'Business',
-  'Technology',
-  'Science',
-  'Arts & Humanities',
-  'Health & Medicine',
-  'Social Sciences',
-  'Enviroment',
-  'Education',
-  'Law & Politics',
-  'Lifestyle',
-  'Other',
-];
 
 export default function AlertDialogSlideForInterest(props) {
   const updateLocalStorage = (interest) => {
@@ -96,7 +80,8 @@ export default function AlertDialogSlideForInterest(props) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const [selectedSkills, setSelectedSkills] = React.useState([]);
-  const [otherInterest, setOtherInterest] = React.useState('');
+  const [selectedTags, setSelectedTags] = React.useState([]);
+
 
   const handleClickOpen = () => {
     debugger;
@@ -120,11 +105,17 @@ export default function AlertDialogSlideForInterest(props) {
   };
 
 
-  const handleSaveInterest = () => {
-    debugger
-    saveInterest(selectedSkills);
-    props.onSave(selectedSkills);
+  // const handleSaveInterest = () => {
+  //   debugger
+  //   saveInterest(selectedSkills);
+  //   props.onSave(selectedSkills);
  
+  //   handleClose();
+  // };
+
+  const handleSaveInterest = () => {
+    saveInterest(selectedTags);
+    props.setSelectedSkills(selectedTags);
     handleClose();
   };
   
@@ -134,9 +125,13 @@ export default function AlertDialogSlideForInterest(props) {
     setSelectedSkills(updatedSkills);
   };
 
+  // React.useEffect(() => {
+  //   setSelectedSkills(props.selectedSkills);
+  // }, [props.selectedSkills]);
   React.useEffect(() => {
-    setSelectedSkills(props.selectedSkills);
+    setSelectedTags(props.selectedSkills);
   }, [props.selectedSkills]);
+  
 
   return (
     <div>
@@ -157,7 +152,7 @@ export default function AlertDialogSlideForInterest(props) {
             Keeping your skills up to date helps you get the jobs you want.
           </DialogContentText>
           <div className={classes.skillsContainer}>
-            {suggestedSkills.map((skill) => (
+            {/* {suggestedSkills.map((skill) => (
               <Chip
                 key={skill}
                 label={skill}
@@ -173,8 +168,11 @@ export default function AlertDialogSlideForInterest(props) {
                       </Avatar>)
                   }
               />
-            ))}
+            ))} */}
+            <FixedTags selectedTags={selectedTags} setSelectedTags={setSelectedTags} />
+
           </div>
+          
         </DialogContent>
         
         <DialogActions>
