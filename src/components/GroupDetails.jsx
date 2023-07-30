@@ -14,7 +14,7 @@ import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined";
 
 
 function NewComponent({ onBackClick }) {
-  const [selectedFile, setSelectedFile] = useState(null);
+  const [selectedFile, setSelectedFile] = useState([]);
   const [groupName, setGroupName] = useState("");
   const [subtitle, setSubtitle] = useState("");
   const [textAreaValue, setTextAreaValue] = useState("");
@@ -25,7 +25,8 @@ function NewComponent({ onBackClick }) {
   };
   
   const handleFileChange = (event) => {
-    setSelectedFile(event.target.files[0]);
+    setSelectedFile(Array.from(event.target.files));
+    
   };
   
   const handleGroupNameChange = (event) => {
@@ -39,10 +40,64 @@ function NewComponent({ onBackClick }) {
   const handleTextAreaChange = (event) => {
     setTextAreaValue(event.target.value);
   };
-  
-  const handleCreateGroupClick = () => {
-debugger
-
+  const createGroup = async (url) => {
+    debugger;
+    try {
+      const response = await fetch(
+        "https://jusaskin.herokuapp.com/api/groups/creategroup",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            imageurl: url,
+            groupname: groupName,
+            subtitle: subtitle,
+            description:textAreaValue,
+            admin:JSON.parse(localStorage.getItem('userDetail')),
+          }),
+        }
+      );
+      const data = await response.json();
+      console.log(data);
+      if (response.ok) {
+       alert("group Created")
+      } else {
+     
+      }
+    } catch (error) {
+     console.log(error)
+    }
+  };
+  const uploadFiles = async () => {
+    debugger;
+    const formData = new FormData();
+    selectedFile.forEach((file) => {
+      formData.append('files[]', file);
+    });
+    let promise = new Promise((resolve, reject) => {
+      fetch("https://jusaskin.herokuapp.com/api/resources/upload", {
+        method: "POST",
+        body: formData,
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+          resolve(data['fileUrls'])
+        })
+        .catch((error) => {
+          console.error(error);
+          resolve([])
+        });
+      // resolve(true);
+    });
+    return promise;
+  }
+  const handleCreateGroupClick = async () => {
+debugger;
+const url = await uploadFiles();
+createGroup(url)
    
   };
 

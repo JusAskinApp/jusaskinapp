@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useEffect } from "react";
 import Post from "./Post";
 
-const Feed = () => {
+const Feed = (groupid) => {
   const [loading, setLoading] = useState(true);
   const [blogData, setBlogData] = useState([]);
   function shuffleArray(array) {
@@ -18,14 +18,31 @@ const Feed = () => {
   }, [5000]);
   useEffect(() => {
     debugger;
+    // let url = "https://jusaskin.herokuapp.com/api/blogPosts/blogs/";
+    let url = ""
+    let getBlogObj = {}
+    if (groupid.groupid) {
+      url = "https://jusaskin.herokuapp.com/api/groups/getgrouppost/";
+      getBlogObj = {
+        interests: ["Nasir"],
+        groupid:groupid.groupid
+
+      }
+    } else {
+      url = "https://jusaskin.herokuapp.com/api/blogPosts/blogs/";
+      getBlogObj = {
+        interests: ["Nasir"]
+
+      }
+    }
     const getBlogs = async (id) => {
       debugger;
-      fetch(`https://jusaskin.herokuapp.com/api/blogPosts/blogs/`, {
+      fetch(url, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ interests: ["Nasir"] }),
+        body: JSON.stringify(getBlogObj ),
       })
         .then((response) => response.json())
         .then((data) => {

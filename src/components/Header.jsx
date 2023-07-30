@@ -68,10 +68,10 @@ export default function AutoGrid() {
         window.location.reload(true)
       })
       .catch((error) => {
-         console.error(error);
+        console.error(error);
       });
   };
-  const CreatePost =  () => {
+  const CreatePost = () => {
     debugger
     const userDetail = JSON.parse(localStorage.getItem("userDetail"));
     blogPost.author = userDetail;
@@ -85,39 +85,39 @@ export default function AutoGrid() {
   return (
     <div>
       {/* <Box sx={{ flexGrow: 1 }}> */}
-      <HeaderIcons/>
-    <Stories />
-    <Grid container spacing={2} style={{marginTop:'25px'}}>
-    <Grid item xs={11}>
-      <div className="flex flex-row items-center">
-  <input
-    className="w-full py-2 px-4 border border-gray-400 rounded-lg text-gray-700 leading-tight focus:outline-none focus:border-blue-500"
-    type="text"
-    placeholder="What's on your mind"
-    onChange={(e) => {
-      setContent(e.target.value);
-    }}
-  />
-  <button
-    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 ml-2 rounded-lg"
-    onClick={CreatePost}
-  >
-    Post
-  </button>
-</div>
-    </Grid>
-    <Grid item xs={1}>
-      <IconButton onClick={handleClickOpen}>
-        <AddIcon
-          fontSize="large"
-          fontWeight="light"
-          style={{ color: "#8ca1a6" }}
-        />
-      </IconButton>
-      <DialogBox open={open} onClose={handleClose} />
-    </Grid>
-    </Grid>
-{/* </Box> */}
+      <HeaderIcons />
+      <Stories />
+      <Grid container spacing={2} style={{ marginTop: '25px' }}>
+        <Grid item xs={11}>
+          <div className="flex flex-row items-center">
+            <input
+              className="w-full py-2 px-4 border border-gray-400 rounded-lg text-gray-700 leading-tight focus:outline-none focus:border-blue-500"
+              type="text"
+              placeholder="What's on your mind"
+              onChange={(e) => {
+                setContent(e.target.value);
+              }}
+            />
+            <button
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 ml-2 rounded-lg"
+              onClick={CreatePost}
+            >
+              Post
+            </button>
+          </div>
+        </Grid>
+        <Grid item xs={1}>
+          <IconButton onClick={handleClickOpen}>
+            <AddIcon
+              fontSize="large"
+              fontWeight="light"
+              style={{ color: "#8ca1a6" }}
+            />
+          </IconButton>
+          <DialogBox open={open} onClose={handleClose} />
+        </Grid>
+      </Grid>
+      {/* </Box> */}
 
     </div>
   );

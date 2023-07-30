@@ -15,11 +15,13 @@ import GroupDetails from '../components/GroupDetails';
 
 const tabs = [
   { label: 'Groups', component: <GroupComponent/>},
-  { label: 'Topics', component: <TopicComponent/> },
+  { label: 'My Groups', component: <TopicComponent/> },
 ];
 
 function Group() {
+
   const [showNewComponent, setShowNewComponent] = useState(false);
+  
 
   const handleAddClick = () => {
     setShowNewComponent(true);
