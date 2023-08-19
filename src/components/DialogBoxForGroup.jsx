@@ -63,9 +63,11 @@ export default function DialogBoxForGroups(props) {
     })
       .then((response) => response.json())
       .then((data) => {
+        
         setSnackbarMessage("Post added successfully");
           setSnackbarSeverity("success");
           setShowSnackbar(true);
+          window.location.reload(true);
       })
       .catch((error) => {
         setSnackbarMessage("Please try again later");
