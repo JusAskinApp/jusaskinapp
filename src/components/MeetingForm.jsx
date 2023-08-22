@@ -35,7 +35,7 @@ function MeetingForm(groupid) {
     };
     function InsertMeetingDetails() {
         debugger;
-        fetch("http://localhost:4000/api/groups/scehdualmeeting", {
+        fetch("https://jusaskin.herokuapp.com/api/groups/scehdualmeeting", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

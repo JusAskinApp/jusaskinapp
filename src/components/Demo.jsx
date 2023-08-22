@@ -7,6 +7,7 @@ import TableCell from '@mui/material/TableCell';
 import Typography from '@mui/material/Typography';
 import { ViewState, EditingState } from '@devexpress/dx-react-scheduler';
 import classNames from 'clsx';
+import './Demo.css';
 import {
   Scheduler,
   MonthView,
@@ -262,7 +263,7 @@ export default class Demo extends React.PureComponent {
     debugger;
     try {
       const { groupid } = this.props; // Access groupid from props
-      const response = await fetch('http://localhost:4000/api/groups/getmeetingsbygroupid', {
+      const response = await fetch('https://jusaskin.herokuapp.com/api/groups/getmeetingsbygroupid', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

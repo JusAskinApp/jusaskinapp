@@ -94,30 +94,21 @@ export default function AlertDialogSlideForInterest(props) {
     setOpen(false);
   };
   
-  const handleSkillClick = (skill) => {
-    debugger
-    if (selectedSkills.includes(skill)) {
-      setSelectedSkills(selectedSkills.filter((s) => s !== skill));
-    } else {
-      setSelectedSkills([...selectedSkills, skill]);
-    }
 
-  };
-
-
-  // const handleSaveInterest = () => {
-  //   debugger
-  //   saveInterest(selectedSkills);
-  //   props.onSave(selectedSkills);
- 
-  //   handleClose();
-  // };
 
   const handleSaveInterest = () => {
+    debugger;
     saveInterest(selectedTags);
     props.setSelectedSkills(selectedTags);
     handleClose();
   };
+
+  // const handleSaveInterest = () => {
+  //   debugger;
+  //   saveInterest(selectedSkills);
+  //   props.setSelectedSkills(selectedSkills);
+  //   handleClose();
+  // };
   
 
   const handleDeleteSkill = (deletedSkill) => {
@@ -125,9 +116,6 @@ export default function AlertDialogSlideForInterest(props) {
     setSelectedSkills(updatedSkills);
   };
 
-  // React.useEffect(() => {
-  //   setSelectedSkills(props.selectedSkills);
-  // }, [props.selectedSkills]);
   React.useEffect(() => {
     setSelectedTags(props.selectedSkills);
   }, [props.selectedSkills]);
@@ -152,23 +140,7 @@ export default function AlertDialogSlideForInterest(props) {
             Keeping your skills up to date helps you get the jobs you want.
           </DialogContentText>
           <div className={classes.skillsContainer}>
-            {/* {suggestedSkills.map((skill) => (
-              <Chip
-                key={skill}
-                label={skill}
-                className={classes.skillChip}
-                color={selectedSkills.includes(skill) ? 'primary' : undefined}
-                onClick={() => handleSkillClick(skill)}
-                avatar={!selectedSkills.includes(skill) ?
-                    (<Avatar >
-                      <AddIcon className={classes.AvatarSize}/>
-                    </Avatar>):
-                    (<Avatar>
-                        <CloseIcon className={classes.AvatarSize}/>
-                      </Avatar>)
-                  }
-              />
-            ))} */}
+           
             <FixedTags selectedTags={selectedTags} setSelectedTags={setSelectedTags} />
 
           </div>
@@ -177,7 +149,7 @@ export default function AlertDialogSlideForInterest(props) {
         
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleSaveInterest} variant="contained" disabled={!selectedSkills.length}>
+          <Button onClick={handleSaveInterest} variant="contained">
             Save
           </Button>
         </DialogActions>
