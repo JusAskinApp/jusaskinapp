@@ -4,6 +4,8 @@ import facebook from "../assets/facebook-icon.png";
 import google from "../assets/google-icon.png";
 import twitter from "../assets/twitter-icon.png";
 import { useNavigate } from "react-router-dom";
+import { isMobile } from "react-device-detect";
+import Footer from "./Footer";
 import {
   TextField,
   Paper,
@@ -48,7 +50,7 @@ export default function Login() {
   const navigate = useNavigate();
   const paperStyle = {
     padding: "40px 30px",
-    width: 450,
+    width: isMobile ? "auto" : 450,
     margin: "100px auto",
     textAlign: "center",
   };
@@ -251,6 +253,7 @@ export default function Login() {
           </form>
         </ThemeProvider>
       </Paper>
+      <Footer />
     </Grid>
   );
 }

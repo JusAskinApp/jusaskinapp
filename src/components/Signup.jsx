@@ -5,7 +5,7 @@ import RadioGroup from "@mui/material/RadioGroup";
 import { useNavigate } from "react-router-dom";
 import { GoogleLogin } from "react-google-login";
 import { Link } from "react-router-dom";
-
+import Footer from "./Footer";
 import {
   TextField,
   Paper,
@@ -339,8 +339,10 @@ export default function Signup() {
               </Grid>
             </FormControl>
           </form>
+          
         </ThemeProvider>
       </Paper>
+<Footer />
     </Grid>
   );
 }

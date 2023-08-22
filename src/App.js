@@ -20,6 +20,8 @@ import { useLocation } from 'react-router-dom';
 import Terms from "./components/Terms";
 import PrivacyPolicy from "./components/PrivacyPolicy";
 import GroupHomePage from './pages/GroupHomePage';
+import { isMobile } from 'react-device-detect';
+import BottomBar from './components/BottomBar';
 const clientID = '644322334132-o3bvfqgckm43rq74dki8jb3jren3a5sj.apps.googleusercontent.com'
 function App() {
   const location = useLocation();
@@ -29,6 +31,7 @@ function App() {
   const isLandingPage = currentPath === '/';
   const privacyPolicy = currentPath === '/privacypolicy';
   const terms = currentPath === '/terms'
+
   // Render the Sidebar component conditionally
   const renderSidebar = !isLoginPage && !isSignupPage && !isLandingPage && !privacyPolicy && !terms;
   debugger;
@@ -45,8 +48,11 @@ function App() {
 
   return (
     <div className='bg-gray-50 h-screen overflow-y-scroll scrollbar-hide app-container'>
-      {renderSidebar && <div className='sidebar'>
+      {renderSidebar && !isMobile && <div className='sidebar'>
         <Sidebar />
+      </div>}
+      {renderSidebar && isMobile && <div>
+        <BottomBar />
       </div>}
       <div className='content'>
         <Routes>

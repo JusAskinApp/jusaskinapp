@@ -88,7 +88,7 @@ export default function AutoGrid() {
       <HeaderIcons />
       <Stories />
       <Grid container spacing={2} style={{ marginTop: '25px' }}>
-        <Grid item xs={11}>
+        <Grid item xs={12}>
           <div className="flex flex-row items-center">
             <input
               className="w-full py-2 px-4 border border-gray-400 rounded-lg text-gray-700 leading-tight focus:outline-none focus:border-blue-500"
@@ -104,9 +104,16 @@ export default function AutoGrid() {
             >
               Post
             </button>
+            <IconButton onClick={handleClickOpen}>
+            <AddIcon
+              fontSize="large"
+              fontWeight="light"
+              style={{ color: "#8ca1a6" }}
+            />
+          </IconButton>
           </div>
         </Grid>
-        <Grid item xs={1}>
+        {/* <Grid item xs={1}>
           <IconButton onClick={handleClickOpen}>
             <AddIcon
               fontSize="large"
@@ -115,7 +122,7 @@ export default function AutoGrid() {
             />
           </IconButton>
           <DialogBox open={open} onClose={handleClose} />
-        </Grid>
+        </Grid> */}
       </Grid>
       {/* </Box> */}
 
