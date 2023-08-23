@@ -60,7 +60,7 @@ export default function Signup() {
   const navigate = useNavigate();
   const paperStyle = {
     padding: "40px 30px",
-    width: 450,
+    width: isMobile ? 'auto' : 450,
     margin: "20px auto",
     textAlign: "center",
   };

@@ -76,16 +76,16 @@ function BottomBar() {
     // </BottomNavigation>
     // </div>
 
-    <div class="fixed z-50 w-full h-16 max-w-lg -translate-x-1/2 bg-white border-gray-200 bottom-0 left-1/2 dark:bg-gray-700 dark:border-gray-600">
+    <div class="fixed z-50 w-full h-16 max-w-lg -translate-x-1/2 bg-white border-gray-200 bottom-0 left-1/2">
       <div class="grid h-full max-w-lg grid-cols-7 gap-2 mx-auto">
         <div class="flex items-center justify-center">
           <button
             onClick={() => handleNavigation("Home")}
             data-tooltip-target="tooltip-home"
             type="button"
-            class="inline-flex items-center justify-center w-10 h-10 font-medium  rounded-full group focus:ring-4 focus:ring-blue-300 focus:outline-none dark:focus:ring-blue-800"
+            class="inline-flex items-center justify-center w-10 h-10 font-medium  focus:bg-gray-300  rounded-full bg-blue-300rounded-full group"
           >
-            <HomeIcon />
+            <HomeIcon/>
             <span class="sr-only">Home</span>
           </button>
         </div>
@@ -94,7 +94,9 @@ function BottomBar() {
             onClick={() => handleNavigation("Search")}
             data-tooltip-target="tooltip-wallet"
             type="button"
-            class="inline-flex items-center justify-center w-10 h-10 font-medium  rounded-full group focus:ring-4 focus:ring-blue-300 focus:outline-none dark:focus:ring-blue-800"
+            class="inline-flex items-center justify-center w-10 h-10 font-medium  focus:bg-gray-300  rounded-full bg-blue-300rounded-full group"
+
+
           >
             <SearchIcon />
             <span class="sr-only">Search</span>
@@ -113,7 +115,9 @@ function BottomBar() {
             onClick={() => handleNavigation("Group")}
             data-tooltip-target="tooltip-new"
             type="button"
-            class="inline-flex items-center justify-center w-10 h-10 font-medium  rounded-full group focus:ring-4 focus:ring-blue-300 focus:outline-none dark:focus:ring-blue-800"
+            class="inline-flex items-center justify-center w-10 h-10 font-medium  focus:bg-gray-300  rounded-full bg-blue-300rounded-full group"
+
+
           >
             <GroupIcon />
             <span class="sr-only">Group</span>
@@ -124,7 +128,9 @@ function BottomBar() {
             onClick={() => handleNavigation("Resources")}
             data-tooltip-target="tooltip-settings"
             type="button"
-            class="inline-flex items-center justify-center w-10 h-10 font-medium  rounded-full group focus:ring-4 focus:ring-blue-300 focus:outline-none dark:focus:ring-blue-800"
+            class="inline-flex items-center justify-center w-10 h-10 font-medium  focus:bg-gray-300  rounded-full bg-blue-300rounded-full group"
+
+
 
           >
             <ResourcesIcon />
@@ -136,7 +142,9 @@ function BottomBar() {
             onClick={() => handleNavigation("Messages")}
             data-tooltip-target="tooltip-profile"
             type="button"
-            class="inline-flex items-center justify-center w-10 h-10 font-medium  rounded-full group focus:ring-4 focus:ring-blue-300 focus:outline-none dark:focus:ring-blue-800"
+            class="inline-flex items-center justify-center w-10 h-10 font-medium  focus:bg-gray-300  rounded-full bg-blue-300rounded-full group"
+
+
 
           >
             <MessagesIcon />
@@ -148,7 +156,9 @@ function BottomBar() {
             onClick={() => handleNavigation("Profile")}
             data-tooltip-target="tooltip-profile"
             type="button"
-            class="inline-flex items-center justify-center w-10 h-10 font-medium  rounded-full group focus:ring-4 focus:ring-blue-300 focus:outline-none dark:focus:ring-blue-800"
+            class="inline-flex items-center justify-center w-10 h-10 font-medium  focus:bg-gray-300  rounded-full bg-blue-300rounded-full group"
+
+
 
           >
             <ProfileIcon />
@@ -160,7 +170,7 @@ function BottomBar() {
             onClick={() => handleLogout()}
             data-tooltip-target="tooltip-logout"
             type="button"
-            class="inline-flex items-center justify-center w-10 h-10 font-medium  rounded-full group focus:ring-4 focus:ring-blue-300 focus:outline-none dark:focus:ring-blue-800"
+            class="inline-flex items-center justify-center w-10 h-10 font-medium  focus:bg-gray-300  rounded-full bg-blue-300rounded-full group"
 
           >
            <LogoutIcon />

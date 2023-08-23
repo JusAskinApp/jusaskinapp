@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Feed from "../components/Feed";
 import "./home.css";
-import IconButton from "@mui/material/IconButton";
+// import IconButton from "@mui/material/IconButton";
 import Grid from "@mui/material/Unstable_Grid2";
 import { useLocation } from "react-router-dom";
 import DialogBoxForGroups from "../components/DialogBoxForGroup";
@@ -13,9 +13,16 @@ import Divider from "@mui/material/Divider";
 import LockIcon from "@mui/icons-material/Lock";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import Avatar from '@mui/material/Avatar';
-import AvatarGroup from '@mui/material/AvatarGroup';
-
+import Avatar from "@mui/material/Avatar";
+import AvatarGroup from "@mui/material/AvatarGroup";
+import Demo from "../components/Demo";
+import { createTheme, Box } from "@material-ui/core";
+import { ThemeProvider } from "styled-components";
+import IconButton from "@mui/material/IconButton";
+import AddIcon from "@mui/icons-material/Add";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import { isMobile } from "react-device-detect";
+import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
 const GroupTitle = styled.h1`
   font-size: 28px;
   font-weight: bold;
@@ -23,10 +30,10 @@ const GroupTitle = styled.h1`
   text-transform: capitalize;
 `;
 
-const SubtitleText = styled.p`
-  font-size: 16px;
-  color: #777;
-`;
+// const SubtitleText = styled.p`
+//   font-size: 16px;
+//   color: #777;
+// `;
 
 const BannerImage = styled.img`
   width: 100%;
@@ -37,29 +44,33 @@ const BannerImage = styled.img`
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 `;
 
+// import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined";
 function GroupHomePage() {
-  debugger;
   const navigate = useNavigate();
+  const [mode, setMode] = useState("dark");
   const [content, setContent] = useState("");
   const { state } = useLocation();
   const join = state ? state.join : null;
+  const [showMeetingComp, setMeetingComp] = useState(true);
   const group = state ? state.group : null;
-
   // const bannerImageUrl = group?.bannerurl;
   // const groupTitle = group?.groupname;
-  const groupid = group?.blogRefId;
-
   const [open, setOpen] = useState(false);
   const [isResponseOk, setIsResponseOk] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
   const [expandedSection, setExpandedSection] = useState(false);
+  const groupid = group?.blogRefId;
   const handleClickOpen = () => {
     setOpen(true);
   };
   const handleClose = (value) => {
     setOpen(false);
   };
-
+  const darktheme = createTheme({
+    pelette: {
+      mode: mode,
+    },
+  });
   let blogPost = {
     id: "",
     author: "",
@@ -91,15 +102,14 @@ function GroupHomePage() {
         console.error(error);
       });
   };
-  const CreatePost = () => {
+
+  const scheduleMeeting = () => {
     debugger;
-    const userDetail = JSON.parse(localStorage.getItem("userDetail"));
-    blogPost.author = userDetail;
-    blogPost.id = userDetail.id;
-    blogPost.content = content;
-    blogPost.email = userDetail.email;
-    blogPost.userid = userDetail.id;
-    InsertBlogPost();
+    setMeetingComp((prevFlag) => !prevFlag);
+  };
+  const onBackClick = () => {
+    debugger;
+    setMeetingComp((prevFlag) => !prevFlag);
   };
   async function joinGroup(groupid) {
     debugger;
@@ -132,135 +142,190 @@ function GroupHomePage() {
       setShowPopup(false);
     }
   }
+  const CreatePost = () => {
+    debugger;
+    const userDetail = JSON.parse(localStorage.getItem("userDetail"));
+    blogPost.author = userDetail;
+    blogPost.id = userDetail.id;
+    blogPost.content = content;
+    blogPost.email = userDetail.email;
+    blogPost.userid = userDetail.id;
+    InsertBlogPost();
+  };
   return (
     <div className="header">
-      <Grid container spacing={2} style={{ marginTop: "25px" }}>
-        <Grid item xs={12}>
-          <IconButton
-            onClick={() => {
-              navigate("/group");
-            }}
-          >
-            <ArrowBackOutlinedIcon />
-          </IconButton>
-          <BannerImage src={group.bannerurl} alt="Banner" />
-
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
+      <ThemeProvider theme={darktheme}>
+        {showMeetingComp ? (
+          true ? (
             <div>
-              <GroupTitle>{group.groupname}</GroupTitle>
-              <SubtitleText>
-                <LockIcon style={{ fontSize: "16px" }} /> Private 28 members
-              </SubtitleText>
-            </div>
+              <Grid container spacing={2} style={{ marginTop: "25px" }}>
+                <Grid item xs={12}>
+                  <IconButton
+                    onClick={() => {
+                      navigate("/group");
+                    }}
+                  >
+                    <ArrowBackOutlinedIcon />
+                  </IconButton>
+                  <BannerImage src={group.bannerurl} alt="Banner" />
 
-            <div>
-              {!join && !isResponseOk && (
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={() => {
-                    joinGroup(groupid);
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                    }}
+                  >
+                    <div>
+                      <GroupTitle>{group.groupname}</GroupTitle>
+                      {/* <SubtitleText>
+       M                 <LockIcon style={{ fontSize: "16px" }} /> 
+                      </SubtitleText> */}
+                    </div>
+
+                    <div className="gap-1 flex space-x-1 items-center">
+                      {!join && !isResponseOk && (
+                        <button
+                          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 ml-2 rounded-lg"
+                          onClick={() => {
+                            joinGroup(groupid);
+                          }}
+                        >
+                          <PersonAddAltIcon /> {isMobile ? "" : "  Join Group"}
+                        </button>
+                      )}
+
+                      {join && (
+                        <button
+                          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 ml-2 rounded-lg"
+                          onClick={scheduleMeeting}
+                        >
+                          <CalendarMonthIcon />{" "}
+                          {isMobile ? "" : "Schedule Meeting"}
+                        </button>
+                      )}
+
+                      <Button
+                        variant="outlined"
+                        color="primary"
+                        onClick={() => {
+                          setExpandedSection(!expandedSection);
+                        }}
+                      >
+                        {!expandedSection ? (
+                          <ExpandMoreIcon />
+                        ) : (
+                          <KeyboardArrowUpIcon />
+                        )}
+                      </Button>
+                    </div>
+                  </div>
+                  {expandedSection && (
+                    <div className="bg-gray-100 p-4 rounded">
+                      <div>
+                        <p>{group.description}</p>
+                      </div>
+
+                      <div>
+                        <AvatarGroup total={group.members.length}>
+                          {group.members.map((item, ind) => {
+                            <Avatar alt="Remy Sharp" src={item.urlLink[ind]} />;
+                          })}
+                        </AvatarGroup>
+                      </div>
+                    </div>
+                  )}
+                  <br></br>
+                  <Divider />
+                  <br></br>
+                  {(join || isResponseOk) && (
+                    <div className="flex flex-row items-center">
+                      <input
+                        className="w-full py-2 px-4 border border-gray-400 rounded-lg text-gray-700 leading-tight focus:outline-none focus:border-blue-500"
+                        type="text"
+                        placeholder="What's on your mind"
+                        onChange={(e) => {
+                          setContent(e.target.value);
+                        }}
+                      />
+                      <button
+                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 ml-2 rounded-lg"
+                        onClick={CreatePost}
+                      >
+                        Post
+                      </button>
+                      {/* <button
+                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 ml-2 rounded-lg"
+                        onClick={handleClickOpen}
+                      >
+                       <AddIcon
+                          fontSize="large"
+                          fontWeight="light"
+                          style={{ color: "#8ca1a6" }}
+                        /> upload
+                      </button> */}
+
+                      <IconButton onClick={handleClickOpen}>
+                        <AddIcon
+                          fontSize="large"
+                          fontWeight="light"
+                          style={{ color: "#8ca1a6" }}
+                        />
+                      </IconButton>
+
+                      {/* <button
+                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 ml-2 rounded-lg"
+                        onClick={scheduleMeeting}
+                      >
+                        Schedule
+                      </button> */}
+                    </div>
+                  )}
+                </Grid>
+              </Grid>
+              {showPopup && (
+                <div
+                  style={{
+                    position: "fixed",
+                    top: "50%",
+                    left: "50%",
+                    transform: "translate(-50%, -50%)",
+                    padding: "20px",
+                    background: "#fff",
+                    boxShadow: "0 2px 8px rgba(0, 0, 0, 0.15)",
                   }}
                 >
-                  Join Group
-                </Button>
+                  <h2>Congratulations!</h2>
+                  <p>
+                    You are now a member of this group. You can now actively
+                    participate.
+                  </p>
+                  <button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => setShowPopup(false)}
+                  >
+                    Close
+                  </button>
+                </div>
               )}
-              <Button
-                variant="outlined"
-                color="primary"
-                onClick={() => {
-                  setExpandedSection(!expandedSection);
-                }}
-              >
-                {!expandedSection ? (
-                  <ExpandMoreIcon />
-                ) : (
-                  <KeyboardArrowUpIcon />
-                )}
-              </Button>
-            </div>
-          </div>
-          {expandedSection && (
-            <div className="bg-gray-100 p-4 rounded">
-              <div>
-                <p>{group.description}</p>
-              </div>
-
-              <div>
-                <AvatarGroup total={group.members.length}>
-{group.members.map((item,ind)=>{
-  <Avatar alt="Remy Sharp" src={item.urlLink[ind]} />
-})}
-                  
-                  
-                </AvatarGroup>
-              </div>
-            </div>
-          )}
-          <br></br>
-          <Divider />
-          <br></br>
-          {(join || isResponseOk) && (
-            <div className="flex flex-row items-center">
-              <input
-                className="w-full py-2 px-4 border border-gray-400 rounded-lg text-gray-700 leading-tight focus:outline-none focus:border-blue-500"
-                type="text"
-                placeholder="What's on your mind"
-                onChange={(e) => {
-                  setContent(e.target.value);
-                }}
+              <DialogBoxForGroups
+                open={open}
+                onClose={handleClose}
+                groupid={groupid}
               />
-              <button
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 ml-2 rounded-lg"
-                onClick={handleClickOpen}
-              >
-                upload
-              </button>
-
-              <button
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 ml-2 rounded-lg"
-                onClick={CreatePost}
-              >
-                Post
-              </button>
+              <Feed groupid={groupid} />
             </div>
-          )}
-        </Grid>
-      </Grid>
-      {showPopup && (
-        <div
-          style={{
-            position: "fixed",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            padding: "20px",
-            background: "#fff",
-            boxShadow: "0 2px 8px rgba(0, 0, 0, 0.15)",
-          }}
-        >
-          <h2>Congratulations!</h2>
-          <p>
-            You are now a member of this group. You can now actively
-            participate.
-          </p>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => setShowPopup(false)}
-          >
-            Close
-          </Button>
-        </div>
-      )}
-      <DialogBoxForGroups open={open} onClose={handleClose} groupid={groupid} />
-      <Feed groupid={groupid} />
+          ) : null
+        ) : (
+          <div>
+            <IconButton onClick={onBackClick}>
+              <ArrowBackOutlinedIcon />
+            </IconButton>
+            <Demo groupid={groupid} />
+          </div>
+        )}
+      </ThemeProvider>
     </div>
   );
 }

@@ -111,6 +111,7 @@ export default function AutoGrid() {
               style={{ color: "#8ca1a6" }}
             />
           </IconButton>
+         <DialogBox open={open} onClose={handleClose} />
           </div>
         </Grid>
         {/* <Grid item xs={1}>
@@ -121,7 +122,7 @@ export default function AutoGrid() {
               style={{ color: "#8ca1a6" }}
             />
           </IconButton>
-          <DialogBox open={open} onClose={handleClose} />
+          // <DialogBox open={open} onClose={handleClose} />
         </Grid> */}
       </Grid>
       {/* </Box> */}
