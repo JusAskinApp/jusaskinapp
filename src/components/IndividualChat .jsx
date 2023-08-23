@@ -55,7 +55,7 @@ const IndividualChat = ({ profile, onBackClick }) => {
           "id":"2",
           // "ProfilePic": "https://firebasestorage.googleapis.com/v0/b/jusaskinapp.appspot.com/o/149071-fb71c7c3-f1b1-4379-b4fa-65dc793d9125.png?alt=media&token=38953411-e32f-41fb-970c-d617b38749f6"
       },
-      "text" : _message
+      "text" : _message,
   };
     setMessages([...messages, messagebody]);
     try {
@@ -69,6 +69,7 @@ const IndividualChat = ({ profile, onBackClick }) => {
       console.log(messages)
       if(data){
         _setMessage('')
+        // sendNotification();
         // alert("send")
       }
      
@@ -77,10 +78,59 @@ const IndividualChat = ({ profile, onBackClick }) => {
       console.error(error);
     }
   }
+//  async function sendNotification(){
+//     try {
+//       const data = await makeApiCall('http://localhost:4000/api/chat/pushToNotifications', {
+//         method: "POST",
+//         headers: {
+//           "Content-Type": "application/json",
+//         },
+//         body:JSON.stringify({
+//           seen: false,
+//           from: JSON.parse(JSON.parse(JSON.stringify(localStorage)).userDetail).name,
+//           receiveremail:profile.chatPartnerEmail ? profile.chatPartnerEmail : profile.email,
+//           senderemail:JSON.parse(JSON.parse(JSON.stringify(localStorage)).userDetail).email,
+//         }),
+//       });
+//       console.log(messages)
+//       if(data){
+//         _setMessage('')
+//         // alert("send")
+//       }
+     
+//     } catch (error) {
+//       // setError(true)
+//       console.error(error);
+//     }
+//   }
   
+  // async function updateNotificationsSeenBySenderAndReceiver(){
+  //   try {
+  //     const data = await makeApiCall('http://localhost:4000/api/chat/updateNotificationsSeenBySenderAndReceiver', {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body:JSON.stringify({
+  //         receiveremail:profile.chatPartnerEmail ? profile.chatPartnerEmail : profile.email,
+  //         senderemail:JSON.parse(JSON.parse(JSON.stringify(localStorage)).userDetail).email,
+  //       }),
+  //     });
+  //     console.log(messages)
+  //     if(data){
+  //       _setMessage('')
+  //       // alert("send")
+  //     }
+     
+  //   } catch (error) {
+  //     // setError(true)
+  //     console.error(error);
+  //   }
+  // }
   useEffect(()=>{
     getMessages();
   },[])
+
   return (
     <div className="rounded-lg flex flex-col">
       <div className="flex justify-between p-4">
