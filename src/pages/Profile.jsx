@@ -20,7 +20,7 @@ import MuiAlert from "@material-ui/lab/Alert";
 import "./home.css";
 import { useLocation } from "react-router-dom";
 import CustomSnackbar from "../components/CustomSnackbar";
-
+import Feed from "../components/Feed";
 const useStyles = makeStyles({
   editIcon: {
     fontSize: "medium",
@@ -163,7 +163,7 @@ function Profile(props) {
       label: "Settings",
       component: <Settings currentUser={currentUser} />,
     },
-    { label: "Saved", component: "test" },
+    { label: "Saved", component : <Feed /> },
     {
       label: "My Resources",
       component: <Resources currentUser={currentUser} />,
