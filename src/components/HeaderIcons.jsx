@@ -7,7 +7,7 @@ import Badge from "@mui/material/Badge";
 import Avatar from "@mui/material/Avatar";
 import myIcon from "../assets/logo.png";
 import { isMobile } from "react-device-detect";
-
+import { useNavigate } from "react-router-dom";
 function HeaderIcons() {
   return (
     <div>
