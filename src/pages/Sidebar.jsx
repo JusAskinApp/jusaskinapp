@@ -3,8 +3,9 @@ import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
 import Drawer from "@mui/material/Drawer";
 import myIcon from "../assets/logo.png";
+import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import { useNavigate } from "react-router-dom";
-import { isMobile } from "react-device-detect"; 
+import { isMobile } from "react-device-detect";
 import {
   Home as HomeIcon,
   Search as SearchIcon,
@@ -22,13 +23,37 @@ function Sidebar(props) {
   const navigate = useNavigate();
   const [activeItem, setSelectedItem] = useState("Home");
 
-  function handleListItemClick(item) {
+  // Define click handler functions separately
+  const handleListItemClick = (item) => {
     setSelectedItem(item);
-  }
+  };
+
+  const handleNavigation = (item) => {
+    debugger;
+    console.log(item);
+    if (item === "Home") {
+      navigate("/home");
+    } else if (item === "Search") {
+      navigate("/search");
+    } else if (item === "Group") {
+      navigate("/group");
+    } else if (item === "Resources") {
+      navigate("/resource");
+    } else if (item === "Messages") {
+      navigate("/messages");
+    } else if (item === "Profile") {
+      navigate("/profile");
+    } else if (item === "Visit JAsigma") {
+      debugger;
+      window.open("https://www.jasigma.com/", "_blank");
+    }
+  };
+
   const handleLogout = () => {
     localStorage.removeItem("userDetail");
     navigate("/");
   };
+
   const drawer = (
     <div>
       <div style={{ margin: "15px 26px" }}>
@@ -51,18 +76,17 @@ function Sidebar(props) {
             text: "Profile",
             icon: <ProfileIcon style={{ color: "#757575" }} />,
           },
+          {
+            text: "Visit JAsigma",
+            icon: <OpenInNewIcon style={{ color: "#757575" }} />,
+          },
         ].map((item, index) => (
           <div key={item.text} className="flex items-center py-3">
             <div
               className={`flex cursor-pointer items-center justify-center${
                 activeItem === item.text ? "bg-blue-500" : ""
               }`}
-              onClick={() =>
-                handleListItemClick(() => {
-                  debugger;
-                  console.log(item.text);
-                })
-              }
+              onClick={() => handleListItemClick(item.text)}
             >
               {item.icon}
             </div>
@@ -70,25 +94,7 @@ function Sidebar(props) {
               className={`ml-6 cursor-pointer ${
                 activeItem === item.text ? "text-green-500" : ""
               } hover:text-green-500`}
-              onClick={() =>
-                handleListItemClick(() => {
-                  debugger;
-                  console.log(item);
-                  if (item.text == "Home") {
-                    navigate("/home");
-                  } else if (item.text == "Search") {
-                    navigate("/search");
-                  } else if (item.text == "Group") {
-                    navigate("/group");
-                  } else if (item.text == "Resources") {
-                    navigate("/resource");
-                  } else if (item.text === "Messages") {
-                    navigate("/messages");
-                  } else if (item.text === "Profile") {
-                    navigate("/profile");
-                  }
-                })
-              }
+              onClick={() => handleNavigation(item.text)}
             >
               {item.text}
             </div>
@@ -109,44 +115,35 @@ function Sidebar(props) {
 
   return (
     <>
-    {isMobile ? (<BottomBar/>) : (
-    <Box sx={{ display: "flex" }}>
-      <CssBaseline />
-      
-         <Box
-         component="nav"
-         sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
-         aria-label="mailbox folders"
-       >
-         <Drawer
-           variant="permanent"
-           sx={{
-             display: { xs: "none", sm: "block" },
-             "& .MuiDrawer-paper": {
-               boxSizing: "border-box",
-               width: drawerWidth,
-             },
-           }}
-           open
-         >
-           {drawer}
-         </Drawer>
-       </Box>
-      
-      
-      {/* <Box
-        component="main"
-        sx={{
-          flexGrow: 1,
-          p: 3,
-          width: { sm: `calc(100% - ${drawerWidth}px)` },
-        }}
-      ></Box> */}
-    </Box>
-    )}
+      {isMobile ? (
+        <BottomBar />
+      ) : (
+        <Box sx={{ display: "flex" }}>
+          <CssBaseline />
+
+          <Box
+            component="nav"
+            sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
+            aria-label="mailbox folders"
+          >
+            <Drawer
+              variant="permanent"
+              sx={{
+                display: { xs: "none", sm: "block" },
+                "& .MuiDrawer-paper": {
+                  boxSizing: "border-box",
+                  width: drawerWidth,
+                },
+              }}
+              open
+            >
+              {drawer}
+            </Drawer>
+          </Box>
+        </Box>
+      )}
     </>
   );
 }
+
 export default Sidebar;
-
-

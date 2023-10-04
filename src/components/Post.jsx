@@ -19,6 +19,7 @@ import BookmarkIcon from "@mui/icons-material/Bookmark";
 import { useState, useEffect } from "react";
 import Tooltip from "@mui/material/Tooltip";
 import UrlParser from "./UrlParser";
+import MorevertMenu from "./MorevertMenu";
 const Post = (props) => {
   debugger;
   debugger;
@@ -221,7 +222,7 @@ const Post = (props) => {
         }
         action={
           <IconButton aria-label="settings">
-            <MoreVert />
+            <MorevertMenu/>
           </IconButton>
         }
         title={props.name.name}

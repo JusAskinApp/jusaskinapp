@@ -18,6 +18,8 @@ function WhitePaperPopUp(props) {
     setOpen(false);
   };
 
+  
+
 
 
   return (
@@ -48,9 +50,14 @@ Whether you're an individual looking to expand your knowledge and skills, or an 
         <Button onClick={handleClose} color="primary">
           Close
         </Button>
-        <Button component={Link} to="/whitepaperpage"  color="primary">
+        {/* <Button component={Link} to="/whitepaperpage"  color="primary">
           Open
-        </Button>
+        </Button> */}
+        <a href="/whitepaperpage" target="_blank" rel="noopener noreferrer">
+          <Button color="primary">
+            Open
+          </Button>
+        </a>
       </DialogActions>
     </Dialog>
   );

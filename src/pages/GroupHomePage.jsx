@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import Feed from "../components/Feed";
 import "./home.css";
 // import IconButton from "@mui/material/IconButton";
@@ -48,6 +48,7 @@ const BannerImage = styled.img`
 function GroupHomePage() {
   const navigate = useNavigate();
   const [mode, setMode] = useState("dark");
+  const [members, setMembers] = useState([]);
   const [content, setContent] = useState("");
   const { state } = useLocation();
   const join = state ? state.join : null;
@@ -58,7 +59,7 @@ function GroupHomePage() {
   const [open, setOpen] = useState(false);
   const [isResponseOk, setIsResponseOk] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
-  const [expandedSection, setExpandedSection] = useState(false);
+  const [userLeft, setUserLeft] = useState(false);
   const groupid = group?.blogRefId;
   const handleClickOpen = () => {
     setOpen(true);
@@ -82,6 +83,9 @@ function GroupHomePage() {
     userid: "",
     group: groupid,
   };
+  useEffect(()=>{
+    retrieveGroupMembers(groupid);
+  })
   const InsertBlogPost = (e) => {
     console.log(blogPost);
     debugger;
@@ -111,6 +115,56 @@ function GroupHomePage() {
     debugger;
     setMeetingComp((prevFlag) => !prevFlag);
   };
+
+
+  const  retrieveGroupMembers =(groupid) =>{
+    debugger;
+    fetch("https://jusaskin.herokuapp.com/api/groups/getallmembers", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({groupId : groupid}),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+       setMembers(data.members)
+        
+        // window.location.reload(true);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+
+  async function leaveGroup(groupid) {
+    debugger;
+    try {
+      const response = await fetch(
+        "https://jusaskin.herokuapp.com/api/groups/leavegroup",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            groupid: groupid,
+            members: JSON.parse(localStorage.getItem("userDetail")),
+          }),
+        }
+      );
+      if (response) {
+        alert("user left the group");
+        setUserLeft(true);
+      } else {
+        setUserLeft(false);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   async function joinGroup(groupid) {
     debugger;
     try {
@@ -178,9 +232,7 @@ function GroupHomePage() {
                   >
                     <div>
                       <GroupTitle>{group.groupname}</GroupTitle>
-                      {/* <SubtitleText>
-       M                 <LockIcon style={{ fontSize: "16px" }} /> 
-                      </SubtitleText> */}
+                     
                     </div>
 
                     <div className="gap-1 flex space-x-1 items-center">
@@ -204,37 +256,43 @@ function GroupHomePage() {
                           {isMobile ? "" : "Schedule Meeting"}
                         </button>
                       )}
-
-                      <Button
-                        variant="outlined"
-                        color="primary"
+                      {!userLeft ? (
+                        <Button
+                          variant="outlined"
+                          color="primary"
+                          onClick={() => leaveGroup(groupid)} // Wrap in an anonymous function
+                        >
+                          Leave Group
+                        </Button>
+                      ):
+                      (
+                        <button
+                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 ml-2 rounded-lg"
                         onClick={() => {
-                          setExpandedSection(!expandedSection);
+                          joinGroup(groupid);
                         }}
                       >
-                        {!expandedSection ? (
-                          <ExpandMoreIcon />
-                        ) : (
-                          <KeyboardArrowUpIcon />
-                        )}
-                      </Button>
+                        <PersonAddAltIcon /> {isMobile ? "" : "  Join Group"}
+                      </button>
+                      )}
                     </div>
                   </div>
-                  {expandedSection && (
-                    <div className="bg-gray-100 p-4 rounded">
-                      <div>
-                        <p>{group.description}</p>
-                      </div>
 
-                      <div>
-                        <AvatarGroup total={group.members.length}>
-                          {group.members.map((item, ind) => {
-                            <Avatar alt="Remy Sharp" src={item.urlLink[ind]} />;
-                          })}
-                        </AvatarGroup>
-                      </div>
+                  
+                  <div className="bg-gray-100 p-4 rounded">
+                    <div>
+                      <p>{group.description}</p>
                     </div>
-                  )}
+                    
+
+                    <div>
+                      <AvatarGroup total={members.length}>
+                        {members.map((item, ind) => {
+                          <Avatar alt="Remy Sharp" src={item.urlLink[0]} />;
+                        })}
+                      </AvatarGroup>
+                    </div>
+                  </div>
                   <br></br>
                   <Divider />
                   <br></br>
@@ -254,16 +312,6 @@ function GroupHomePage() {
                       >
                         Post
                       </button>
-                      {/* <button
-                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 ml-2 rounded-lg"
-                        onClick={handleClickOpen}
-                      >
-                       <AddIcon
-                          fontSize="large"
-                          fontWeight="light"
-                          style={{ color: "#8ca1a6" }}
-                        /> upload
-                      </button> */}
 
                       <IconButton onClick={handleClickOpen}>
                         <AddIcon
@@ -272,13 +320,6 @@ function GroupHomePage() {
                           style={{ color: "#8ca1a6" }}
                         />
                       </IconButton>
-
-                      {/* <button
-                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 ml-2 rounded-lg"
-                        onClick={scheduleMeeting}
-                      >
-                        Schedule
-                      </button> */}
                     </div>
                   )}
                 </Grid>

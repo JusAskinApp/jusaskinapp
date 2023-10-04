@@ -24,6 +24,7 @@ import {
 
 import CustomSnackbar from "./CustomSnackbar";
 import Navbar from "./NavbarComponent";
+import { isMobile } from "react-device-detect";
 
 const theme = createTheme();
 theme.overrides = {

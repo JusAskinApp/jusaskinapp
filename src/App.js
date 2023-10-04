@@ -31,9 +31,10 @@ function App() {
   const isLandingPage = currentPath === '/';
   const privacyPolicy = currentPath === '/privacypolicy';
   const terms = currentPath === '/terms'
+  const whitePaper = currentPath ==='/whitepaperpage'
 
   // Render the Sidebar component conditionally
-  const renderSidebar = !isLoginPage && !isSignupPage && !isLandingPage && !privacyPolicy && !terms;
+  const renderSidebar = !isLoginPage && !isSignupPage && !isLandingPage && !privacyPolicy && !terms && !whitePaper;
   debugger;
   useEffect(() => {
     function start() {
