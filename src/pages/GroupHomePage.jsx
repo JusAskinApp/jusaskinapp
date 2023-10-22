@@ -29,12 +29,12 @@ const GroupTitle = styled.h1`
   margin-top: 10px;
   text-transform: capitalize;
 `;
-
+ 
 // const SubtitleText = styled.p`
 //   font-size: 16px;
 //   color: #777;
 // `;
-
+ 
 const BannerImage = styled.img`
   width: 100%;
   height: auto;
@@ -43,7 +43,7 @@ const BannerImage = styled.img`
   border: 2px solid #ccc;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 `;
-
+ 
 // import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined";
 function GroupHomePage() {
   const navigate = useNavigate();
@@ -51,7 +51,8 @@ function GroupHomePage() {
   const [members, setMembers] = useState([]);
   const [content, setContent] = useState("");
   const { state } = useLocation();
-  const join = state ? state.join : null;
+  const [join, setJoin] = useState(state.join)
+  // const join = state ? state.join : null;
   const [showMeetingComp, setMeetingComp] = useState(true);
   const group = state ? state.group : null;
   // const bannerImageUrl = group?.bannerurl;
@@ -106,7 +107,7 @@ function GroupHomePage() {
         console.error(error);
       });
   };
-
+ 
   const scheduleMeeting = () => {
     debugger;
     setMeetingComp((prevFlag) => !prevFlag);
@@ -115,8 +116,8 @@ function GroupHomePage() {
     debugger;
     setMeetingComp((prevFlag) => !prevFlag);
   };
-
-
+ 
+ 
   const  retrieveGroupMembers =(groupid) =>{
     debugger;
     fetch("https://jusaskin.herokuapp.com/api/groups/getallmembers", {
@@ -130,41 +131,44 @@ function GroupHomePage() {
       .then((data) => {
         console.log(data);
        setMembers(data.members)
-        
+       
         // window.location.reload(true);
       })
       .catch((error) => {
         console.error(error);
       });
   }
-
+ 
   async function leaveGroup(groupid) {
     debugger;
     try {
       const response = await fetch(
-        "https://jusaskin.herokuapp.com/api/groups/leavegroup",
+        "http://localhost:4000/api/groups/leavegroup",
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            groupid: groupid,
-            members: JSON.parse(localStorage.getItem("userDetail")),
+            groupId: groupid,
+            userEmail: JSON.parse(localStorage.getItem("userDetail")).email,
           }),
         }
       );
-      if (response) {
-        alert("user left the group");
-        setUserLeft(true);
+      if (response.ok) {
+        alert("user left")
+
+        setJoin(false)
+        // setUserLeft(true);
       } else {
-        setUserLeft(false);
+
+        // setUserLeft(false);
       }
     } catch (error) {
       console.log(error);
     }
   }
-
+ 
   async function joinGroup(groupid) {
     debugger;
     try {
@@ -184,8 +188,10 @@ function GroupHomePage() {
       const data = await response.json();
       console.log(data);
       if (response.ok) {
+        setJoin(true)
         setIsResponseOk(true);
         setShowPopup(true);
+        
       } else {
         setIsResponseOk(false);
         setShowPopup(false);
@@ -222,7 +228,7 @@ function GroupHomePage() {
                     <ArrowBackOutlinedIcon />
                   </IconButton>
                   <BannerImage src={group.bannerurl} alt="Banner" />
-
+ 
                   <div
                     style={{
                       display: "flex",
@@ -234,9 +240,9 @@ function GroupHomePage() {
                       <GroupTitle>{group.groupname}</GroupTitle>
                      
                     </div>
-
+ 
                     <div className="gap-1 flex space-x-1 items-center">
-                      {!join && !isResponseOk && (
+                      {/* {!join && (
                         <button
                           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 ml-2 rounded-lg"
                           onClick={() => {
@@ -245,8 +251,8 @@ function GroupHomePage() {
                         >
                           <PersonAddAltIcon /> {isMobile ? "" : "  Join Group"}
                         </button>
-                      )}
-
+                      )} */}
+ 
                       {join && (
                         <button
                           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 ml-2 rounded-lg"
@@ -256,7 +262,7 @@ function GroupHomePage() {
                           {isMobile ? "" : "Schedule Meeting"}
                         </button>
                       )}
-                      {!userLeft ? (
+                      {join ? (
                         <Button
                           variant="outlined"
                           color="primary"
@@ -277,14 +283,14 @@ function GroupHomePage() {
                       )}
                     </div>
                   </div>
-
-                  
+ 
+                 
                   <div className="bg-gray-100 p-4 rounded">
                     <div>
                       <p>{group.description}</p>
                     </div>
-                    
-
+                   
+ 
                     <div>
                       <AvatarGroup total={members.length}>
                         {members.map((item, ind) => {
@@ -312,7 +318,7 @@ function GroupHomePage() {
                       >
                         Post
                       </button>
-
+ 
                       <IconButton onClick={handleClickOpen}>
                         <AddIcon
                           fontSize="large"
@@ -370,5 +376,5 @@ function GroupHomePage() {
     </div>
   );
 }
-
+ 
 export default GroupHomePage;

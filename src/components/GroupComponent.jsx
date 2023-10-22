@@ -2,7 +2,7 @@ import React from "react";
 import ImageGallery from "./ImageGallery";
 import { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
-import { CircularProgress  } from "@mui/material";
+import { CircularProgress } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 function GroupComponent() {
@@ -22,8 +22,9 @@ function GroupComponent() {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            id: JSON.parse(JSON.parse(JSON.stringify(localStorage)).userDetail)
-              .id,
+            userEmail: JSON.parse(
+              JSON.parse(JSON.stringify(localStorage)).userDetail
+            ).email,
           }),
         }
       );
@@ -40,7 +41,7 @@ function GroupComponent() {
       setLoading(false);
     }
   };
-  async function joinGroup(groupid) {
+  async function joinGroup(groupid, item) {
     debugger;
     try {
       const response = await fetch(
@@ -59,8 +60,10 @@ function GroupComponent() {
       const data = await response.json();
       console.log(data);
       if (response.ok) {
-        // setAllGroups(data)
-        navigate("/group");
+        navigate("/grouphomepage", {
+          state: { group: item, join: true },
+        });
+       
       } else {
       }
     } catch (error) {
@@ -68,37 +71,27 @@ function GroupComponent() {
     }
   }
   useEffect(() => {
-   
     getallgroups();
   }, []);
 
   return (
-    
-
     <div className="bg-white p-4 justify-center">
       <p className="text-lg font-bold mb-4">All Groups</p>
       {loading ? (
-         <div
-         style={{
-           display: "flex",
-           justifyContent: "center",
-           alignItems: "center",
-           height: "300px", // Set the height as needed to center the loader vertically
-         }}
-       >
-         <CircularProgress size={30} color="primary" />
-       </div>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "300px", // Set the height as needed to center the loader vertically
+          }}
+        >
+          <CircularProgress size={30} color="primary" />
+        </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
           {allgroups.map((item) => (
-            <div
-              className="border border-solid border-gray-300 rounded-lg shadow-md p-2 transition duration-24.3s flex-shrink-0"
-              onClick={() => {
-                navigate("/grouphomepage", {
-                  state: { group: item, join: item.join },
-                });
-              }}
-            >
+            <div className="border border-solid border-gray-300 rounded-lg shadow-md p-2 transition duration-24.3s flex-shrink-0">
               <ImageGallery
                 url={item.imageurl || item.imageurl[0]}
                 title={item.groupname}
@@ -106,9 +99,19 @@ function GroupComponent() {
                 className="flex-shrink-0"
               />
               <Button
+                onClick={() => {
+                  navigate("/grouphomepage", {
+                    state: { group: item, join: item.join },
+                  });
+                }}
+                style={{ float: "right" }}
+              >
+                View
+              </Button>
+              <Button
                 style={{ float: "right" }}
                 onClick={() => {
-                  joinGroup(item.blogRefId);
+                  joinGroup(item.blogRefId, item);
                 }}
               >
                 {item.join ? "joined" : "join"}
