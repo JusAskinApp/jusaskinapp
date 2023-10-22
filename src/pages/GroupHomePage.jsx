@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Feed from "../components/Feed";
 import "./home.css";
 // import IconButton from "@mui/material/IconButton";
@@ -23,18 +23,19 @@ import AddIcon from "@mui/icons-material/Add";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import { isMobile } from "react-device-detect";
 import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
+import SimpleDialogDemo from "../components/userPopup";
 const GroupTitle = styled.h1`
   font-size: 28px;
   font-weight: bold;
   margin-top: 10px;
   text-transform: capitalize;
 `;
- 
+
 // const SubtitleText = styled.p`
 //   font-size: 16px;
 //   color: #777;
 // `;
- 
+
 const BannerImage = styled.img`
   width: 100%;
   height: auto;
@@ -43,15 +44,16 @@ const BannerImage = styled.img`
   border: 2px solid #ccc;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 `;
- 
+
 // import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined";
-function GroupHomePage() {
+function GroupHomePage(props) {
   const navigate = useNavigate();
   const [mode, setMode] = useState("dark");
   const [members, setMembers] = useState([]);
   const [content, setContent] = useState("");
+  const [openpopup, setOpenPopup] = useState(false);
   const { state } = useLocation();
-  const [join, setJoin] = useState(state.join)
+  const [join, setJoin] = useState(state.join);
   // const join = state ? state.join : null;
   const [showMeetingComp, setMeetingComp] = useState(true);
   const group = state ? state.group : null;
@@ -84,9 +86,9 @@ function GroupHomePage() {
     userid: "",
     group: groupid,
   };
-  useEffect(()=>{
+  useEffect(() => {
     retrieveGroupMembers(groupid);
-  })
+  },[]);
   const InsertBlogPost = (e) => {
     console.log(blogPost);
     debugger;
@@ -107,7 +109,7 @@ function GroupHomePage() {
         console.error(error);
       });
   };
- 
+
   const scheduleMeeting = () => {
     debugger;
     setMeetingComp((prevFlag) => !prevFlag);
@@ -116,29 +118,28 @@ function GroupHomePage() {
     debugger;
     setMeetingComp((prevFlag) => !prevFlag);
   };
- 
- 
-  const  retrieveGroupMembers =(groupid) =>{
+
+  const retrieveGroupMembers = (groupid) => {
     debugger;
-    fetch("https://jusaskin.herokuapp.com/api/groups/getallmembers", {
+    fetch("http://localhost:4000/api/groups/getallmembers", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({groupId : groupid}),
+      body: JSON.stringify({ groupId: groupid }),
     })
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
-       setMembers(data.members)
-       
+        setMembers(data.members);
+
         // window.location.reload(true);
       })
       .catch((error) => {
         console.error(error);
       });
-  }
- 
+  };
+
   async function leaveGroup(groupid) {
     debugger;
     try {
@@ -156,19 +157,18 @@ function GroupHomePage() {
         }
       );
       if (response.ok) {
-        alert("user left")
+        alert("user left");
 
-        setJoin(false)
+        setJoin(false);
         // setUserLeft(true);
       } else {
-
         // setUserLeft(false);
       }
     } catch (error) {
       console.log(error);
     }
   }
- 
+
   async function joinGroup(groupid) {
     debugger;
     try {
@@ -188,10 +188,9 @@ function GroupHomePage() {
       const data = await response.json();
       console.log(data);
       if (response.ok) {
-        setJoin(true)
+        setJoin(true);
         setIsResponseOk(true);
         setShowPopup(true);
-        
       } else {
         setIsResponseOk(false);
         setShowPopup(false);
@@ -202,6 +201,20 @@ function GroupHomePage() {
       setShowPopup(false);
     }
   }
+
+  const [openDialog, setOpenDialog] = React.useState(false); // State for controlling the dialog
+
+  // Function to open the dialog
+  const openUserPopup = () => {
+    debugger
+    setOpenDialog(true);
+  };
+
+  // Function to close the dialog
+  const closeDialog = () => {
+    setOpenDialog(false);
+  };
+
   const CreatePost = () => {
     debugger;
     const userDetail = JSON.parse(localStorage.getItem("userDetail"));
@@ -228,7 +241,7 @@ function GroupHomePage() {
                     <ArrowBackOutlinedIcon />
                   </IconButton>
                   <BannerImage src={group.bannerurl} alt="Banner" />
- 
+
                   <div
                     style={{
                       display: "flex",
@@ -238,9 +251,8 @@ function GroupHomePage() {
                   >
                     <div>
                       <GroupTitle>{group.groupname}</GroupTitle>
-                     
                     </div>
- 
+
                     <div className="gap-1 flex space-x-1 items-center">
                       {/* {!join && (
                         <button
@@ -252,7 +264,7 @@ function GroupHomePage() {
                           <PersonAddAltIcon /> {isMobile ? "" : "  Join Group"}
                         </button>
                       )} */}
- 
+
                       {join && (
                         <button
                           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 ml-2 rounded-lg"
@@ -270,34 +282,51 @@ function GroupHomePage() {
                         >
                           Leave Group
                         </Button>
-                      ):
-                      (
+                      ) : (
                         <button
-                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 ml-2 rounded-lg"
-                        onClick={() => {
-                          joinGroup(groupid);
-                        }}
-                      >
-                        <PersonAddAltIcon /> {isMobile ? "" : "  Join Group"}
-                      </button>
+                          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 ml-2 rounded-lg"
+                          onClick={() => {
+                            joinGroup(groupid);
+                          }}
+                        >
+                          <PersonAddAltIcon /> {isMobile ? "" : "  Join Group"}
+                        </button>
                       )}
                     </div>
                   </div>
- 
-                 
+
                   <div className="bg-gray-100 p-4 rounded">
                     <div>
                       <p>{group.description}</p>
                     </div>
-                   
- 
                     <div>
-                      <AvatarGroup total={members.length}>
+                      <AvatarGroup
+                        onClick={openUserPopup}
+                        total={members.length}
+                      >
+                        {members.map((item, ind) => (
+                          <Avatar
+                            key={ind}
+                            alt="Remy Sharp"
+                            src={item.urlLink[0]}
+                          />
+                        ))}
+                      </AvatarGroup>
+                      <SimpleDialogDemo
+                        open={openDialog}
+                        onClose={closeDialog}
+                        members={members}
+                      />
+                    </div>
+
+                    {/* <div>
+                      <AvatarGroup onClick={openUserPopup} total={members.length}>
                         {members.map((item, ind) => {
                           <Avatar alt="Remy Sharp" src={item.urlLink[0]} />;
                         })}
                       </AvatarGroup>
-                    </div>
+                      <SimpleDialogDemo open={openDialog} onClose={closeDialog} membersarr={props.membersarr} />
+                    </div> */}
                   </div>
                   <br></br>
                   <Divider />
@@ -318,7 +347,7 @@ function GroupHomePage() {
                       >
                         Post
                       </button>
- 
+
                       <IconButton onClick={handleClickOpen}>
                         <AddIcon
                           fontSize="large"
@@ -376,5 +405,5 @@ function GroupHomePage() {
     </div>
   );
 }
- 
+
 export default GroupHomePage;
