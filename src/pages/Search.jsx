@@ -112,7 +112,7 @@ function SearchPage() {
               {usersData.map((user, index) => (
                 <SearchedUser
                   key={index}
-                  img={user.urlLink ? user.urlLink[0] : ''}
+                  img={user.urlLink ? user.urlLink[0] : 'https://firebasestorage.googleapis.com/v0/b/jusaskinapp.appspot.com/o/userimg.png?alt=media&token=4f5c9566-158f-489a-97b9-40254e97b0c6&_gl=1*qh6ua*_ga*MTU5MTQyOTg4Ny4xNjk5MzYzODgz*_ga_CW55HF8NVT*MTY5OTM2Mzg4NS4xLjEuMTY5OTM2NDAxMy40Ny4wLjA.'}
                   username={user.name}
                   type={user.type}
                   onClick={() => handleUserClick(user)}

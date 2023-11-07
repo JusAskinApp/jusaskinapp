@@ -8,6 +8,8 @@ import MicIcon from "@mui/icons-material/Mic";
 import AttachFileOutlinedIcon from "@mui/icons-material/AttachFileOutlined";
 import SendIcon from "@mui/icons-material/Send";
 import makeApiCall from '../Api/api';
+import { isMobile } from "react-device-detect";
+
 const IndividualChat = ({ profile, onBackClick }) => {
   const [messages,setMessages] = useState([])
   const [_message,_setMessage] = useState("")
@@ -132,7 +134,7 @@ const IndividualChat = ({ profile, onBackClick }) => {
   },[])
 
   return (
-    <div className="rounded-lg flex flex-col">
+    <div className="rounded-lg flex flex-col" style={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>
       <div className="flex justify-between p-4">
         <IconButton onClick={onBackClick}>
           <ArrowBackOutlinedIcon />
@@ -141,42 +143,71 @@ const IndividualChat = ({ profile, onBackClick }) => {
         <MoreVertIcon />
       </div>
       <div
-        className="flex flex-col flex-1 p-4 max-h-[500vh] overflow-y-scroll scrollbar-thin scrollbar-thumb-black"
-        style={{ background: "#FAFAFA" }}
+        className="flex flex-col flex-1 p-4"
+        style={{
+          background: "#FAFAFA",
+          border: "1px solid",
+          borderColor: "#ccc",
+          borderRadius: "8px",
+          overflowY: "auto", // To enable scrolling
+          maxHeight: isMobile ? "calc(100vh - 220px)" : "calc(100vh - 120px)" // Adjusted value based on mobile or non-mobile
+        }}
       >
-         
-            {messages.map((message) => (
-            <ChatBubble
+        {messages.map((message) => (
+          <ChatBubble
             position={message.sender.email === JSON.parse(JSON.parse(JSON.stringify(localStorage)).userDetail).email ? "right" : "left"}
             message={message.text}
-             imageUrl={message.sender.ProfilePic}
-             time={message.timestamp ? message.timestamp :  new Date()}
+            imageUrl={message.sender.ProfilePic}
+            time={message.timestamp ? message.timestamp : new Date()}
           />
-            ))}
-    
+        ))}
       </div>
-      <div className="mt-4 flex justify-between p-4">
-        <div className="flex items-center space-x-2 text-gray-500">
-          <IconButton>
-            <EmojiEmotionsIcon />
-          </IconButton>
-          <IconButton>
-            <AttachFileOutlinedIcon />
-          </IconButton>
+      {isMobile ? (
+        <div className="flex justify-between p-4">
+          <div className="flex items-center space-x-2 text-gray-500">
+            <IconButton>
+              <EmojiEmotionsIcon />
+            </IconButton>
+            <IconButton>
+              <AttachFileOutlinedIcon />
+            </IconButton>
+          </div>
+          <input
+            type="text"
+            placeholder="Type a message"
+            className="flex-1 px-4 py-2 rounded-full bg-gray-200 focus:outline-none"
+            onChange={(e) => {_setMessage(e.target.value)}}
+            value={_message}
+          />
+          <div className="flex items-center ml-2">
+            <SendIcon onClick={sendButtonClick} />
+          </div>
         </div>
-        <input
-          type="text"
-          placeholder="Type a message"
-          className="flex-1 px-4 py-2 rounded-full bg-gray-200 focus:outline-none"
-          onChange={(e)=>{_setMessage(e.target.value)}}
-          value={_message}
-        />
-        <div className="flex items-center ml-2">
-          <SendIcon onClick={sendButtonClick}/>
+      ) : (
+        <div className="mt-auto flex justify-between p-4">
+          <div className="flex items-center space-x-2 text-gray-500">
+            <IconButton>
+              <EmojiEmotionsIcon />
+            </IconButton>
+            <IconButton>
+              <AttachFileOutlinedIcon />
+            </IconButton>
+          </div>
+          <input
+            type="text"
+            placeholder="Type a message"
+            className="flex-1 px-4 py-2 rounded-full bg-gray-200 focus:outline-none"
+            onChange={(e) => {_setMessage(e.target.value)}}
+            value={_message}
+          />
+          <div className="flex items-center ml-2">
+            <SendIcon onClick={sendButtonClick} />
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
+  
 };
 
 export default IndividualChat;
