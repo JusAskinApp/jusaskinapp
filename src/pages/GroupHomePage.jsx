@@ -3,7 +3,7 @@ import Feed from "../components/Feed";
 import "./home.css";
 // import IconButton from "@mui/material/IconButton";
 import Grid from "@mui/material/Unstable_Grid2";
-import { useLocation } from "react-router-dom";
+import { json, useLocation } from "react-router-dom";
 import DialogBoxForGroups from "../components/DialogBoxForGroup";
 import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined";
 import { Button } from "@mui/material";
@@ -24,6 +24,8 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import { isMobile } from "react-device-detect";
 import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
 import SimpleDialogDemo from "../components/userPopup";
+
+import SettingsIcon from '@mui/icons-material/Settings';
 const GroupTitle = styled.h1`
   font-size: 28px;
   font-weight: bold;
@@ -47,6 +49,7 @@ const BannerImage = styled.img`
 
 // import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined";
 function GroupHomePage(props) {
+  debugger;
   const navigate = useNavigate();
   const [mode, setMode] = useState("dark");
   const [members, setMembers] = useState([]);
@@ -63,6 +66,19 @@ function GroupHomePage(props) {
   const [isResponseOk, setIsResponseOk] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
   const [userLeft, setUserLeft] = useState(false);
+
+
+  // need to continue form here adding a pop up
+  // setting intial state when the pop up opens
+  // update the state in the DB via API call
+  const [isModelOpen, setIsModelOpen] = useState(false);
+  const [formData, setFormData] = useState({
+    description: '',
+    groupName: '',
+    imageUrl: '',
+    subtitle: '',
+  } )
+  const [isAdmin,setIsAdmin]= useState(group.admin.email === JSON.parse(localStorage.getItem("userDetail")).email);
   const groupid = group?.blogRefId;
   const handleClickOpen = () => {
     setOpen(true);
@@ -121,7 +137,7 @@ function GroupHomePage(props) {
 
   const retrieveGroupMembers = (groupid) => {
     debugger;
-    fetch("http://localhost:4000/api/groups/getallmembers", {
+    fetch("https://jusaskin.herokuapp.com/api/groups/getallmembers", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -144,7 +160,7 @@ function GroupHomePage(props) {
     debugger;
     try {
       const response = await fetch(
-        "http://localhost:4000/api/groups/leavegroup",
+        "https://jusaskin.herokuapp.com/api/groups/leavegroup",
         {
           method: "POST",
           headers: {
@@ -240,7 +256,7 @@ function GroupHomePage(props) {
                   >
                     <ArrowBackOutlinedIcon />
                   </IconButton>
-                  <BannerImage src={group.bannerurl} alt="Banner" />
+                { group.bannerurl ?  <BannerImage src={group.bannerurl} alt="Banner" /> : ''}
 
                   <div
                     style={{
@@ -292,6 +308,10 @@ function GroupHomePage(props) {
                           <PersonAddAltIcon /> {isMobile ? "" : "  Join Group"}
                         </button>
                       )}
+                      {
+                        isAdmin ? 
+                        <Button variant="outlined"><SettingsIcon fontSize="25px"/> Edit</Button>: ''
+                      }
                     </div>
                   </div>
 
@@ -308,7 +328,7 @@ function GroupHomePage(props) {
                           <Avatar
                             key={ind}
                             alt="Remy Sharp"
-                            src={item.urlLink[0]}
+                            src={item.urlLink ? item.urlLink[0] : ''}
                           />
                         ))}
                       </AvatarGroup>
@@ -316,17 +336,12 @@ function GroupHomePage(props) {
                         open={openDialog}
                         onClose={closeDialog}
                         members={members}
+                        isAdmin={isAdmin}
+                        groupid={groupid}
                       />
                     </div>
 
-                    {/* <div>
-                      <AvatarGroup onClick={openUserPopup} total={members.length}>
-                        {members.map((item, ind) => {
-                          <Avatar alt="Remy Sharp" src={item.urlLink[0]} />;
-                        })}
-                      </AvatarGroup>
-                      <SimpleDialogDemo open={openDialog} onClose={closeDialog} membersarr={props.membersarr} />
-                    </div> */}
+                   
                   </div>
                   <br></br>
                   <Divider />

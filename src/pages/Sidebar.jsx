@@ -19,7 +19,7 @@ import BottomBar from "../components/BottomBar";
 const drawerWidth = 240;
 
 function Sidebar(props) {
-  const { window } = props;
+  
   const navigate = useNavigate();
   const [activeItem, setSelectedItem] = useState("Home");
 
@@ -45,7 +45,8 @@ function Sidebar(props) {
       navigate("/profile");
     } else if (item === "Visit JAsigma") {
       debugger;
-      window.open("https://www.jasigma.com/", "_blank");
+      let externalUrl = "https://www.jasigma.com/";
+      window.open(externalUrl, "_blank");
     }
   };
 

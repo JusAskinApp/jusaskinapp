@@ -63,7 +63,6 @@ function GroupComponent() {
         navigate("/grouphomepage", {
           state: { group: item, join: true },
         });
-       
       } else {
       }
     } catch (error) {
@@ -91,14 +90,30 @@ function GroupComponent() {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
           {allgroups.map((item) => (
-            <div className="border border-solid border-gray-300 rounded-lg shadow-md p-2 transition duration-24.3s flex-shrink-0">
-              <ImageGallery
-                url={item.imageurl || item.imageurl[0]}
-                title={item.groupname}
-                creator={item.admin.name}
-                className="flex-shrink-0"
-              />
-              <Button
+            <div
+              className="border border-solid border-gray-300 rounded-lg shadow-md p-2 transition duration-24.3s flex-shrink-0"
+              onClick={() => {
+                navigate("/grouphomepage", {
+                  state: { group: item, join: item.join },
+                });
+              }}
+            >
+              {item.imageurl.length > 0 ? (
+                <ImageGallery
+                  url={item.imageurl || item.imageurl[0]}
+                  title={item.groupname}
+                  creator={item.admin.name}
+                  className="flex-shrink-0"
+                />
+              ) : (
+                <ImageGallery
+                  url="https://firebasestorage.googleapis.com/v0/b/jusaskinapp.appspot.com/o/No%20img.jpg?alt=media&token=d323a262-d2e6-45e4-8503-6b10fbea0e86&_gl=1*1gwntyg*_ga*MTc1ODIxOTgzOC4xNjkwNjkzNTY1*_ga_CW55HF8NVT*MTY5ODY3NzEyMi4yMi4xLjE2OTg2NzcyNzQuNDkuMC4w"
+                  title={item.groupname}
+                  creator={item.admin.name}
+                  className="flex-shrink-0"
+                />
+              )}
+              {/* <Button
                 onClick={() => {
                   navigate("/grouphomepage", {
                     state: { group: item, join: item.join },
@@ -107,8 +122,8 @@ function GroupComponent() {
                 style={{ float: "right" }}
               >
                 View
-              </Button>
-              <Button
+              </Button> */}
+              <Button color="primary" variant="contained"
                 style={{ float: "right" }}
                 onClick={() => {
                   joinGroup(item.blogRefId, item);

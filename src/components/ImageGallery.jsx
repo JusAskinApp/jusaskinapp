@@ -56,15 +56,15 @@ const Info = styled.div`
 
 const ImageGallery = (props) => {
   const classes = useStyles();
-const [open, setOpen] = useState(false);
+// const [open, setOpen] = useState(false);
 
-const handleOpen = () => {
-  setOpen(true);
-};
+// const handleOpen = () => {
+//   setOpen(true);
+// };
 
-const handleClose = () => {
-  setOpen(false);
-};
+// const handleClose = () => {
+//   setOpen(false);
+// };
   return (
     <div  style={{ textDecoration: "none" }}>
       <Container type={props.type} style={{ height: "150px", width: "250px", padding: "2px" }}>
@@ -72,7 +72,7 @@ const handleClose = () => {
         style={{marginTop:'8px'}}
           type={props.type}
           src={props.url}
-          onClick={handleOpen}
+          // onClick={handleOpen}
         />
         <Details type={props.type}>
           <Texts>
@@ -81,7 +81,7 @@ const handleClose = () => {
           </Texts>
         </Details>
       </Container>
-      <Dialog open={open} onClose={handleClose}>
+      {/* <Dialog open={open} onClose={handleClose}>
         <DialogTitle>
           Image Preview
           <IconButton className={classes.closeButton} onClick={handleClose}>
@@ -89,14 +89,14 @@ const handleClose = () => {
           </IconButton>
         </DialogTitle>
         <DialogContent>
-          {/* <iframe src={url}></iframe> */}
+          
           <Image
           type={props.type}
           src={props.url}
         
         />
         </DialogContent>
-      </Dialog>
+      </Dialog> */}
     </div>
   );
 };

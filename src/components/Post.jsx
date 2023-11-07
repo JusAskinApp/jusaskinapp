@@ -22,7 +22,6 @@ import UrlParser from "./UrlParser";
 import MorevertMenu from "./MorevertMenu";
 const Post = (props) => {
   debugger;
-  debugger;
   const [comment, setComment] = useState("");
   const [checked, setChecked] = useState(false);
   const [localComments, setLocalComment] = useState([]);
@@ -32,7 +31,7 @@ const Post = (props) => {
   const [saved, setSaved] = useState(false);
   const saveBlogPost = (value) => {
     debugger;
-    fetch("http://localhost:4000/api/blogPosts/savepost", {
+    fetch("https://jusaskin.herokuapp.com/api/blogPosts/savepost", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -50,7 +49,7 @@ const Post = (props) => {
   };
   const updateSave = (value) => {
     debugger;
-    fetch("http://localhost:4000/api/blogPosts/updatesave", {
+    fetch("https://jusaskin.herokuapp.com/api/blogPosts/updatesave", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -69,8 +68,8 @@ const Post = (props) => {
   const handleSaveClick = (value) => {
     debugger;
     let blogPost = { ...value };
-    blogPost['savePersonEmail'] = JSON.parse(localStorage.userDetail).email
-    blogPost['save'] = !saved;
+    blogPost["savePersonEmail"] = JSON.parse(localStorage.userDetail).email;
+    blogPost["save"] = !saved;
     if (saved == true) {
       updateSave(blogPost);
     } else {
@@ -128,8 +127,8 @@ const Post = (props) => {
                 JSON.parse(JSON.stringify(localStorage)).userDetail
               ).urlLink
                 ? JSON.parse(
-                  JSON.parse(JSON.stringify(localStorage)).userDetail
-                ).urlLink[0]
+                    JSON.parse(JSON.stringify(localStorage)).userDetail
+                  ).urlLink[0]
                 : "",
             },
           }),
@@ -266,7 +265,7 @@ const Post = (props) => {
         }
         action={
           <IconButton aria-label="settings">
-            <MorevertMenu/>
+            <MorevertMenu blogRefId={props.blogRefId} />
           </IconButton>
         }
         title={props.name.name}
@@ -291,7 +290,9 @@ const Post = (props) => {
       </CardContent>
 
       <div style={{ display: "flex", flexWrap: "wrap" }}>
-        {props.images &&
+        {props &&
+          props.images &&
+          props.images.length > 0 &&
           props.images.map((image, index) => (
             <div
               key={index}
@@ -300,14 +301,14 @@ const Post = (props) => {
                   props.images.length === 1
                     ? "1 1 100%"
                     : props.images.length === 2
-                      ? "1 1 50%"
-                      : "1 1 25%",
+                    ? "1 1 50%"
+                    : "1 1 25%",
                 padding: "10px",
               }}
             >
               {console.log(image)}
               {determineMediaType(image) === "video" ||
-                determineMediaType(image) === "image" ? (
+              determineMediaType(image) === "image" ? (
                 <CardMedia
                   component={
                     determineMediaType(image) === "video" ? "video" : "img"
@@ -355,9 +356,11 @@ const Post = (props) => {
         </div>
 
         <Tooltip title={saved ? "Remove from saved" : "Save post"}>
-          <IconButton onClick={() => {
-            handleSaveClick(props)
-          }}>
+          <IconButton
+            onClick={() => {
+              handleSaveClick(props);
+            }}
+          >
             {saved ? (
               <BookmarkIcon sx={{ fontSize: 30, color: "black" }} />
             ) : (
@@ -374,7 +377,7 @@ const Post = (props) => {
             JSON.parse(JSON.parse(JSON.stringify(localStorage)).userDetail)
               .urlLink
               ? JSON.parse(JSON.parse(JSON.stringify(localStorage)).userDetail)
-                .urlLink[0]
+                  .urlLink[0]
               : ""
           }
           sx={{ width: 24, height: 24 }}
@@ -403,10 +406,11 @@ const Post = (props) => {
         </Typography>
       </Box>
       <div
-        className={`m-5 ${props.comments.length > 3
-          ? "h-20 overflow-y-scroll scrollbar-thumb-black scrollbar-thin"
-          : ""
-          }`}
+        className={`m-5 ${
+          props.comments.length > 3
+            ? "h-20 overflow-y-scroll scrollbar-thumb-black scrollbar-thin"
+            : ""
+        }`}
       >
         {props.comments.length > 0 ? (
           <div>
@@ -442,8 +446,8 @@ const Post = (props) => {
                       JSON.parse(JSON.stringify(localStorage)).userDetail
                     ).urlLink
                       ? JSON.parse(
-                        JSON.parse(JSON.stringify(localStorage)).userDetail
-                      ).urlLink[0]
+                          JSON.parse(JSON.stringify(localStorage)).userDetail
+                        ).urlLink[0]
                       : ""
                   }
                   alt=""

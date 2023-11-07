@@ -57,9 +57,7 @@ function NewComponent({ onBackClick }) {
     return (
       groupName.trim() !== "" &&
       subtitle.trim() !== "" &&
-      textAreaValue.trim() !== "" &&
-      selectedFile.length > 0 &&
-      bannerfile.length > 0
+      textAreaValue.trim() !== ""
     );
   };
 
@@ -74,8 +72,8 @@ function NewComponent({ onBackClick }) {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            imageurl: url,
-            bannerurl: bannerImageUrl,
+            imageurl: url ? url : '',
+            bannerurl: bannerImageUrl ? bannerImageUrl :'',
             groupname: groupName,
             subtitle: subtitle,
             description: textAreaValue,
@@ -113,28 +111,32 @@ function NewComponent({ onBackClick }) {
 
   const uploadFiles = async () => {
     debugger;
-    const formData = new FormData();
-    selectedFile.forEach((file) => {
-      formData.append("files[]", file);
-    });
-
-    const bannerImageFile = bannerfile[0];
-    formData.append("files[]", bannerImageFile);
-
-    try {
-      const response = await fetch(
-        "https://jusaskin.herokuapp.com/api/resources/upload",
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
-      const data = await response.json();
-      const fileUrls = data["fileUrls"];
-      const bannerImageUrl = fileUrls.pop();
-      return { url: fileUrls, bannerImageUrl };
-    } catch (error) {
-      console.error(error);
+    if(selectedFile.length > 0){
+      const formData = new FormData();
+      selectedFile.forEach((file) => {
+        formData.append("files[]", file);
+      });
+  
+      const bannerImageFile = bannerfile[0];
+      formData.append("files[]", bannerImageFile);
+  
+      try {
+        const response = await fetch(
+          "https://jusaskin.herokuapp.com/api/resources/upload",
+          {
+            method: "POST",
+            body: formData,
+          }
+        );
+        const data = await response.json();
+        const fileUrls = data["fileUrls"];
+        const bannerImageUrl = fileUrls.pop();
+        return { url: fileUrls, bannerImageUrl };
+      } catch (error) {
+        console.error(error);
+        return { url: [], bannerImageUrl: "" };
+      }
+    }else{
       return { url: [], bannerImageUrl: "" };
     }
   };
