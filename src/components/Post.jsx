@@ -265,7 +265,7 @@ const Post = (props) => {
         }
         action={
           <IconButton aria-label="settings">
-            <MorevertMenu blogRefId={props.blogRefId} />
+            <MorevertMenu post={props} isAdmin={props.isAdmin}/>
           </IconButton>
         }
         title={props.name.name}
