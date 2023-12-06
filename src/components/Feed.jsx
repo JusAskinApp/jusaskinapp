@@ -73,7 +73,7 @@ const Feed = (groupid) => {
                 blogRefId={item.blogRefId}
                 comments={item.comments}
                 likes={item.likes}
-                isAdmin={groupid.isAdmin}
+                isAdmin={JSON.parse(localStorage.getItem("userDetail")).email === item.author.email}
               />
             </Box>
           ))}

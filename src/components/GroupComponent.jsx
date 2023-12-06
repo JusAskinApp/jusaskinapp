@@ -1,18 +1,18 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ImageGallery from "./ImageGallery";
-import { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
 import { CircularProgress } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import IconButton from "@mui/material/IconButton";
+import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 
 function GroupComponent() {
   const navigate = useNavigate();
-  const [suggestions, setSuggestions] = useState([]);
   const [allgroups, setAllGroups] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const getallgroups = async () => {
-    debugger;
     try {
       const response = await fetch(
         "https://jusaskin.herokuapp.com/api/groups/getallgroups",
@@ -41,8 +41,12 @@ function GroupComponent() {
       setLoading(false);
     }
   };
-  async function joinGroup(groupid, item) {
-    debugger;
+
+  useEffect(() => {
+    getallgroups();
+  }, []);
+
+  const joinGroup = async (groupid, item) => {
     try {
       const response = await fetch(
         "https://jusaskin.herokuapp.com/api/groups/adduseringroup",
@@ -68,14 +72,29 @@ function GroupComponent() {
     } catch (error) {
       console.log(error);
     }
-  }
-  useEffect(() => {
-    getallgroups();
-  }, []);
+  };
+
+  const filteredGroups = allgroups.filter((item) =>
+    item.groupname.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     <div className="bg-white p-4 justify-center">
       <p className="text-lg font-bold mb-4">All Groups</p>
+      <div className="flex items-center space-x-2 text-gray-500" style={{ padding: "5px" }}>
+        <IconButton>
+          <SearchOutlinedIcon />
+        </IconButton>
+        <input
+          type="text"
+          placeholder="Search groups..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          style={{ outline: 'none', border: 'none', borderBottom: '1px solid #ccc',width:"100%" }}
+        />
+      </div>
+      <hr />
+      <div style={{ margin: "4px" }}></div>
       {loading ? (
         <div
           style={{
@@ -89,8 +108,9 @@ function GroupComponent() {
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
-          {allgroups.map((item) => (
+          {filteredGroups.map((item) => (
             <div
+              key={item.blogRefId}
               className="border border-solid border-gray-300 rounded-lg shadow-md p-2 transition duration-24.3s flex-shrink-0"
               onClick={() => {
                 navigate("/grouphomepage", {
@@ -113,17 +133,9 @@ function GroupComponent() {
                   className="flex-shrink-0"
                 />
               )}
-              {/* <Button
-                onClick={() => {
-                  navigate("/grouphomepage", {
-                    state: { group: item, join: item.join },
-                  });
-                }}
-                style={{ float: "right" }}
-              >
-                View
-              </Button> */}
-              <Button color="primary" variant="contained"
+              <Button
+                color="primary"
+                variant="contained"
                 style={{ float: "right" }}
                 onClick={() => {
                   joinGroup(item.blogRefId, item);
