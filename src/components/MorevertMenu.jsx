@@ -6,7 +6,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import makeApiCall from "../Api/api";
 import { useState } from "react";
 import CustomSnackbar from "./CustomSnackbar";
-export default function MorevertMenu(props) {
+export default function MorevertMenu(post) {
   debugger;
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [showSnackbar, setShowSnackbar] = useState(false);
@@ -29,7 +29,7 @@ export default function MorevertMenu(props) {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            blogId: props.blogRefId,
+            blogId: post.blogRefId,
           }),
         }
       );
@@ -78,7 +78,7 @@ export default function MorevertMenu(props) {
           "aria-labelledby": "basic-button",
         }}
       >
-        <MenuItem onClick={handleDelete}>Delete Post</MenuItem>
+        {post.isAdmin ? <MenuItem onClick={handleDelete}>Delete Post</MenuItem> : ''}
       </Menu>
     </div>
   );

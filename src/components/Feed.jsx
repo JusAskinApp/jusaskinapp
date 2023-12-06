@@ -73,6 +73,7 @@ const Feed = (groupid) => {
                 blogRefId={item.blogRefId}
                 comments={item.comments}
                 likes={item.likes}
+                isAdmin={groupid.isAdmin}
               />
             </Box>
           ))}
