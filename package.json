@@ -21,7 +21,7 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
-    "bcryptjs": "^2.4.3",
+    "bcryptjs": "^2.4.3",                                                             
     "crypto-browserify": "^3.12.0",
     "dayjs": "^1.11.9",
     "firebase": "^9.22.1",
@@ -44,12 +44,6 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
   },
   "browserslist": {
     "production": [
