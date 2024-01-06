@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useEffect } from "react";
 import Post from "./Post";
 
-const Feed = (groupid) => {
+const Feed = (choice) => {
   const [loading, setLoading] = useState(true);
   const [blogData, setBlogData] = useState([]);
   function shuffleArray(array) {
@@ -21,18 +21,23 @@ const Feed = (groupid) => {
     // let url = "https://jusaskin.herokuapp.com/api/blogPosts/blogs/";
     let url = ""
     let getBlogObj = {}
-    if (groupid.groupid) {
+    if (choice.groupid) {
       url = "https://jusaskin.herokuapp.com/api/groups/getgrouppost/";
       getBlogObj = {
-        interests: ["Nasir"],
-        groupid:groupid.groupid
+        interests: ["test"],
+        groupid: groupid.groupid
 
       }
-    } else {
+    }
+    else if (choice.savedPosts == true) {
+      url = "https://jusaskin.herokuapp.com/api/blogPosts/savedBlogs/";
+
+    }
+    else {
       url = "https://jusaskin.herokuapp.com/api/blogPosts/blogs/";
       getBlogObj = {
-        interests: ["Nasir"]
-
+        interests: ["test"],
+        savePersonEmail: JSON.parse(localStorage.getItem('userDetail')).email
       }
     }
     const getBlogs = async (id) => {
@@ -42,14 +47,16 @@ const Feed = (groupid) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(getBlogObj ),
+        body: JSON.stringify(
+          !choice.savedPosts ? getBlogObj : {
+            savePersonEmail: JSON.parse(localStorage.getItem('userDetail')).email
+          }
+        ),
       })
         .then((response) => response.json())
         .then((data) => {
           const randomizedData = shuffleArray(data);
-          console.log(randomizedData);
           setBlogData(randomizedData);
-          setBlogData(data);
         })
         .catch((error) => {
           console.error("Error:", error);
@@ -63,17 +70,18 @@ const Feed = (groupid) => {
     <div>
       {blogData.length > 0 ? (
         <>
-          {blogData.map((item, index) => (
+          {blogData.map((item) => (
             <Box style={{ marginTop: "25px" }}>
               <Post
                 name={item.author}
                 date={item.date}
                 content={item.content}
-                images={item.imageIDs}
+                images={choice.savedPosts ? item.images : item.imageIDs}
                 blogRefId={item.blogRefId}
                 comments={item.comments}
                 likes={item.likes}
                 isAdmin={JSON.parse(localStorage.getItem("userDetail")).email === item.author.email}
+                saved={item.saved}
               />
             </Box>
           ))}

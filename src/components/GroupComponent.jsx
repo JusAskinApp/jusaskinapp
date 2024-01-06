@@ -90,7 +90,7 @@ function GroupComponent() {
           placeholder="Search groups..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          style={{ outline: 'none', border: 'none', borderBottom: '1px solid #ccc',width:"100%" }}
+          style={{ outline: 'none', border: 'none', borderBottom: '1px solid #ccc', width: "100%" }}
         />
       </div>
       <hr />
@@ -114,7 +114,7 @@ function GroupComponent() {
               className="border border-solid border-gray-300 rounded-lg shadow-md p-2 transition duration-24.3s flex-shrink-0"
               onClick={() => {
                 navigate("/grouphomepage", {
-                  state: { group: item, join: item.join },
+                  state: { group: item, join: item.admin.email === JSON.parse(localStorage.getItem('userDetail')).email ? true : item.join },
                 });
               }}
             >

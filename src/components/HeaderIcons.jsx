@@ -22,11 +22,11 @@ function HeaderIcons() {
               />
             </div>
           ) : null}
-          <IconButton>
+          {/* <IconButton>
             <Badge badgeContent={2} color="error">
               <EmailOutlinedIcon />
             </Badge>
-          </IconButton>
+          </IconButton> */}
           <IconButton>
             <NotificationPopup />
           </IconButton>

@@ -25,7 +25,8 @@ const Post = (props) => {
   const [comment, setComment] = useState("");
   const [checked, setChecked] = useState(false);
   const [localComments, setLocalComment] = useState([]);
-  const [likeCount, setCount] = useState(-1);
+  const [likeCount, setCount] = useState(0);
+
   const [error, setError] = useState(false);
 
   const [saved, setSaved] = useState(false);
@@ -47,40 +48,63 @@ const Post = (props) => {
         console.error(error);
       });
   };
-  const updateSave = (value) => {
+  const updateSave = async (value) => {
     debugger;
-    fetch("https://jusaskin.herokuapp.com/api/blogPosts/updatesave", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ blogpost: value }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        // window.location.reload(true)
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    try {
+      const data = await makeApiCall(
+        "https://jusaskin.herokuapp.com/api/blogPosts/updatesave",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            blogId: props.blogRefId,
+            email: JSON.parse(localStorage.getItem('userDetail')).email
+          }),
+        }
+      );
+
+      if (data.status == "ok") {
+        setSaved(false);
+        window.location.reload(true);
+      } else {
+        // setShowSnackbar(true)
+      }
+    } catch (error) {
+      console.error(error);
+    }
+
   };
   const handleSaveClick = (value) => {
     debugger;
     let blogPost = { ...value };
+    blogPost['author'] = blogPost['name'];
+
     blogPost["savePersonEmail"] = JSON.parse(localStorage.userDetail).email;
-    blogPost["save"] = !saved;
-    if (saved == true) {
-      updateSave(blogPost);
-    } else {
+    // blogPost["save"] = !saved;
+    // if (saved == true) {
+    //   updateSave(blogPost);
+    // } else {
+    //   saveBlogPost(blogPost);
+    // }
+    // setSaved(!saved);\
+    if (!saved) {
       saveBlogPost(blogPost);
     }
-    setSaved(!saved);
+    else {
+      updateSave(blogPost);
+    }
+    // saveBlogPost(blogPost);
+    setSaved(true);
   };
 
   useEffect(() => {
     debugger;
     const likes = props.likes.data;
+    setSaved(props.saved);
+    setCount(props.likes.total);
+    setSaved(props.saved);
     const email = JSON.parse(
       JSON.parse(JSON.stringify(localStorage)).userDetail
     ).email;
@@ -127,8 +151,8 @@ const Post = (props) => {
                 JSON.parse(JSON.stringify(localStorage)).userDetail
               ).urlLink
                 ? JSON.parse(
-                    JSON.parse(JSON.stringify(localStorage)).userDetail
-                  ).urlLink[0]
+                  JSON.parse(JSON.stringify(localStorage)).userDetail
+                ).urlLink[0]
                 : "",
             },
           }),
@@ -194,9 +218,9 @@ const Post = (props) => {
       " ago"
     );
   };
-  const docs = [{ uri: "https://url-to-my-pdf.pdf" }];
 
   function determineMediaType(url) {
+    debugger;
     const videoExtensions = [".mp4", ".avi", ".mov", ".wmv"];
     const imageExtensions = [".jpg", ".jpeg", ".png", ".gif", ".ico"];
     const pdfExtensions = [".pdf"];
@@ -222,10 +246,10 @@ const Post = (props) => {
       return null;
     }
   }
+  
   const likesUpdated = async (e) => {
     debugger;
-    console.log(likeCount);
-    setCount(e.target.checked ? props.likes.total + 1 : props.likes.total - 1);
+    setCount(e.target.checked ? likeCount + 1 : likeCount - 1);
     setChecked(e.target.checked ? true : false);
     try {
       const data = await makeApiCall(
@@ -265,22 +289,12 @@ const Post = (props) => {
         }
         action={
           <IconButton aria-label="settings">
-            <MorevertMenu post={props} isAdmin={props.isAdmin}/>
+            <MorevertMenu post={props} isAdmin={props.isAdmin} />
           </IconButton>
         }
         title={props.name.name}
         subheader={dateGetter(props.date)}
       />
-
-      {/* <CardContent>
-        <Typography variant="body2" color="text.secondary">
-          <span style={{ fontWeight: "bold" }}></span>
-
-          {props.content}
-
-          {props.author}
-        </Typography>
-      </CardContent> */}
       <CardContent>
         <Typography variant="body2" color="text.secondary">
           <span style={{ fontWeight: "bold" }}></span>
@@ -301,14 +315,14 @@ const Post = (props) => {
                   props.images.length === 1
                     ? "1 1 100%"
                     : props.images.length === 2
-                    ? "1 1 50%"
-                    : "1 1 25%",
+                      ? "1 1 50%"
+                      : "1 1 25%",
                 padding: "10px",
               }}
             >
               {console.log(image)}
               {determineMediaType(image) === "video" ||
-              determineMediaType(image) === "image" ? (
+                determineMediaType(image) === "image" ? (
                 <CardMedia
                   component={
                     determineMediaType(image) === "video" ? "video" : "img"
@@ -324,11 +338,12 @@ const Post = (props) => {
                     <iframe
                       title={"PDF-Viewer"}
                       src={`https://view.officeapps.live.com/op/embed.aspx?src=${image}`}
-                      frameBorder={0}
                       style={{ height: "100vh", width: "100%" }}
                     ></iframe>
                   ) : (
-                    <iframe src={image} width="100%" height="600"></iframe>
+                    // <iframe src={image} width="100%" height="600" ></iframe>
+                    <embed src={image} type="application/pdf" width="100%" height="600" />
+                    
                   )}
                 </div>
               )}
@@ -349,10 +364,6 @@ const Post = (props) => {
           <IconButton>
             <MapsUgcOutlinedIcon sx={{ fontSize: 30 }} />
           </IconButton>
-
-          <IconButton aria-label="share">
-            <Share sx={{ fontSize: 30 }} />
-          </IconButton>
         </div>
 
         <Tooltip title={saved ? "Remove from saved" : "Save post"}>
@@ -371,17 +382,17 @@ const Post = (props) => {
       </CardActions>
 
       <Box display="flex" ml={3} mb={2}>
-        <Avatar
+        {likeCount === 0 || checked ? <Avatar
           alt="Remy Sharp"
           src={
             JSON.parse(JSON.parse(JSON.stringify(localStorage)).userDetail)
               .urlLink
               ? JSON.parse(JSON.parse(JSON.stringify(localStorage)).userDetail)
-                  .urlLink[0]
+                .urlLink[0]
               : ""
           }
           sx={{ width: 24, height: 24 }}
-        />
+        /> : ""}
         <Typography variant="body2" color="text.secondary" ml={1}>
           <span style={{ fontWeight: "bold" }}>
             {" "}
@@ -391,26 +402,30 @@ const Post = (props) => {
                 : ""
               : ""}{" "}
           </span>
-          {props.likes.total > 0 && (
+          {likeCount == 1 && (
             <span>
-              {props.likes.data.length > 0 ? "and " : ""}
-              <span style={{ fontWeight: "bold" }}>
-                {likeCount !== -1 ? likeCount : props.likes.total}
-              </span>
-              {props.likes.total === 1 ? " person" : " people"} liked this.
+              {checked ? " You like this." : "1 person liked this."}
             </span>
           )}
-          {props.likes.total === 0 && (
+          {likeCount > 1 && (
+            <span>
+              {checked ? "and " : ""}
+              <span style={{ fontWeight: "bold" }}>
+                {likeCount !== 0 ? likeCount : likeCount}
+              </span>
+              {" "} people liked this.
+            </span>
+          )}
+          {likeCount === 0 && (
             <span>Be the first one to like this.</span>
           )}
         </Typography>
       </Box>
       <div
-        className={`m-5 ${
-          props.comments.length > 3
-            ? "h-20 overflow-y-scroll scrollbar-thumb-black scrollbar-thin"
-            : ""
-        }`}
+        className={`m-5 ${props.comments.length > 3
+          ? "h-20 overflow-y-scroll scrollbar-thumb-black scrollbar-thin"
+          : ""
+          }`}
       >
         {props.comments.length > 0 ? (
           <div>
@@ -446,8 +461,8 @@ const Post = (props) => {
                       JSON.parse(JSON.stringify(localStorage)).userDetail
                     ).urlLink
                       ? JSON.parse(
-                          JSON.parse(JSON.stringify(localStorage)).userDetail
-                        ).urlLink[0]
+                        JSON.parse(JSON.stringify(localStorage)).userDetail
+                      ).urlLink[0]
                       : ""
                   }
                   alt=""

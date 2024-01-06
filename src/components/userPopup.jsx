@@ -15,10 +15,13 @@ import Typography from "@mui/material/Typography";
 import { blue } from "@mui/material/colors";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Tooltip from "@mui/material/Tooltip";
+import { useNavigate } from "react-router-dom";
 
 const emails = ["username@gmail.com", "user02@gmail.com"];
 
 function SimpleDialog(props) {
+  const navigate = useNavigate();
+
   debugger;
   const { onClose, open, members, isAdmin, groupid } = props;
   const handleClose = () => {
@@ -64,7 +67,10 @@ function SimpleDialog(props) {
       <List sx={{ pt: 0 }}>
         {members.map((member) =>
          
-            <ListItem disableGutters key={member.id}>
+            <ListItem disableGutters key={member.id} onClick={()=>{
+              debugger;
+              navigate('/profile', { state  : {currentUser: member} });
+            }}>
               <ListItemButton>
                 <ListItemAvatar>
                   <Avatar

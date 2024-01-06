@@ -22,14 +22,15 @@ export default function MorevertMenu(props) {
     debugger;
     try {
       const data = await makeApiCall(
-        "https://jusaskin.herokuapp.com/api/groups/deleteblogpost",
+        "https://jusaskin.herokuapp.com/api/blogPosts/deleteblogpost",
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            blogId: post.blogRefId,
+            blogId: props.post.blogRefId,
+            email:JSON.parse(localStorage.getItem('userDetail')).email
           }),
         }
       );

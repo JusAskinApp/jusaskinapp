@@ -56,6 +56,7 @@ function App() {
         <BottomBar />
       </div>}
       <div className='content'>
+        
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/admin" element={<SubscriberDetail />} />

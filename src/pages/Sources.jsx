@@ -128,16 +128,16 @@ async function search(){
   </div>
 ) : searchResults.length > 0 ? (
   <div>
-    {searchResults.map((result) => (
+    {/* {searchResults.map((result) => (
       <div key={result.title}>
         {result.imageIDs.map((image) => (
-          
+
           <div key={image}>
             
           </div>
         ))}
       </div>
-    ))}
+    ))} */}
   </div>
 ) : (
   <div className="mt-4 flex flex-col items-center justify-center">
