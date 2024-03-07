@@ -25,7 +25,7 @@ const Feed = (choice) => {
       url = "https://jusaskin.herokuapp.com/api/groups/getgrouppost/";
       getBlogObj = {
         interests: ["test"],
-        groupid: groupid.groupid
+        groupid: choice.groupid
 
       }
     }
