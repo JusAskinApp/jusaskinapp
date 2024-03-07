@@ -6,6 +6,7 @@ import myIcon from "../assets/logo.png";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import { useNavigate } from "react-router-dom";
 import { isMobile } from "react-device-detect";
+import PaymentIcon from '@mui/icons-material/Payment';
 import {
   Home as HomeIcon,
   Search as SearchIcon,
@@ -47,6 +48,8 @@ function Sidebar(props) {
       debugger;
       let externalUrl = "https://www.jasigma.com/";
       window.open(externalUrl, "_blank");
+    }else if(item === "Payment"){
+      navigate("/payment")
     }
   };
 
@@ -80,6 +83,10 @@ function Sidebar(props) {
           {
             text: "Visit JAsigma",
             icon: <OpenInNewIcon style={{ color: "#757575" }} />,
+          },
+          {
+            text: "Payment",
+            icon: <PaymentIcon style={{ color: "#757575" }} />,
           },
         ].map((item, index) => (
           <div key={item.text} className="flex items-center py-3">

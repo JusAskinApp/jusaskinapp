@@ -22,6 +22,7 @@ import PrivacyPolicy from "./components/PrivacyPolicy";
 import GroupHomePage from './pages/GroupHomePage';
 import { isMobile } from 'react-device-detect';
 import BottomBar from './components/BottomBar';
+import Payment from './pages/Payment';
 const clientID = '644322334132-o3bvfqgckm43rq74dki8jb3jren3a5sj.apps.googleusercontent.com'
 function App() {
   const location = useLocation();
@@ -71,6 +72,7 @@ function App() {
           <Route path="/grouphomepage" element={<GroupHomePage />} />
           <Route path="/terms" element={<Terms />} />
           <Route path="/privacypolicy" element={<PrivacyPolicy />} />
+          <Route path='/payment' element={<Payment/>}/>
         </Routes>
       </div>
     </div>
