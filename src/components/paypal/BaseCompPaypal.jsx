@@ -28,7 +28,7 @@ fetchPlansData();
 
   const fetchPlansData = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/users/plansdata', {
+      const response = await fetch('https://jusaskin.herokuapp.com/api/users/plansdata', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -52,7 +52,7 @@ fetchPlansData();
     try {
         setLoading(true);
       const response = await fetch(
-        "http://localhost:5000/api/users/create-subscription",
+        "https://jusaskin.herokuapp.com/api/users/create-subscription",
         {
           method: "POST",
           headers: {
