@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import IconButton from "@mui/material/IconButton";
 import EmojiEmotionsIcon from "@mui/icons-material/EmojiEmotions";
 import MicIcon from "@mui/icons-material/Mic";
@@ -12,16 +12,14 @@ import GroupComponent from '../components/GroupComponent';
 import TopicComponent from '../components/TopicComponent';
 import GroupDetails from '../components/GroupDetails';
 
-
 const tabs = [
-  { label: 'Groups', component: <GroupComponent/>},
-  { label: 'My Groups', component: <TopicComponent/> },
+  { label: 'Groups', component: <GroupComponent /> },
+  { label: 'My Groups', component: <TopicComponent /> },
 ];
 
 function Group() {
-
   const [showNewComponent, setShowNewComponent] = useState(false);
-  
+  const [searchQuery, setSearchQuery] = useState('');
 
   const handleAddClick = () => {
     setShowNewComponent(true);
@@ -40,26 +38,30 @@ function Group() {
     <div className='header'>
       {!showNewComponent ? (
         <div>
-      <div className="flex justify-end">
-        <div className="flex items-center space-x-2 text-gray-500">
-          <IconButton>
-            <SearchOutlinedIcon />
-          </IconButton>
-          <IconButton onClick={handleAddClick}>
-            <AddIcon />
-          </IconButton>
-          <IconButton>
-            <MoreVertIcon />
-          </IconButton>
+          <div className="flex justify-end">
+            <div className="flex items-center space-x-2 text-gray-500">
+              {/* <IconButton>
+                <SearchOutlinedIcon />
+              </IconButton> */}
+              {/* <input
+                type="text"
+                placeholder="Search groups..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              /> */}
+              <IconButton onClick={handleAddClick}>
+                <AddIcon />
+              </IconButton>
+              <IconButton>
+                <MoreVertIcon />
+              </IconButton>
+            </div>
+          </div>
+          <Tabsection tabs={tabs} />
         </div>
-      </div>
-      <Tabsection tabs={tabs}/>
-      </div>
-      ):(
-        <GroupDetails onBackClick={handleBackClick}/>
-)}
-        
-       
+      ) : (
+        <GroupDetails onBackClick={handleBackClick} />
+      )}
     </div>
   );
 }

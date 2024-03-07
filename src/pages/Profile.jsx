@@ -26,7 +26,6 @@ const useStyles = makeStyles({
     fontSize: "medium",
   },
 });
-
 function Profile(props) {
   const [fvt, setfvt] = useState(false);
   const [showSnackbar, setShowSnackbar] = useState(false);
@@ -163,10 +162,11 @@ function Profile(props) {
       label: "Settings",
       component: <Settings currentUser={currentUser} />,
     },
-    { label: "Saved", component : <Feed /> },
+    { label: "Saved", component : <Feed savedPosts={true}/> },
     {
       label: "My Resources",
-      component: <Resources currentUser={currentUser} />,
+      component: <Resour
+      ces currentUser={currentUser} />,
     },
   ];
 

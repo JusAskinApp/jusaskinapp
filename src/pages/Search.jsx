@@ -19,18 +19,26 @@ function SearchPage() {
   const [currentDataObject, setCurrentDataObject] = useState({});
   const handleChange = (event) => {
     setSearchTerm(event.target.value);
-    search()
+    // search();
+    filterUsers();
   };
 
   const handleUserClick = (data) => {
     debugger;
     setCurrentDataObject(data);
     setShowProfile(true);
-      navigate('/profile', { state  : {currentUser: data} });
+    navigate('/profile', { state: { currentUser: data } });
 
   };
   const backClick = () => {
     setShowProfile(false);
+  };
+  const filterUsers = () => {
+    const filteredData = originalData.filter((user) =>
+      user.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    setUsersData(filteredData);
   };
   async function search() {
     debugger;

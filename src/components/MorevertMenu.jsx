@@ -6,11 +6,11 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import makeApiCall from "../Api/api";
 import { useState } from "react";
 import CustomSnackbar from "./CustomSnackbar";
-export default function MorevertMenu(post) {
+export default function MorevertMenu(props) {
   debugger;
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [showSnackbar, setShowSnackbar] = useState(false);
-  
+
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -22,14 +22,15 @@ export default function MorevertMenu(post) {
     debugger;
     try {
       const data = await makeApiCall(
-        "https://jusaskin.herokuapp.com/api/groups/deleteblogpost",
+        "https://jusaskin.herokuapp.com/api/blogPosts/deleteblogpost",
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            blogId: post.blogRefId,
+            blogId: props.post.blogRefId,
+            email:JSON.parse(localStorage.getItem('userDetail')).email
           }),
         }
       );
@@ -55,7 +56,7 @@ export default function MorevertMenu(post) {
         open={showSnackbar}
         autoHideDuration={6000}
         handleClose={handleCloseSnackbar}
-        message= "Something went wrong"
+        message="Something went wrong"
         severity="error"
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
       />
@@ -68,7 +69,8 @@ export default function MorevertMenu(post) {
       >
         <MoreVertIcon />
       </IconButton>
-      <Menu
+
+      {props.isAdmin ? <Menu
         style={{ padding: "10px" }}
         id="basic-menu"
         anchorEl={anchorEl}
@@ -78,8 +80,9 @@ export default function MorevertMenu(post) {
           "aria-labelledby": "basic-button",
         }}
       >
-        {post.isAdmin ? <MenuItem onClick={handleDelete}>Delete Post</MenuItem> : ''}
-      </Menu>
+        {<MenuItem onClick={handleDelete}>Delete Post</MenuItem>}
+      </Menu> : ''}
+
     </div>
   );
 }

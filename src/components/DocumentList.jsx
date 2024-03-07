@@ -86,13 +86,15 @@ const DocumentList = ({ type, url,title}) => {
       fullWidth={true} maxWidth="lg"
        resizable={true}>
         <DialogTitle>
-          Image Preview
+          Document Preview
           <IconButton className={classes.closeButton} onClick={handleClose}>
             <Close />
           </IconButton>
         </DialogTitle>
         <DialogContent>
-          <iframe resizable="true" src={url} width="1000vh" height="600"></iframe>
+          {/* <iframe resizable="true" src={url} width="1000vh" height="600"></iframe> */}
+          <embed src={url} resizable="true" type="application/pdf" width="1000vh" height="600" />
+
         </DialogContent>
       </Dialog>
     </div>
