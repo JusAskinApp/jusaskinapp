@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Button,
@@ -19,7 +19,7 @@ import CustomSnackbar from "./CustomSnackbar";
 function NewComponent({ onBackClick }) {
   const navigate = useNavigate();
   const [selectedFile, setSelectedFile] = useState([]);
-  const [bannerfile, setbannerfile] = useState([]);
+  const [bannerfile, setBannerfile] = useState([]);
   const [groupName, setGroupName] = useState("");
   const [subtitle, setSubtitle] = useState("");
   const [textAreaValue, setTextAreaValue] = useState("");
@@ -28,6 +28,20 @@ function NewComponent({ onBackClick }) {
   const [showSnackbar, setShowSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("success");
+  const [subscriptionStatus, setSubscriptionStatus] = useState("");
+  const [planName, setPlanName] = useState("");
+
+  useEffect(() => {
+    debugger
+if(JSON.parse(localStorage.userDetail).subscription){
+
+    const subscription = JSON.parse(localStorage.userDetail).subscription;
+    if (subscription && subscription.subscription_status === "ACTIVE") {
+      setSubscriptionStatus(subscription.subscription_status);
+      setPlanName(subscription.planName);
+    }
+  }
+  }, []);
 
   const handleRadioChange = (event) => {
     setSelectedValue(event.target.value);
@@ -36,9 +50,9 @@ function NewComponent({ onBackClick }) {
   const handleFileChange = (event) => {
     setSelectedFile(Array.from(event.target.files));
   };
+
   const handleBannerFileChange = (event) => {
-    debugger;
-    setbannerfile(Array.from(event.target.files));
+    setBannerfile(Array.from(event.target.files));
   };
 
   const handleGroupNameChange = (event) => {
@@ -62,7 +76,7 @@ function NewComponent({ onBackClick }) {
   };
 
   const createGroup = async (url, bannerImageUrl) => {
-    debugger;
+    setLoading(true);
     try {
       const response = await fetch(
         "https://jusaskin.herokuapp.com/api/groups/creategroup",
@@ -72,8 +86,8 @@ function NewComponent({ onBackClick }) {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            imageurl: url ? url : '',
-            bannerurl: bannerImageUrl ? bannerImageUrl :'',
+            imageurl: url || "",
+            bannerurl: bannerImageUrl || "",
             groupname: groupName,
             subtitle: subtitle,
             description: textAreaValue,
@@ -84,11 +98,11 @@ function NewComponent({ onBackClick }) {
       const data = await response.json();
 
       if (response.ok) {
-        setSnackbarMessage("Group created Successfull");
+        setSnackbarMessage("Group created successfully");
         setSnackbarSeverity("success");
         setShowSnackbar(true);
         setSelectedFile([]);
-        setbannerfile([]);
+        setBannerfile([]);
         setGroupName("");
         setSubtitle("");
         setTextAreaValue("");
@@ -110,16 +124,15 @@ function NewComponent({ onBackClick }) {
   };
 
   const uploadFiles = async () => {
-    debugger;
-    if(selectedFile.length > 0){
+    if (selectedFile.length > 0) {
       const formData = new FormData();
       selectedFile.forEach((file) => {
         formData.append("files[]", file);
       });
-  
+
       const bannerImageFile = bannerfile[0];
       formData.append("files[]", bannerImageFile);
-  
+
       try {
         const response = await fetch(
           "https://jusaskin.herokuapp.com/api/resources/upload",
@@ -136,16 +149,20 @@ function NewComponent({ onBackClick }) {
         console.error(error);
         return { url: [], bannerImageUrl: "" };
       }
-    }else{
+    } else {
       return { url: [], bannerImageUrl: "" };
     }
   };
+
   const handleCreateGroupClick = async () => {
-    debugger;
-    if (isFormValid) {
-      setLoading(true);
-      const { url, bannerImageUrl } = await uploadFiles();
-      createGroup(url[0], bannerImageUrl);
+    if (isFormValid()) {
+      if (subscriptionStatus === "Active" && planName === "Premium Monthly") {
+        const { url, bannerImageUrl } = await uploadFiles();
+        createGroup(url[0], bannerImageUrl);
+      } else {
+        // Subscription does not meet requirements
+        alert("Subscribe to premium monthly to create a group");
+      }
     }
   };
 
@@ -161,118 +178,122 @@ function NewComponent({ onBackClick }) {
       <IconButton onClick={onBackClick}>
         <ArrowBackOutlinedIcon />
       </IconButton>
-      <Box sx={{ display: "flex", flexDirection: "column", mt: 2 }}>
-        <div>
-          <label htmlFor="group-upload-photo">
-            <input
-              style={{ display: "none" }}
-              id="group-upload-photo"
-              name="group-upload-photo"
-              onChange={handleFileChange}
-              type="file"
-            />
+      {subscriptionStatus === "ACTIVE" && planName === "Premium Monthly" ? (
+        <Box sx={{ display: "flex", flexDirection: "column", mt: 2 }}>
+          <div>
+            <label htmlFor="group-upload-photo">
+              <input
+                style={{ display: "none" }}
+                id="group-upload-photo"
+                name="group-upload-photo"
+                onChange={handleFileChange}
+                type="file"
+              />
 
-            <Fab
-              color="primary"
-              size="small"
-              component="span"
-              aria-label="add"
-              variant="extended"
-            >
-              <AddIcon />{" "}
-              <p>
-                {selectedFile.length !== 0
-                  ? selectedFile[0].name
-                  : "Upload Group Photo"}
-              </p>
-            </Fab>
-          </label>
-        </div>
-        <Box sx={{ mt: 2 }}>
-          <TextField
-            label="Group Name"
-            variant="outlined"
-            value={groupName}
-            onChange={handleGroupNameChange}
-          />
-          <TextField
-            label="Subtitle"
-            variant="outlined"
-            value={subtitle}
-            onChange={handleSubtitleChange}
-            sx={{ ml: 2 }}
-          />
-        </Box>
-        <br></br>
-        <div>
-          <label htmlFor="upload-photo">
-            <input
-              style={{ display: "none" }}
-              id="upload-photo"
-              name="upload-photo"
-              onChange={handleBannerFileChange}
-              type="file"
+              <Fab
+                color="primary"
+                size="small"
+                component="span"
+                aria-label="add"
+                variant="extended"
+              >
+                <AddIcon />{" "}
+                <p>
+                  {selectedFile.length !== 0
+                    ? selectedFile[0].name
+                    : "Upload Group Photo"}
+                </p>
+              </Fab>
+            </label>
+          </div>
+          <Box sx={{ mt: 2 }}>
+            <TextField
+              label="Group Name"
+              variant="outlined"
+              value={groupName}
+              onChange={handleGroupNameChange}
             />
+            <TextField
+              label="Subtitle"
+              variant="outlined"
+              value={subtitle}
+              onChange={handleSubtitleChange}
+              sx={{ ml: 2 }}
+            />
+          </Box>
+          <br></br>
+          <div>
+            <label htmlFor="upload-photo">
+              <input
+                style={{ display: "none" }}
+                id="upload-photo"
+                name="upload-photo"
+                onChange={handleBannerFileChange}
+                type="file"
+              />
 
-            <Fab
-              color="primary"
-              size="small"
-              component="span"
-              aria-label="add"
-              variant="extended"
+              <Fab
+                color="primary"
+                size="small"
+                component="span"
+                aria-label="add"
+                variant="extended"
+              >
+                <AddIcon />{" "}
+                <p>
+                  {bannerfile.length !== 0
+                    ? bannerfile[0].name
+                    : "Upload banner photo"}
+                </p>
+              </Fab>
+            </label>
+          </div>
+          <Box sx={{ mt: 2 }}>
+            <Textarea
+              value={textAreaValue}
+              onChange={handleTextAreaChange}
+              minRows={2}
+              placeholder="Type in here…"
+            />
+          </Box>
+          <Box sx={{ mt: 2 }}>
+            <RadioGroup
+              aria-label="privacy"
+              name="privacy"
+              value={selectedValue}
+              onChange={handleRadioChange}
+              row
             >
-              <AddIcon />{" "}
-              <p>
-                {bannerfile.length !== 0
-                  ? bannerfile[0].name
-                  : "Upload banner photo"}
-              </p>
-            </Fab>
-          </label>
-        </div>
-        <Box sx={{ mt: 2 }}>
-          <Textarea
-            value={textAreaValue}
-            onChange={handleTextAreaChange}
-            minRows={2}
-            placeholder="Type in here…"
-          />
+              <FormControlLabel
+                value="public"
+                control={<Radio />}
+                label="Public"
+              />
+              <FormControlLabel
+                value="private"
+                control={<Radio />}
+                label="Private"
+              />
+            </RadioGroup>
+          </Box>
+          <Box sx={{ mt: 2 }}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleCreateGroupClick}
+              disabled={!isFormValid() || loading}
+            >
+              {loading ? (
+                <CircularProgress size={24} color="primary" />
+              ) : (
+                "Create Group"
+              )}
+            </Button>
+          </Box>
         </Box>
-        <Box sx={{ mt: 2 }}>
-          <RadioGroup
-            aria-label="privacy"
-            name="privacy"
-            value={selectedValue}
-            onChange={handleRadioChange}
-            row
-          >
-            <FormControlLabel
-              value="public"
-              control={<Radio />}
-              label="Public"
-            />
-            <FormControlLabel
-              value="private"
-              control={<Radio />}
-              label="Private"
-            />
-          </RadioGroup>
-        </Box>
-        <Box sx={{ mt: 2 }}>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleCreateGroupClick}
-            disabled={!isFormValid() || loading}
-          >
-            {loading ? (
-              <CircularProgress size={24} color="primary" />
-            ) : (
-              "Create Group"
-            )}
-          </Button>
-        </Box>
-      </Box>
+      ) : (
+        <p>Subscribe to premium monthly to get access to creating the group</p>
+      )}
     </div>
   );
 }

@@ -1,10 +1,14 @@
 import React from 'react'
-import PayPalButton from '../components/paypal/PaypalButton'
+// import PayPalButton from '../components/paypal/PaypalButton'
+import BaseCompPaypal from '../components/paypal/BaseCompPaypal'
+import SubscriptionPlans from '../components/paypal/SubscriptionPlans'
 
 function Payment() {
   return (
     <div>
-        <PayPalButton/>
+        {/* <PayPalButton/> */}
+        <BaseCompPaypal/>
+        {/* <SubscriptionPlans/> */}
     </div>
   )
 }
