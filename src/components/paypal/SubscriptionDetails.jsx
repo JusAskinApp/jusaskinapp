@@ -7,7 +7,7 @@ const SubscriptionDetails = ({subscription}) => {
     return date.toLocaleDateString('en-US', options);
   }
   return (
-    <div>
+    <div className="pt-5">
     <h2>Plan: <strong>{subscription.planName}</strong></h2>
     <h2>Subscription Status: <strong>{subscription.subscription_status}</strong></h2>
     <p>Subscription ID: <strong>{subscription.subscription_id}</strong></p>

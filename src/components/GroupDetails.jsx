@@ -40,30 +40,21 @@ function NewComponent({ onBackClick }) {
   function subscriptionHandler() {
     const current_date = new Date();
     const signup_date = new Date(JSON.parse(localStorage.userDetail).signup_date);
-    
-    // Calculate the difference in milliseconds between the current date and signup date
     const timeDifference = current_date.getTime() - signup_date.getTime();
-    // Convert milliseconds to days
     const daysPassed = timeDifference / (1000 * 3600 * 24);
   
     if (daysPassed < 30) {
-      // Still within the trial period
       setPlanName('Premium Monthly');
     } else {
       try {
-        // Attempt to access the subscription details from local storage
         const userDetail = JSON.parse(localStorage.userDetail);
         const subscription = userDetail.subscription;
         if (subscription && subscription.subscription_status === "ACTIVE") {
           setPlanName(subscription.planName);
         } else {
-          // Handle case where trial has ended and no active subscription
-          // Set plan name to a default value or prompt user to subscribe
         }
       } catch (error) {
-        // Handle error accessing subscription details
         console.error("Error accessing subscription details:", error);
-        // Set plan name to a default value or prompt user to log in again
       }
     }
   }
@@ -182,13 +173,12 @@ function NewComponent({ onBackClick }) {
 
   const handleCreateGroupClick = async () => {
     if (isFormValid()) {
-      if (subscriptionStatus === "Active" && planName === "Premium Monthly") {
+      // if (subscriptionStatus === "Active" && planName === "Premium Monthly") {
         const { url, bannerImageUrl } = await uploadFiles();
         createGroup(url[0], bannerImageUrl);
-      } else {
-        // Subscription does not meet requirements
-        alert("Subscribe to premium monthly to create a group");
-      }
+      // } else {
+      //   alert("Subscribe to premium monthly to create a group");
+      // }
     }
   };
 

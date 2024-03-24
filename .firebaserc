@@ -1,5 +1,15 @@
 {
   "projects": {
     "default": "jusaskinapp"
-  }
+  },
+  "targets": {
+    "jusaskinapp": {
+      "hosting": {
+        "live": [
+          "jusaskin.com"
+        ]
+      }
+    }
+  },
+  "etags": {}
 }
