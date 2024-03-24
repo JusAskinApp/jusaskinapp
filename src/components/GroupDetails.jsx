@@ -32,16 +32,42 @@ function NewComponent({ onBackClick }) {
   const [planName, setPlanName] = useState("");
 
   useEffect(() => {
-    debugger
-if(JSON.parse(localStorage.userDetail).subscription){
+    debugger;
+    subscriptionHandler()
+  }, []);
 
-    const subscription = JSON.parse(localStorage.userDetail).subscription;
-    if (subscription && subscription.subscription_status === "ACTIVE") {
-      setSubscriptionStatus(subscription.subscription_status);
-      setPlanName(subscription.planName);
+
+  function subscriptionHandler() {
+    const current_date = new Date();
+    const signup_date = new Date(JSON.parse(localStorage.userDetail).signup_date);
+    
+    // Calculate the difference in milliseconds between the current date and signup date
+    const timeDifference = current_date.getTime() - signup_date.getTime();
+    // Convert milliseconds to days
+    const daysPassed = timeDifference / (1000 * 3600 * 24);
+  
+    if (daysPassed < 30) {
+      // Still within the trial period
+      setPlanName('Premium Monthly');
+    } else {
+      try {
+        // Attempt to access the subscription details from local storage
+        const userDetail = JSON.parse(localStorage.userDetail);
+        const subscription = userDetail.subscription;
+        if (subscription && subscription.subscription_status === "ACTIVE") {
+          setPlanName(subscription.planName);
+        } else {
+          // Handle case where trial has ended and no active subscription
+          // Set plan name to a default value or prompt user to subscribe
+        }
+      } catch (error) {
+        // Handle error accessing subscription details
+        console.error("Error accessing subscription details:", error);
+        // Set plan name to a default value or prompt user to log in again
+      }
     }
   }
-  }, []);
+  
 
   const handleRadioChange = (event) => {
     setSelectedValue(event.target.value);
@@ -178,7 +204,7 @@ if(JSON.parse(localStorage.userDetail).subscription){
       <IconButton onClick={onBackClick}>
         <ArrowBackOutlinedIcon />
       </IconButton>
-      {subscriptionStatus === "ACTIVE" && planName === "Premium Monthly" ? (
+      {planName === "Premium Monthly" ? (
         <Box sx={{ display: "flex", flexDirection: "column", mt: 2 }}>
           <div>
             <label htmlFor="group-upload-photo">

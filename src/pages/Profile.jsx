@@ -165,8 +165,7 @@ function Profile(props) {
     { label: "Saved", component : <Feed savedPosts={true}/> },
     {
       label: "My Resources",
-      component: <Resour
-      ces currentUser={currentUser} />,
+      component: <Resources currentUser={currentUser} />,
     },
   ];
 
