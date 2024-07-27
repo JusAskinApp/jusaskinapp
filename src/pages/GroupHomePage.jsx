@@ -1,18 +1,14 @@
 import React, { useState, useEffect } from "react";
 import Feed from "../components/Feed";
 import "./home.css";
-// import IconButton from "@mui/material/IconButton";
 import Grid from "@mui/material/Unstable_Grid2";
-import { json, useLocation } from "react-router-dom";
+import { json, useLocation, useParams } from "react-router-dom";
 import DialogBoxForGroups from "../components/DialogBoxForGroup";
 import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined";
 import { Button, TextField, CircularProgress } from "@mui/material";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import Divider from "@mui/material/Divider";
-import LockIcon from "@mui/icons-material/Lock";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import Avatar from "@mui/material/Avatar";
 import AvatarGroup from "@mui/material/AvatarGroup";
 import Demo from "../components/Demo";
@@ -25,19 +21,19 @@ import { isMobile } from "react-device-detect";
 import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
 import SimpleDialogDemo from "../components/userPopup";
 import { Dialog } from "@mui/material";
-
+import TabSection from "../components/Tabsection";
 import SettingsIcon from "@mui/icons-material/Settings";
+import { uploadFiles } from "../utility/uploadUtility";
+// import GroupComponent from "../components/GroupComponent";
+// import TopicComponent from '../components/TopicComponent';
+import Course from "../components/groups/courses/Course";
+
 const GroupTitle = styled.h1`
   font-size: 28px;
   font-weight: bold;
   margin-top: 10px;
   text-transform: capitalize;
 `;
-
-// const SubtitleText = styled.p`
-//   font-size: 16px;
-//   color: #777;
-// `;
 
 const BannerImage = styled.img`
   width: 100%;
@@ -48,22 +44,20 @@ const BannerImage = styled.img`
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 `;
 
-// import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined";
+
+
 function GroupHomePage(props) {
   debugger;
   const navigate = useNavigate();
+  const { id } = useParams();
+  const { state } = useLocation();
+  const [group,setGroup] = useState(state ? state.group : null)
   const [mode, setMode] = useState("dark");
   const [members, setMembers] = useState([]);
   const [content, setContent] = useState("");
   const [openpopup, setOpenPopup] = useState(false);
-  const { state } = useLocation();
-  const [join, setJoin] = useState(state.join);
-  // const join = state ? state.join : null;
+  const [join, setJoin] = useState(state ? state.join : false);
   const [showMeetingComp, setMeetingComp] = useState(true);
-  // const group = state ? state.group : null;
-  const [group,setGroup] = useState(state ? state.group : null)
-  // const bannerImageUrl = group?.bannerurl;
-  // const groupTitle = group?.groupname;
   const [open, setOpen] = useState(false);
   const [isResponseOk, setIsResponseOk] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
@@ -71,22 +65,16 @@ function GroupHomePage(props) {
   const [imagesUrl, setImages] = useState([]);
   const [bannerUrl, setBannerImage] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-
-  // need to continue form here adding a pop up
-  // setting intial state when the pop up opens
-  // update the state in the DB via API call
   const [isModelOpen, setIsModelOpen] = useState(false);
   const [formData, setFormData] = useState({
-    description: group.description,
-    groupname: group.groupname,
-    imageurl: group.imageurl,
-    subtitle: group.subtitle,
-    bannerurl: group.bannerurl,
+    description: '',
+    groupname: '',
+    imageurl: '',
+    subtitle: '',
+    bannerurl: ''
   });
-  const [isAdmin, setIsAdmin] = useState(
-    group.admin.email === JSON.parse(localStorage.getItem("userDetail")).email
-  );
-  const groupid = group?.blogRefId;
+  const [isAdmin, setIsAdmin] = useState(false);
+  const groupid = group ? group.blogRefId : id;
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -110,6 +98,61 @@ function GroupHomePage(props) {
     group: groupid,
   };
   useEffect(() => {
+    debugger
+    if (!group) {
+      fetchGroupDataById(id);
+    } else {
+      setFormData({
+        description: group.description,
+        groupname: group.groupname,
+        imageurl: group.imageurl,
+        subtitle: group.subtitle,
+        bannerurl: group.bannerurl
+      });
+      setIsAdmin(group.admin && group.admin.email === JSON.parse(localStorage.getItem('userDetail')).email);
+     
+    }
+  }, [id, group]);
+
+  
+
+  const fetchGroupDataById = async (groupId) => {
+    debugger
+    try {
+      const userEmail = JSON.parse(localStorage.getItem('userDetail')).email;
+      const response = await fetch('http://localhost:5000/api/groups/getgroupsbyid', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ groupId, userEmail })
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const data = await response.json();
+      setGroup(data);
+      setJoin(data.admin.email === userEmail ? true : data.join);
+      setFormData({
+        description: data.description,
+        groupname: data.groupname,
+        imageurl: data.imageurl,
+        subtitle: data.subtitle,
+        bannerurl: data.bannerurl
+      });
+      // setLoading(false);
+    } catch (error) {
+      console.error('Error fetching group data:', error);
+      // setLoading(false);
+    }
+  };
+  const tabs = [
+    { label: 'Feed', component:  <Feed groupid={groupid} isAdmin={group?.admin.email === JSON.parse(localStorage.getItem("userDetail")).email}/>},
+    { label: 'Course', component: <Course/> },
+  ];
+  useEffect(() => {
     retrieveGroupMembers(groupid);
   }, []);
   const InsertBlogPost = (e) => {
@@ -132,34 +175,34 @@ function GroupHomePage(props) {
         console.error(error);
       });
   };
-  const uploadFiles = async (files) => {
-    debugger;
-    if (files.length > 0) {
-      const formData = new FormData();
-      files.forEach((file) => {
-        formData.append("files[]", file);
-      });
-      let promise = new Promise((resolve, reject) => {
-        fetch("https://jusaskin.herokuapp.com/api/resources/upload", {
-          method: "POST",
-          body: formData,
-        })
-          .then((response) => response.json())
-          .then((data) => {
-            console.log(data);
-            resolve(data["fileUrls"]);
-          })
-          .catch((error) => {
-            console.error(error);
-            resolve([]);
-          });
-        // resolve(true);
-      });
-      return promise;
-    } else {
-      return true;
-    }
-  };
+//  const uploadFiles = async (files) => {
+//     debugger;
+//     if (files.length > 0) {
+//       const formData = new FormData();
+//       files.forEach((file) => {
+//         formData.append("files[]", file);
+//       });
+//       let promise = new Promise((resolve, reject) => {
+//         fetch("https://jusaskin.herokuapp.com/api/resources/upload", {
+//           method: "POST",
+//           body: formData,
+//         })
+//           .then((response) => response.json())
+//           .then((data) => {
+//             console.log(data);
+//             resolve(data["fileUrls"]);
+//           })
+//           .catch((error) => {
+//             console.error(error);
+//             resolve([]);
+//           });
+//         // resolve(true);
+//       });
+//       return promise;
+//     } else {
+//       return true;
+//     }
+//   };
   const scheduleMeeting = () => {
     debugger;
     setMeetingComp((prevFlag) => !prevFlag);
@@ -252,7 +295,7 @@ function GroupHomePage(props) {
     }
   }
 
-  const [openDialog, setOpenDialog] = React.useState(false); // State for controlling the dialog
+  const [openDialog, setOpenDialog] = React.useState(false);
 
   // Function to open the dialog
   const openUserPopup = () => {
@@ -292,35 +335,7 @@ function GroupHomePage(props) {
     setIsModelOpen(false);
   };
 
-  // const handleSave = async () => {
-  //   debugger;
-  //   if (imagesUrl.length > 0) {
-  //     formData.imageurl = await uploadFiles(imagesUrl);
-  //   }
-  //   if (bannerUrl.length > 0) {
-  //     formData.bannerurl = await uploadFiles(bannerUrl);
-  //   }
-  //   fetch("https://jusaskin.herokuapp.com/api/groups/updategroup", {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify({
-  //       groupId: groupid,
-  //       ...formData,
-  //     }),
-  //   })
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       console.log(data);
-  //       setIsLoading(false);
-  //       handleModelClose();
-  //       window.location.reload(true);
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error updating group data:", error);
-  //     });
-  // };
+  
   const handleSave = async () => {
     debugger;
     setIsLoading(true); // Set loading state to true
@@ -330,6 +345,8 @@ function GroupHomePage(props) {
         formData.imageurl = await uploadFiles(imagesUrl);
       }
       if (bannerUrl.length > 0) {
+      console.log(formData.bannerurl)
+
         formData.bannerurl = await uploadFiles(bannerUrl);
       }
 
@@ -386,7 +403,7 @@ function GroupHomePage(props) {
                   >
                     <ArrowBackOutlinedIcon />
                   </IconButton>
-                  {group.bannerurl ? (
+                  {group && group.bannerurl ? (
                     <BannerImage src={group.bannerurl} alt="Banner" />
                   ) : (
                     ""
@@ -400,21 +417,11 @@ function GroupHomePage(props) {
                     }}
                   >
                     <div>
-                      <GroupTitle>{group.groupname}</GroupTitle>
+                      <GroupTitle>{group?.groupname}</GroupTitle>
                     </div>
 
                     <div className="gap-1 flex space-x-1 items-center">
-                      {/* {!join && (
-                        <button
-                          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 ml-2 rounded-lg"
-                          onClick={() => {
-                            joinGroup(groupid);
-                          }}
-                        >
-                          <PersonAddAltIcon /> {isMobile ? "" : "  Join Group"}
-                        </button>
-                      )} */}
-
+                     
                       {join && (
                         <button
                           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 ml-2 rounded-lg"
@@ -465,13 +472,7 @@ function GroupHomePage(props) {
                               })
                             }
                           />
-                          {/* <input
-                            name="image"
-                            type="file"
-                            id="file-upload"
-                            onChange={handleChange}
-                            single
-                          /> */}
+                         
                           <br />
                           <div
                             style={{ display: "flex", flexDirection: "column" }}
@@ -510,40 +511,6 @@ function GroupHomePage(props) {
                                 <p>Selected Image: {bannerUrl[0].name}</p>
                               )}
                           </div>
-
-                          {/* <input
-                            name="banner"
-                            type="file"
-                            id="file-upload"
-                            onChange={handleChange}
-                            single
-                          /> */}
-                          {/* <TextField
-                            label="Image URL"
-                            variant="outlined"
-                            fullWidth
-                            margin="normal"
-                            value={formData.imageurl}
-                            onChange={(e) =>
-                              setFormData({
-                                ...formData,
-                                imageurl: e.target.value,
-                              })
-                            }
-                          /> */}
-                          {/* <TextField
-                            label="Banner URL"
-                            variant="outlined"
-                            fullWidth
-                            margin="normal"
-                            value={formData.bannerurl}
-                            onChange={(e) =>
-                              setFormData({
-                                ...formData,
-                                bannerurl: e.target.value,
-                              })
-                            }
-                          /> */}
                           <TextField
                             label="Subtitle"
                             variant="outlined"
@@ -590,7 +557,7 @@ function GroupHomePage(props) {
 
                   <div className="bg-gray-100 p-4 rounded">
                     <div>
-                      <p>{group.description}</p>
+                      <p>{group?.description}</p>
                     </div>
                     <div>
                       <AvatarGroup
@@ -671,12 +638,14 @@ function GroupHomePage(props) {
                   </button>
                 </div>
               )}
+              
               <DialogBoxForGroups
                 open={open}
                 onClose={handleClose}
                 groupid={groupid}
               />
-              <Feed groupid={groupid} isAdmin={group.admin.email === JSON.parse(localStorage.getItem("userDetail")).email}/>
+              <TabSection tabs={tabs}/>
+              {/* <Feed groupid={groupid} isAdmin={group?.admin.email === JSON.parse(localStorage.getItem("userDetail")).email}/> */}
             </div>
           ) : null
         ) : (

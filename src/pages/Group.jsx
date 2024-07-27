@@ -40,15 +40,6 @@ function Group() {
         <div>
           <div className="flex justify-end">
             <div className="flex items-center space-x-2 text-gray-500">
-              {/* <IconButton>
-                <SearchOutlinedIcon />
-              </IconButton> */}
-              {/* <input
-                type="text"
-                placeholder="Search groups..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              /> */}
               <IconButton onClick={handleAddClick}>
                 <AddIcon />
               </IconButton>

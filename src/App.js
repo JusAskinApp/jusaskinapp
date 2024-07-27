@@ -1,5 +1,6 @@
 import './App.css';
 import Login from './components/Login';
+import toast, { Toaster } from 'react-hot-toast';
 import Signup from './components/Signup';
 import Home from './pages/Home';
 import Sidebar from './pages/Sidebar';
@@ -70,11 +71,13 @@ function App() {
           <Route path="/group" element={<Group />} />
           <Route path="/messages" element={<Messages />} />
           <Route path="/home" element={<Home />} />
-          <Route path="/grouphomepage" element={<GroupHomePage />} />
+          <Route path="/grouphomepage/:id" element={<GroupHomePage />} />
           <Route path="/terms" element={<Terms />} />
           <Route path="/privacypolicy" element={<PrivacyPolicy />} />
           <Route path='/payment' element={<Payment/>}/>
         </Routes>
+      <Toaster />
+
       </div>
     </div>
 

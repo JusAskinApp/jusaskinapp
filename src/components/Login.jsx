@@ -5,6 +5,7 @@ import google from "../assets/google-icon.png";
 import twitter from "../assets/twitter-icon.png";
 import { useNavigate } from "react-router-dom";
 import { isMobile } from "react-device-detect";
+import { Link } from "react-router-dom";
 import Footer from "./Footer";
 import {
   TextField,
@@ -191,7 +192,9 @@ export default function Login() {
                 }}
                 gutterBottom
               >
-                Forgot Password
+                <Link to="/forgot-password" style={{ color: "#8CA1A6", textDecoration: "none" }}>
+    Forgot Password
+  </Link>
               </Typography>
               <Button
                 style={{
@@ -212,43 +215,7 @@ export default function Login() {
                   "Log in"
                 )}
               </Button>
-              {/* <Button
-                style={{
-                  width: "100%",
-                  height: "60px",
-                  marginTop: "15px",
-                  borderRadius: "40px",
-                  fontSize: "18px",
-                  fontWeight: "700",
-                }}
-                variant="contained"
-                type="submit"
-              >
-                Log in
-              </Button> */}
-              {/* <Grid
-                container
-                style={{ marginTop: "30px" }}
-                justify="center"
-                alignItems="center"
-                spacing={1}
-              >
-                <Grid item xs={3}>
-                  <IconButton>
-                    <img src={facebook} alt="" />
-                  </IconButton>
-                </Grid>
-                <Grid item xs={3}>
-                  <IconButton>
-                    <img src={google} alt="" />
-                  </IconButton>
-                </Grid>
-                <Grid item xs={3}>
-                  <IconButton>
-                    <img src={twitter} alt="" />
-                  </IconButton>
-                </Grid>
-              </Grid> */}
+             
             </FormControl>
           </form>
         </ThemeProvider>

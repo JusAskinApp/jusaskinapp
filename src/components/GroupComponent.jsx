@@ -47,6 +47,7 @@ function GroupComponent() {
   }, []);
 
   const joinGroup = async (groupid, item) => {
+    debugger
     try {
       const response = await fetch(
         "https://jusaskin.herokuapp.com/api/groups/adduseringroup",
@@ -113,7 +114,7 @@ function GroupComponent() {
               key={item.blogRefId}
               className="border border-solid border-gray-300 rounded-lg shadow-md p-2 transition duration-24.3s flex-shrink-0"
               onClick={() => {
-                navigate("/grouphomepage", {
+                navigate(`/grouphomepage/${item.blogRefId}`, {
                   state: { group: item, join: item.admin.email === JSON.parse(localStorage.getItem('userDetail')).email ? true : item.join },
                 });
               }}

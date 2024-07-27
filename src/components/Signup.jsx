@@ -93,7 +93,7 @@ export default function Signup() {
     debugger;
     setLoading(true);
 
-    fetch("https://jusaskin.herokuapp.com/api/users/signup", {
+    fetch("http://localhost:5000/api/users/signup", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
