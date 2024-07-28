@@ -21,10 +21,10 @@ const useAddCourse = () => {
             }
 
             const data = await response.json();
-            toast.success('Course created successfully');
+            toast.success('Course created successfully', { duration: 3000 });
 
         } catch (err) {
-            toast.error(err.message);
+            toast.error(err.message, { duration: 3000 });
         } finally {
             setLoading(false);
         }
