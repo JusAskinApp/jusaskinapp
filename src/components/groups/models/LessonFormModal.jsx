@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Modal, Box, TextField, Button, Typography, IconButton, Grid } from '@mui/material';
 import { AddCircle, RemoveCircle } from '@mui/icons-material';
+import { uploadFiles } from '../../../utility/uploadUtility';
 
 const LessonFormModal = ({ open, handleClose, handleSubmit }) => {
     const [lessons, setLessons] = useState([{
@@ -20,7 +21,8 @@ const LessonFormModal = ({ open, handleClose, handleSubmit }) => {
         const { name, value, files } = e.target;
         const newLessons = [...lessons];
         if (name === 'content') {
-            newLessons[lessonIndex].topicNames[topicIndex][name] = files[0];
+            newLessons[lessonIndex].topicNames[topicIndex][name] = Array.from(files);
+            // newLessons[lessonIndex].topicNames[topicIndex].fileName = files[0].name;
         } else {
             newLessons[lessonIndex].topicNames[topicIndex][name] = value;
         }
@@ -30,7 +32,7 @@ const LessonFormModal = ({ open, handleClose, handleSubmit }) => {
     const addLesson = () => {
         setLessons([...lessons, {
             lessonTopic: '',
-            topicNames: [{ name: '', content: null }],
+            topicNames: [{ name: '', content: null}],
             topicDescription: ''
         }]);
     };
@@ -42,7 +44,7 @@ const LessonFormModal = ({ open, handleClose, handleSubmit }) => {
 
     const addTopicName = (lessonIndex) => {
         const newLessons = [...lessons];
-        newLessons[lessonIndex].topicNames.push({ name: '', content: null });
+        newLessons[lessonIndex].topicNames.push({ name: '', content: null});
         setLessons(newLessons);
     };
 
@@ -52,10 +54,41 @@ const LessonFormModal = ({ open, handleClose, handleSubmit }) => {
         setLessons(newLessons);
     };
 
-    const onSubmit = (e) => {
+    const onSubmit = async (e) => {
         e.preventDefault();
+        // lessons.forEach(lesson =>{
+        //     if(lesson.topicNames.length > 0){
+        //         lesson.topicNames.forEach(item =>{
+        //             if(item.content === null){
+        //                 item.content = await uploadFiles(item.content)
+        //             }
+        //         })
+        //     }
+        // })
+        
         handleSubmit(lessons);
     };
+
+    // const onSubmit = async (e) => {
+    //     debugger
+    //     e.preventDefault();
+    
+    //     const updatedLessons = await Promise.all(lessons.map(async (lesson) => {
+    //         if (lesson.topicNames.length > 0) {
+    //             const updatedTopicNames = await Promise.all(lesson.topicNames.map(async (item) => {
+    //                 if (item.content !== null) {
+    //                     item.content = await uploadFiles([item.content]);
+    //                 }
+    //                 return item;
+    //             }));
+    //             lesson.topicNames = updatedTopicNames;
+    //         }
+    //         return lesson;
+    //     }));
+    
+    //     handleSubmit(updatedLessons);
+    // };
+    
 
     return (
         <Modal open={open} onClose={handleClose}>
@@ -98,7 +131,7 @@ const LessonFormModal = ({ open, handleClose, handleSubmit }) => {
                         </Grid>
                         {lesson.topicNames.map((topic, topicIndex) => (
                             <Grid container spacing={2} key={topicIndex} alignItems="center">
-                                <Grid item xs={12} sm={4}>
+                                <Grid item xs={12} sm={6}>
                                     <TextField 
                                         label={`Topic Name ${topicIndex + 1}`} 
                                         fullWidth 
@@ -109,23 +142,25 @@ const LessonFormModal = ({ open, handleClose, handleSubmit }) => {
                                         onChange={(e) => handleTopicNameChange(lessonIndex, topicIndex, e)} 
                                     />
                                 </Grid>
-                                <Grid item xs={12} sm={4}>
-                                    <Button 
-                                        variant="contained" 
-                                        component="label" 
-                                        fullWidth 
-                                        margin="normal"
-                                        size="small"
-                                    >
-                                        Upload Content
-                                        <input 
-                                            type="file" 
-                                            name="content" 
-                                            hidden 
-                                            onChange={(e) => handleTopicNameChange(lessonIndex, topicIndex, e)} 
-                                        />
-                                    </Button>
-                                </Grid>
+                                <Grid item xs={4}>
+                                        
+                                            <Button 
+                                                variant="contained" 
+                                                component="label" 
+                                                fullWidth 
+                                                margin="normal"
+                                                size="small"
+                                            >
+                                                Upload Content
+                                                <input 
+                                                    type="file" 
+                                                    name="content" 
+                                                    hidden 
+                                                    onChange={(e) => handleTopicNameChange(lessonIndex, topicIndex, e)} 
+                                                />
+                                            </Button>
+                                        
+                                    </Grid>
                                 <Grid item xs={12} sm={2}>
                                     <IconButton onClick={() => removeTopicName(lessonIndex, topicIndex)} disabled={lesson.topicNames.length === 1}>
                                         <RemoveCircle />

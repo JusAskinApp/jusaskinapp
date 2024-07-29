@@ -1,14 +1,16 @@
 import React, { useState,useEffect } from 'react';
 import { Modal, Box, TextField, Button, Select, MenuItem, InputLabel, FormControl,Grid, Typography } from '@mui/material';
 import { uploadFiles } from '../../../utility/uploadUtility';
+import { useParams } from 'react-router-dom';
 
 const CourseFormModal = ({ open, handleClose, handleSubmit }) => {
+    const {id} = useParams();
     const [course, setCourse] = useState({
         courseName: '',
         courseDescription: '',
         createdBy: '',
         coursePic: null,
-        courseAffiliatedGroupID: '12345',
+        courseAffiliatedGroupID: id,
         price: '',
         rating: '',
         language: '',
