@@ -54,40 +54,31 @@ const LessonFormModal = ({ open, handleClose, handleSubmit }) => {
         setLessons(newLessons);
     };
 
-    const onSubmit = async (e) => {
-        e.preventDefault();
-        // lessons.forEach(lesson =>{
-        //     if(lesson.topicNames.length > 0){
-        //         lesson.topicNames.forEach(item =>{
-        //             if(item.content === null){
-        //                 item.content = await uploadFiles(item.content)
-        //             }
-        //         })
-        //     }
-        // })
-        
-        handleSubmit(lessons);
-    };
-
     // const onSubmit = async (e) => {
-    //     debugger
     //     e.preventDefault();
-    
-    //     const updatedLessons = await Promise.all(lessons.map(async (lesson) => {
-    //         if (lesson.topicNames.length > 0) {
-    //             const updatedTopicNames = await Promise.all(lesson.topicNames.map(async (item) => {
-    //                 if (item.content !== null) {
-    //                     item.content = await uploadFiles([item.content]);
-    //                 }
-    //                 return item;
-    //             }));
-    //             lesson.topicNames = updatedTopicNames;
-    //         }
-    //         return lesson;
-    //     }));
-    
-    //     handleSubmit(updatedLessons);
+    //     handleSubmit(lessons);
     // };
+
+    const onSubmit = async (e) => {
+        debugger
+        e.preventDefault();
+    
+        const updatedLessons = await Promise.all(lessons.map(async (lesson) => {
+            if (lesson.topicNames.length > 0) {
+                const updatedTopicNames = await Promise.all(lesson.topicNames.map(async (item) => {
+                    if (item.content !== null) {
+                        item.content = await uploadFiles(item.content);
+                    }
+                    return item;
+                }));
+                debugger
+                lesson.topicNames = updatedTopicNames;
+            }
+            return lesson;
+        }));
+    
+        handleSubmit(updatedLessons);
+    };
     
 
     return (
