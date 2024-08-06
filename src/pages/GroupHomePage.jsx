@@ -120,7 +120,7 @@ function GroupHomePage(props) {
     debugger
     try {
       const userEmail = JSON.parse(localStorage.getItem('userDetail')).email;
-      const response = await fetch('http://localhost:5000/api/groups/getgroupsbyid', {
+      const response = await fetch('https://jusaskin.herokuapp.com/api/groups/getgroupsbyid', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

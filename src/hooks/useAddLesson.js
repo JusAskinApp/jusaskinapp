@@ -8,7 +8,7 @@ debugger
     const addLessons = async (lessonsData) => {
         setLoading(true);
         try {
-            const response = await fetch(`http://localhost:5000/api/courses/${courseId}/add-lessons`, {
+            const response = await fetch(`https://jusaskin.herokuapp.com/api/courses/${courseId}/add-lessons`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

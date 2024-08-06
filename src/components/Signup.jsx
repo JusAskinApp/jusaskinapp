@@ -61,7 +61,7 @@ export default function Signup() {
   const navigate = useNavigate();
   const paperStyle = {
     padding: "40px 30px",
-    width: isMobile ? 'auto' : 450,
+    width: isMobile ? "auto" : 450,
     margin: "20px auto",
     textAlign: "center",
   };
@@ -93,7 +93,7 @@ export default function Signup() {
     debugger;
     setLoading(true);
 
-    fetch("http://localhost:5000/api/users/signup", {
+    fetch("https://jusaskin.herokuapp.com/api/users/signup", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -279,11 +279,23 @@ export default function Signup() {
                     gutterBottom
                   >
                     By creating your account you agree to JusAskin's
-                    <Link to="/terms" style={{ textDecoration: "none" }}>  <span style={{ textDecoration: "underline" }}>terms</span> </Link>
-                     and
-                     <Link to="/privacypolicy" style={{ textDecoration: "none" }}> <span style={{ textDecoration: "underline" }}>Privacy Policy</span> </Link>
+                    <Link to="/terms" style={{ textDecoration: "none" }}>
+                      {" "}
+                      <span style={{ textDecoration: "underline" }}>
+                        terms
+                      </span>{" "}
+                    </Link>
+                    and
+                    <Link
+                      to="/privacypolicy"
+                      style={{ textDecoration: "none" }}
+                    >
+                      {" "}
+                      <span style={{ textDecoration: "underline" }}>
+                        Privacy Policy
+                      </span>{" "}
+                    </Link>
                   </Typography>
-                 
                 }
                 labelPlacement="end"
               />
@@ -340,10 +352,9 @@ export default function Signup() {
               </Grid>
             </FormControl>
           </form>
-          
         </ThemeProvider>
       </Paper>
-<Footer />
+      <Footer />
     </Grid>
   );
 }

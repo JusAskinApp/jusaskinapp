@@ -8,7 +8,7 @@ const useAddCourse = () => {
     const addCourse = async (courseData) => {
         setLoading(true);
         try {
-            const response = await fetch('http://localhost:5000/api/courses/create-course', {
+            const response = await fetch('https://jusaskin.herokuapp.com/api/courses/create-course', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

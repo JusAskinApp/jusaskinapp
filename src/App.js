@@ -24,6 +24,7 @@ import GroupHomePage from './pages/GroupHomePage';
 import { isMobile } from 'react-device-detect';
 import BottomBar from './components/BottomBar';
 import Payment from './pages/Payment';
+import CourseHomePage from './components/groups/courses/CourseHomePage';
 const clientID = '644322334132-o3bvfqgckm43rq74dki8jb3jren3a5sj.apps.googleusercontent.com'
 function App() {
   const location = useLocation();
@@ -75,6 +76,8 @@ function App() {
           <Route path="/terms" element={<Terms />} />
           <Route path="/privacypolicy" element={<PrivacyPolicy />} />
           <Route path='/payment' element={<Payment/>}/>
+          <Route path="/course/:id" element={<CourseHomePage />} />
+
         </Routes>
       <Toaster />
 
